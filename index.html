@@ -1236,7 +1236,7 @@ function metroTap() { const now = Date.now(); if (_lastTap && (now - _lastTap) <
 function toggleSidebar() { const sidebar = document.getElementById('sidebar'), overlay = document.getElementById('sidebarOverlay'), burger = document.getElementById('hamburger'), isOpen = sidebar.classList.contains('open'); if (isOpen) { closeSidebar(); } else { sidebar.classList.add('open'); overlay.classList.add('show'); burger.classList.add('open'); } }
 function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('show'); document.getElementById('hamburger').classList.remove('open'); }
 
-setVol(70); hInit(); iInit(); praticaInit(); metroInitLeds(); _updatePomoDisplay();
+setVol(70); hInit(); iInit(); praticaInit(); metroInitLeds(); reguaBuildUI(); _updatePomoDisplay();
 </script>
 
 <!-- ══════ FIREBASE E SISTEMA DE LOGIN ══════ -->
