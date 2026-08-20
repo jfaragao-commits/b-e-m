@@ -1237,7 +1237,115 @@ function toggleSidebar() { const sidebar = document.getElementById('sidebar'), o
 function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('show'); document.getElementById('hamburger').classList.remove('open'); }
 
 setVol(70); hInit(); iInit(); praticaInit(); metroInitLeds(); reguaBuildUI(); _updatePomoDisplay();
-</script>
+</script>// ================================================================
+//  MÓDULO RÉGUA — RÉGUA DE INTERVALOS (BOHUMIL MED)
+// ================================================================
+const REGUA_INTERVALS = [
+  { semitones: 0, symbol: 'Uníssimo', short: 'U', name: 'Uníssono Justo', cat: 'perfeita', colorClass: 'color-green' },
+  { semitones: 1, symbol: '2ª m', short: '2m', name: 'Segunda Menor', cat: 'forte', colorClass: 'color-red' },
+  { semitones: 2, symbol: '2ª M', short: '2M', name: 'Segunda Maior', cat: 'suave', colorClass: 'color-gold' },
+  { semitones: 3, symbol: '3ª m', short: '3m', name: 'Terça Menor', cat: 'imperfect', colorClass: 'color-imperfect' },
+  { semitones: 4, symbol: '3ª M', short: '3M', name: 'Terça Maior', cat: 'imperfect', colorClass: 'color-imperfect' },
+  { semitones: 5, symbol: '4ª J', short: '4J', name: 'Quarta Justa', cat: 'perfeita', colorClass: 'color-green' },
+  { semitones: 6, symbol: 'Trítono', short: 'TT', name: 'Quarta Aumentada / Quinta Diminuta', cat: 'neutral', colorClass: 'color-neutral' },
+  { semitones: 7, symbol: '5ª J', short: '5J', name: 'Quinta Justa', cat: 'perfeita', colorClass: 'color-green' },
+  { semitones: 8, symbol: '6ª m', short: '6m', name: 'Sexta Menor', cat: 'imperfect', colorClass: 'color-imperfect' },
+  { semitones: 9, symbol: '6ª M', short: '6M', name: 'Sexta Maior', cat: 'imperfect', colorClass: 'color-imperfect' },
+  { semitones: 10, symbol: '7ª m', short: '7m', name: 'Sétima Menor', cat: 'suave', colorClass: 'color-gold' },
+  { semitones: 11, symbol: '7ª M', short: '7M', name: 'Sétima Maior', cat: 'forte', colorClass: 'color-red' },
+  { semitones: 12, symbol: 'Oitava', short: '8ª', name: 'Oitava Justa', cat: 'perfeita', colorClass: 'color-green' }
+];
+
+let reguaRootMidi = 60;
+let reguaRootName = 'C';
+let reguaPlayMode = 'melodic'; // 'melodic' or 'harmonic'
+
+function reguaSetPlayMode(mode) {
+  reguaPlayMode = mode;
+  document.getElementById('reguaMelodic').classList.toggle('active', mode === 'melodic');
+  document.getElementById('reguaHarmonic').classList.toggle('active', mode === 'harmonic');
+}
+
+function reguaSetRoot(name, midi, label) {
+  reguaRootName = name;
+  reguaRootMidi = midi;
+  document.getElementById('reguaRefNote').innerHTML = `${name}<sub>${Math.floor(midi/12)-1}</sub>`;
+  document.getElementById('reguaRefName').textContent = label;
+  
+  document.querySelectorAll('.regua-ref-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().startsWith(name));
+  });
+}
+
+function reguaPlayInterval(semis, rowElementId) {
+  initAudio();
+  const fA = midiToFreq(reguaRootMidi);
+  const fB = midiToFreq(reguaRootMidi + semis);
+  const t = audioCtx.currentTime;
+
+  if (rowElementId) {
+    const el = document.getElementById(rowElementId);
+    if (el) {
+      el.classList.add('playing');
+      setTimeout(() => el.classList.remove('playing'), reguaPlayMode === 'harmonic' ? 2200 : 1600);
+    }
+  }
+
+  if (reguaPlayMode === 'harmonic') {
+    playNote(fA, t, 2.2);
+    playNote(fB, t, 2.2);
+  } else {
+    playNote(fA, t, 1.2);
+    playNote(fB, t + 1.3, 1.4);
+  }
+}
+
+function reguaPlayAll() {
+  let delay = 0;
+  const step = reguaPlayMode === 'harmonic' ? 1200 : 1800;
+  REGUA_INTERVALS.forEach((iv) => {
+    setTimeout(() => {
+      reguaPlayInterval(iv.semitones, 'regua-row-' + iv.semitones);
+    }, delay);
+    delay += step;
+  });
+}
+
+function reguaBuildUI() {
+  const intervalsContainer = document.getElementById('reguaIntervals');
+  const tableContainer = document.getElementById('reguaTable');
+  if (!intervalsContainer || !tableContainer) return;
+
+  intervalsContainer.innerHTML = '';
+  tableContainer.innerHTML = '';
+
+  REGUA_INTERVALS.forEach((iv) => {
+    const isTritone = iv.semitones === 6;
+
+    const row = document.createElement('div');
+    row.className = 'regua-row' + (isTritone ? ' tritone-row' : '');
+    row.id = 'regua-row-' + iv.semitones;
+    row.onclick = () => reguaPlayInterval(iv.semitones, row.id);
+    row.innerHTML = `
+      <div class="regua-line"></div>
+      <button class="regua-dot-btn ${iv.colorClass}" title="${iv.name} (${iv.semitones} st)"></button>
+    `;
+    intervalsContainer.appendChild(row);
+
+    const tRow = document.createElement('div');
+    tRow.className = 'regua-table-row' + (isTritone ? ' tritone-row' : '');
+    tRow.id = 'regua-trow-' + iv.semitones;
+    tRow.onclick = () => reguaPlayInterval(iv.semitones, tRow.id);
+    tRow.innerHTML = `
+      <div class="rtr-name">
+        <span class="rtr-full">${iv.name}</span>
+        <span class="rtr-symbol ${iv.colorClass}">${iv.symbol}</span>
+      </div>
+      <div class="rtr-semis ${iv.colorClass}">${iv.semitones}</div>
+    `;
+    tableContainer.appendChild(tRow);
+  });
+}
 
 <!-- ══════ FIREBASE E SISTEMA DE LOGIN ══════ -->
 <script type="module">
