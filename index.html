@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>B.E.M — Percepção Musical</title>
+  <title>B.E.M — Bloco de Estudos Musicais</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800;900&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Playfair+Display:wght@400;700;900&display=swap');
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:          #0c0c0c;
+      --bg:        #0c0c0c;
       --surface:     #141414;
       --surface2:    #1c1c1c;
       --border:      #2a2a2a;
@@ -304,9 +304,9 @@
     .color-green { color: var(--green); border-color: var(--green); }
     .color-gold  { color: var(--gold);  border-color: var(--gold);  }
     .color-red   { color: var(--red);   border-color: var(--red);   }
-    .color-imperfect{ color: #6dbf8a;       border-color: #6dbf8a; }
-    .color-amber    { color: var(--gold);   border-color: var(--gold); }
-    .color-neutral  { color: #c8602a;       border-color: #c8602a; }
+    .color-imperfect{ color: #6dbf8a;        border-color: #6dbf8a; }
+    .color-amber    { color: var(--gold);    border-color: var(--gold); }
+    .color-neutral  { color: #c8602a;        border-color: #c8602a; }
 
     .regua-mode-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: .4rem; }
     .regua-mode-label { font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-faint); }
@@ -412,7 +412,7 @@
   </nav>
 
   <div class="sidebar-mode">
-    <button class="mode-btn active" id="btnModeSpeaker"   onclick="setMode('speaker')">📱 Caixa</button>
+    <button class="mode-btn active" id="btnModeSpeaker"    onclick="setMode('speaker')">📱 Caixa</button>
     <button class="mode-btn"        id="btnModeHeadphone" onclick="setMode('headphone')">🎧 Fone</button>
   </div>
 </aside>
@@ -805,6 +805,19 @@ let hScoreC = 0, hScoreW = 0;
 let iScoreC = 0, iScoreW = 0;
 let diarioEntries = [];
 
+const PILARES = [
+  { titulo: "01. Solfejo", desc: "Arte de cantar as notas escritas, desenvolvendo o ouvido interno." },
+  { titulo: "02. Leitura Musical", desc: "Fluidez na decodificação e compreensão estrutural da partitura." },
+  { titulo: "03. Transcrição", desc: "Fixação auditiva direta do repertório para o instrumento." },
+  { titulo: "04. Improvisação", desc: "Fluência criativa estruturada sobre o conhecimento harmônico e melódico." },
+  { titulo: "05. Harmonia Clássica", desc: "Estudo das conduções de vozes, regras e sintaxe tonal tradicional." },
+  { titulo: "06. Harmonia Analítica", desc: "Compreensão profunda das funções, tensões e estruturas dos acordes." },
+  { titulo: "07. Apreciação Musical", desc: "Escuta atenta e analítica voltada para a construção do repertório." },
+  { titulo: "08. Técnica", desc: "Desenvolvimento motor e instrumental fundamentado na biomecânica." },
+  { titulo: "09. Bibliografia", desc: "Estudo teórico continuado através de métodos e tratados de referência." },
+  { titulo: "10. Repertório", desc: "O campo prático onde todos os saberes se sintetizam em obra viva." }
+];
+
 // Função que o Firebase vai chamar quando baixar os dados do aluno logado
 window.applyCloudData = (data) => {
   if (data.diario) {
@@ -908,7 +921,6 @@ function addScore(isCorrect, module) {
   document.getElementById('badgeH').textContent = hT ? `${hScoreC}/${hT}` : '0';
   document.getElementById('badgeI').textContent = iT ? `${iScoreC}/${iT}` : '0';
   
-  // Sincroniza com Firebase automaticamente se o aluno estiver logado
   if (window.dbSyncScores) window.dbSyncScores({ gScoreC, gScoreW, hScoreC, hScoreW, iScoreC, iScoreW });
 }
 
@@ -921,7 +933,6 @@ function resetScores() {
   iRenderStats();
   ['allHistory','iHistory'].forEach(id => { document.getElementById(id).innerHTML = '<div class="history-empty">Nenhuma resposta ainda.</div>'; });
 
-  // Sincroniza o zero com o Firebase
   if (window.dbSyncScores) window.dbSyncScores({ gScoreC, gScoreW, hScoreC, hScoreW, iScoreC, iScoreW });
 }
 
@@ -945,10 +956,9 @@ function addHistory(module, pair, answer, isCorrect, subtype) {
 
 function switchTab(tab) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.tab-nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.snav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('view-' + tab).classList.add('active');
-  const idx = ['harmonica','intervalos','historico'].indexOf(tab);
-  document.querySelectorAll('.tab-nav-btn')[idx]?.classList.add('active');
+  document.getElementById('snav-' + tab)?.classList.add('active');
 }
 
 // ================================================================
@@ -1175,7 +1185,6 @@ function dRender() {
     el.addEventListener('click', () => {
       diarioEntries.splice(parseInt(el.dataset.idx), 1);
       dRender();
-      // Salva no banco de dados
       if(window.dbSyncDiary) window.dbSyncDiary(diarioEntries);
     });
   });
@@ -1190,14 +1199,12 @@ function dSave(e) {
   dRender();
   document.getElementById('diarioTitulo').value = ''; document.getElementById('diarioObs').value = '';
   
-  // Salva no banco de dados
   if(window.dbSyncDiary) window.dbSyncDiary(diarioEntries);
 }
 
 function dClearAll() {
   if (!confirm('Apagar todo o diário?')) return;
   diarioEntries = []; dRender();
-  // Sincroniza o diário vazio com a nuvem
   if(window.dbSyncDiary) window.dbSyncDiary(diarioEntries);
 }
 
@@ -1236,8 +1243,7 @@ function metroTap() { const now = Date.now(); if (_lastTap && (now - _lastTap) <
 function toggleSidebar() { const sidebar = document.getElementById('sidebar'), overlay = document.getElementById('sidebarOverlay'), burger = document.getElementById('hamburger'), isOpen = sidebar.classList.contains('open'); if (isOpen) { closeSidebar(); } else { sidebar.classList.add('open'); overlay.classList.add('show'); burger.classList.add('open'); } }
 function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('show'); document.getElementById('hamburger').classList.remove('open'); }
 
-setVol(70); hInit(); iInit(); praticaInit(); metroInitLeds(); reguaBuildUI(); _updatePomoDisplay();
-</script>// ================================================================
+// ================================================================
 //  MÓDULO RÉGUA — RÉGUA DE INTERVALOS (BOHUMIL MED)
 // ================================================================
 const REGUA_INTERVALS = [
@@ -1258,7 +1264,7 @@ const REGUA_INTERVALS = [
 
 let reguaRootMidi = 60;
 let reguaRootName = 'C';
-let reguaPlayMode = 'melodic'; // 'melodic' or 'harmonic'
+let reguaPlayMode = 'melodic';
 
 function reguaSetPlayMode(mode) {
   reguaPlayMode = mode;
@@ -1347,13 +1353,22 @@ function reguaBuildUI() {
   });
 }
 
+// Inicializações gerais
+setVol(70); 
+hInit(); 
+iInit(); 
+praticaInit(); 
+metroInitLeds(); 
+reguaBuildUI(); 
+_updatePomoDisplay();
+</script>
+
 <!-- ══════ FIREBASE E SISTEMA DE LOGIN ══════ -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
   import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-  // Suas credenciais
   const firebaseConfig = {
     apiKey: "AIzaSyC1gz3lEuKhnd_TvXUNNIYRq8HEzdxtVGw",
     authDomain: "b-e-m-2b022.firebaseapp.com",
@@ -1368,7 +1383,6 @@ function reguaBuildUI() {
   const db = getFirestore(app);
   window.currentUser = null;
 
-  // Lógica de Login
   window.fazerLogin = () => {
     const email = document.getElementById('emailInput').value;
     const senha = document.getElementById('senhaInput').value;
@@ -1384,14 +1398,12 @@ function reguaBuildUI() {
       });
   };
 
-  // Lógica de Logout
   window.fazerLogout = () => {
     if(confirm("Deseja sair da sua conta?")) {
         signOut(auth);
     }
   };
 
-  // Funções que o código principal usa para salvar no banco
   window.dbSyncDiary = async (entriesArr) => {
     if (!window.currentUser) return;
     try {
@@ -1408,32 +1420,25 @@ function reguaBuildUI() {
     } catch (e) { console.error("Erro ao salvar pontuação na nuvem:", e); }
   };
 
-  // Monitora o estado de login
   onAuthStateChanged(auth, async (user) => {
     const overlay = document.getElementById('loginOverlay');
     if (user) {
-      // Usuário logou
       overlay.style.display = 'none';
       window.currentUser = user;
       
-      // Busca os dados do usuário no Firestore (ou cria um novo perfil)
       const userRef = doc(db, "alunos", user.uid);
       const docSnap = await getDoc(userRef);
       
       if (docSnap.exists()) {
-        // Aluno já existe, puxa os dados e injeta no app
         window.applyCloudData(docSnap.data());
       } else {
-        // Aluno novo, cria o documento inicial na nuvem
         await setDoc(userRef, {
           email: user.email,
           diario: [],
           scores: { gScoreC: 0, gScoreW: 0, hScoreC: 0, hScoreW: 0, iScoreC: 0, iScoreW: 0 }
         });
       }
-      
     } else {
-      // Ninguém está logado
       overlay.style.display = 'flex';
       window.currentUser = null;
     }
