@@ -331,19 +331,25 @@
 </head>
 <body>
 
-<!-- ══════ TELA DE LOGIN ══════ -->
+<!-- ══════ TELA DE LOGIN / CADASTRO ══════ -->
 <div id="loginOverlay" style="position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center;">
   <div style="background: var(--surface); border: 1px solid var(--border); padding: 2.5rem 2rem; width: 100%; max-width: 320px; animation: fadeUp 0.4s ease; display: flex; flex-direction: column; gap: 10px;">
-    <div style="text-align: center; margin-bottom: 1.5rem;">
+    <div style="text-align: center; margin-bottom: 1.2rem;">
       <span style="font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 900; color: var(--accent); letter-spacing: 0.02em;">B.E.M</span>
       <div style="font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-faint); margin-top: 4px;">Bloco de Estudos Musicais</div>
     </div>
     
-    <input type="email" id="emailInput" placeholder="E-mail do Aluno" style="width: 100%; background: var(--bg); border: 1px solid var(--border-lt); color: var(--text); font-family: var(--mono); font-size: 11px; padding: 0.8rem; outline: none;">
+    <!-- Abas para Alternar entre Entrar e Cadastrar -->
+    <div style="display: flex; border: 1px solid var(--border-lt); margin-bottom: 5px;">
+      <button type="button" id="tabEntrar" class="tab-btn active" style="flex: 1; padding: 6px;" onclick="setAuthMode('login')">Entrar</button>
+      <button type="button" id="tabCadastrar" class="tab-btn" style="flex: 1; padding: 6px;" onclick="setAuthMode('signup')">Criar Conta</button>
+    </div>
+
+    <input type="email" id="emailInput" placeholder="E-mail (ex: seu@gmail.com)" style="width: 100%; background: var(--bg); border: 1px solid var(--border-lt); color: var(--text); font-family: var(--mono); font-size: 11px; padding: 0.8rem; outline: none;">
     
-    <input type="password" id="senhaInput" placeholder="Senha" style="width: 100%; background: var(--bg); border: 1px solid var(--border-lt); color: var(--text); font-family: var(--mono); font-size: 11px; padding: 0.8rem; outline: none; margin-bottom: 10px;">
+    <input type="password" id="senhaInput" placeholder="Senha (mín. 6 dígitos)" style="width: 100%; background: var(--bg); border: 1px solid var(--border-lt); color: var(--text); font-family: var(--mono); font-size: 11px; padding: 0.8rem; outline: none; margin-bottom: 5px;">
     
-    <button class="btn btn-primary" style="width: 100%; padding: 1rem;" onclick="fazerLogin()"><span>ENTRAR NO B.E.M</span></button>
+    <button class="btn btn-primary" id="authSubmitBtn" style="width: 100%; padding: 1rem;" onclick="executarAutenticacao()"><span>ENTRAR NO B.E.M</span></button>
     
     <div id="loginErro" style="color: var(--red); font-size: 10px; margin-top: 5px; text-align: center; font-family: var(--mono); min-height: 15px;"></div>
   </div>
@@ -818,7 +824,6 @@ const PILARES = [
   { titulo: "10. Repertório", desc: "O campo prático onde todos os saberes se sintetizam em obra viva." }
 ];
 
-// Função que o Firebase vai chamar quando baixar os dados do aluno logado
 window.applyCloudData = (data) => {
   if (data.diario) {
     diarioEntries = data.diario;
@@ -1098,8 +1103,6 @@ function iSetDir(d) {
 function iGetFreqs() { 
   if (!iCurrent) return [440,440]; 
   const {rootMidi, interval, actualDir} = iCurrent; 
-  // No modo ascendente: Nota 1 (grave) -> Nota 2 (aguda)
-  // No modo descendente: Nota 1 (aguda) -> Nota 2 (grave)
   if (actualDir === 'asc') {
     return [midiToFreq(rootMidi), midiToFreq(rootMidi + interval.semitones)];
   } else {
@@ -1122,14 +1125,13 @@ function iNew() {
   let actualDir = iDirection === 'both' ? (Math.random() > .5 ? 'asc' : 'desc') : iDirection;
   iCurrent = { rootMidi: root.midi, rootName: root.name, interval, actualDir };
   
-  // Cálculo das notas visuais e sonoras considerando a direção
   let midiNote1, midiNote2;
   if (actualDir === 'asc') {
     midiNote1 = root.midi;
     midiNote2 = root.midi + interval.semitones;
   } else {
-    midiNote1 = root.midi + interval.semitones; // Nota mais aguda (início do descendente)
-    midiNote2 = root.midi;                      // Nota mais grave (destino)
+    midiNote1 = root.midi + interval.semitones;
+    midiNote2 = root.midi;
   }
 
   const name1 = ['C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B'][((midiNote1%12)+12)%12];
@@ -1144,7 +1146,6 @@ function iNew() {
   document.getElementById('iIntSemis').textContent = interval.semitones + ' semitons'; 
   document.getElementById('iIntSemis').classList.add('hidden');
   
-  // Atualiza a seta visual conforme a direção
   const arrowEl = document.querySelector('.interval-arrow');
   if (arrowEl) arrowEl.textContent = actualDir === 'asc' ? '↗' : '↘';
 
@@ -1437,10 +1438,10 @@ reguaBuildUI();
 _updatePomoDisplay();
 </script>
 
-<!-- ══════ FIREBASE E SISTEMA DE LOGIN ══════ -->
+<!-- ══════ FIREBASE E SISTEMA DE LOGIN / CADASTRO ══════ -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+  import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
   import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -1457,19 +1458,50 @@ _updatePomoDisplay();
   const db = getFirestore(app);
   window.currentUser = null;
 
-  window.fazerLogin = () => {
-    const email = document.getElementById('emailInput').value;
+  let isLoginMode = true;
+
+  window.setAuthMode = (mode) => {
+    isLoginMode = (mode === 'login');
+    document.getElementById('tabEntrar').classList.toggle('active', isLoginMode);
+    document.getElementById('tabCadastrar').classList.toggle('active', !isLoginMode);
+    document.getElementById('authSubmitBtn').querySelector('span').textContent = isLoginMode ? 'ENTRAR NO B.E.M' : 'CADASTRAR CONTA';
+    document.getElementById('loginErro').textContent = '';
+  };
+
+  window.executarAutenticacao = () => {
+    const email = document.getElementById('emailInput').value.trim();
     const senha = document.getElementById('senhaInput').value;
     const erroDiv = document.getElementById('loginErro');
     
-    if(!email || !senha) { erroDiv.textContent = "Preencha o e-mail e a senha."; return; }
-    erroDiv.textContent = "Autenticando...";
+    if(!email || !senha) { 
+      erroDiv.textContent = "Preencha o e-mail e a senha."; 
+      return; 
+    }
+
+    if (!isLoginMode && senha.length < 6) {
+      erroDiv.textContent = "A senha deve ter pelo menos 6 caracteres.";
+      return;
+    }
+
+    erroDiv.textContent = isLoginMode ? "Autenticando..." : "Criando conta...";
     
-    signInWithEmailAndPassword(auth, email, senha)
-      .catch((error) => {
-        console.error(error);
-        erroDiv.textContent = "Acesso negado. Verifique suas credenciais.";
-      });
+    if (isLoginMode) {
+      signInWithEmailAndPassword(auth, email, senha)
+        .catch((error) => {
+          console.error(error);
+          erroDiv.textContent = "Acesso negado. Verifique suas credenciais.";
+        });
+    } else {
+      createUserWithEmailAndPassword(auth, email, senha)
+        .catch((error) => {
+          console.error(error);
+          if (error.code === 'auth/email-already-in-use') {
+            erroDiv.textContent = "Este e-mail já está cadastrado.";
+          } else {
+            erroDiv.textContent = "Erro ao cadastrar. Tente outra senha.";
+          }
+        });
+    }
   };
 
   window.fazerLogout = () => {
