@@ -150,29 +150,17 @@ input:focus {
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-  // =======================================================================
-  // ADENDO: SUBSTITUA O BLOCO ABAIXO PELAS SUAS CHAVES REAIS DO FIREBASE
-  // =======================================================================
   const firebaseConfig = {
-    apiKey: "COLE_SUA_API_KEY_AQUI",
-    authDomain: "COLE_SEU_AUTH_DOMAIN_AQUI",
-    projectId: "COLE_SEU_PROJECT_ID_AQUI",
-    storageBucket: "COLE_SEU_STORAGE_BUCKET_AQUI",
-    messagingSenderId: "COLE_SEU_MESSAGING_SENDER_ID_AQUI",
-    appId: "COLE_SEU_APP_ID_AQUI"
+    apiKey: "AIzaSyC1gz3lEuKhnd_TvXUNNIYRq8HEzdxtVGw",
+    authDomain: "b-e-m-2b022.firebaseapp.com",
+    projectId: "b-e-m-2b022",
+    storageBucket: "b-e-m-2b022.firebasestorage.app",
+    messagingSenderId: "915349324107",
+    appId: "1:915349324107:web:43491b00674b5d8b1c28ce"
   };
 
-  // Trava para checar se as chaves foram alteradas
-  function chavesEstaoConfiguradas() {
-    return firebaseConfig.apiKey !== "COLE_SUA_API_KEY_AQUI" && firebaseConfig.apiKey !== "";
-  }
-
-  let app, auth;
-  // Inicializa o Firebase apenas se as chaves existirem
-  if (chavesEstaoConfiguradas()) {
-    app = initializeApp(firebaseConfig);
-    auth = getAuth(app);
-  }
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
   const loginBtn = document.getElementById("loginBtn");
   const resetBtn = document.getElementById("resetBtn");
@@ -182,14 +170,6 @@ input:focus {
   loginBtn.addEventListener("click", () => {
     errorMsg.style.display = "none";
     
-    // Adendo de segurança: Impede o clique se as chaves forem as de exemplo
-    if (!chavesEstaoConfiguradas()) {
-      errorMsg.style.display = "block";
-      errorMsg.style.color = "#c8a030"; // Dourado do B.E.M. para aviso
-      errorMsg.innerText = "⚠️ ADENDO: Por favor, cole as chaves do seu projeto Firebase no código (linha 90) antes de testar.";
-      return;
-    }
-
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     
@@ -203,13 +183,14 @@ input:focus {
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        // Sucesso: Redirecionar para o painel de estudos do B.E.M.
         window.location.href = "painel.html"; 
       })
       .catch((error) => {
         loginBtn.innerText = "ENTRAR →";
         errorMsg.style.display = "block";
         
-        // Tratamento avançado de erros
+        // Tratamento de erros
         if (error.code === 'auth/invalid-credential') {
             errorMsg.innerText = "Credenciais inválidas. O e-mail não existe ou a senha está errada.";
         } else if (error.code === 'auth/invalid-email') {
@@ -224,13 +205,6 @@ input:focus {
   resetBtn.addEventListener("click", (e) => {
     e.preventDefault();
     
-    if (!chavesEstaoConfiguradas()) {
-      errorMsg.style.display = "block";
-      errorMsg.style.color = "#c8a030";
-      errorMsg.innerText = "⚠️ ADENDO: Configure as chaves do Firebase primeiro.";
-      return;
-    }
-
     const email = document.getElementById("email").value;
     
     if(!email) {
