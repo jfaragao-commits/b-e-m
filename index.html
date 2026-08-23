@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>B.E.M. — Bloco de Estudos Musicais</title>
+<title>B.E.M. — Acesso ao Treinamento</title>
 <style>
 :root {
   --bg: #0c0c0c;
@@ -125,7 +125,7 @@ input:focus {
   <div class="logo-container">
     <div class="logo">BEM</div>
     <h2>ACESSO AO APP</h2>
-    <div class="sub">OUVIDO RELATIVO</div>
+    <div class="sub">TREINAMENTO AUDITIVO</div>
   </div>
 
   <div class="input-group">
@@ -147,66 +147,108 @@ input:focus {
 </div>
 
 <script type="module">
-  // IMPORTANTE: Insira as credenciais do seu projeto Firebase abaixo
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+  // =======================================================================
+  // ADENDO: SUBSTITUA O BLOCO ABAIXO PELAS SUAS CHAVES REAIS DO FIREBASE
+  // =======================================================================
   const firebaseConfig = {
-    apiKey: "SUA_API_KEY",
-    authDomain: "SEU_PROJETO.firebaseapp.com",
-    projectId: "SEU_PROJETO",
-    storageBucket: "SEU_PROJETO.appspot.com",
-    messagingSenderId: "SEU_MESSAGING_ID",
-    appId: "SEU_APP_ID"
+    apiKey: "COLE_SUA_API_KEY_AQUI",
+    authDomain: "COLE_SEU_AUTH_DOMAIN_AQUI",
+    projectId: "COLE_SEU_PROJECT_ID_AQUI",
+    storageBucket: "COLE_SEU_STORAGE_BUCKET_AQUI",
+    messagingSenderId: "COLE_SEU_MESSAGING_SENDER_ID_AQUI",
+    appId: "COLE_SEU_APP_ID_AQUI"
   };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+  // Trava para checar se as chaves foram alteradas
+  function chavesEstaoConfiguradas() {
+    return firebaseConfig.apiKey !== "COLE_SUA_API_KEY_AQUI" && firebaseConfig.apiKey !== "";
+  }
+
+  let app, auth;
+  // Inicializa o Firebase apenas se as chaves existirem
+  if (chavesEstaoConfiguradas()) {
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+  }
 
   const loginBtn = document.getElementById("loginBtn");
   const resetBtn = document.getElementById("resetBtn");
   const errorMsg = document.getElementById("errorMsg");
 
-  // Função de Login (Apenas Entrar)
+  // Função de Login
   loginBtn.addEventListener("click", () => {
+    errorMsg.style.display = "none";
+    
+    // Adendo de segurança: Impede o clique se as chaves forem as de exemplo
+    if (!chavesEstaoConfiguradas()) {
+      errorMsg.style.display = "block";
+      errorMsg.style.color = "#c8a030"; // Dourado do B.E.M. para aviso
+      errorMsg.innerText = "⚠️ ADENDO: Por favor, cole as chaves do seu projeto Firebase no código (linha 90) antes de testar.";
+      return;
+    }
+
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     
-    errorMsg.style.display = "none";
+    if(!email || !password) {
+      errorMsg.style.display = "block";
+      errorMsg.innerText = "Preencha e-mail e senha.";
+      return;
+    }
+
     loginBtn.innerText = "CARREGANDO...";
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Sucesso: Redirecionar para o painel de estudos do B.E.M.
         window.location.href = "painel.html"; 
       })
       .catch((error) => {
         loginBtn.innerText = "ENTRAR →";
         errorMsg.style.display = "block";
-        errorMsg.innerText = "Credenciais inválidas. Verifique seu e-mail e senha.";
+        
+        // Tratamento avançado de erros
+        if (error.code === 'auth/invalid-credential') {
+            errorMsg.innerText = "Credenciais inválidas. O e-mail não existe ou a senha está errada.";
+        } else if (error.code === 'auth/invalid-email') {
+            errorMsg.innerText = "Formato de e-mail inválido.";
+        } else {
+            errorMsg.innerText = "Erro ao acessar: " + error.message;
+        }
       });
   });
 
   // Função de Redefinir Senha
   resetBtn.addEventListener("click", (e) => {
     e.preventDefault();
+    
+    if (!chavesEstaoConfiguradas()) {
+      errorMsg.style.display = "block";
+      errorMsg.style.color = "#c8a030";
+      errorMsg.innerText = "⚠️ ADENDO: Configure as chaves do Firebase primeiro.";
+      return;
+    }
+
     const email = document.getElementById("email").value;
     
     if(!email) {
       errorMsg.style.display = "block";
-      errorMsg.innerText = "Digite seu e-mail acima para redefinir a senha.";
+      errorMsg.style.color = "#b84848";
+      errorMsg.innerText = "Digite seu e-mail no campo acima para redefinir a senha.";
       return;
     }
 
     sendPasswordResetEmail(auth, email)
       .then(() => {
         errorMsg.style.display = "block";
-        errorMsg.style.color = "#4a9e6a"; // Cor verde
+        errorMsg.style.color = "#4a9e6a"; 
         errorMsg.innerText = "E-mail de redefinição enviado!";
       })
       .catch((error) => {
         errorMsg.style.display = "block";
-        errorMsg.style.color = "#b84848"; // Cor vermelha
+        errorMsg.style.color = "#b84848"; 
         errorMsg.innerText = "Erro ao enviar e-mail. Verifique se o endereço está correto.";
       });
   });
