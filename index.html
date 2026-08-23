@@ -150,6 +150,7 @@ input:focus {
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+  // Chaves reais do seu projeto
   const firebaseConfig = {
     apiKey: "AIzaSyC1gz3lEuKhnd_TvXUNNIYRq8HEzdxtVGw",
     authDomain: "b-e-m-2b022.firebaseapp.com",
@@ -183,7 +184,7 @@ input:focus {
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // CORREÇÃO APLICADA AQUI: Redireciona para o index.html
+        // Redireciona para o index.html com sucesso
         window.location.href = "index.html"; 
       })
       .catch((error) => {
