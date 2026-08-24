@@ -1,1522 +1,333 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>B.E.M — Bloco de Estudos Musicais</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800;900&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Playfair+Display:wght@400;700;900&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B.E.M. — Do zero ao ouvido relativo</title>
+<style>
+:root{
+  --bg: #0b0b0b;
+  --panel: #111111;
+  --panel2: #151515;
+  --line: #262626;
+  --text: #eae6df;
+  --muted: #8c877d;
+  --gold: #e2b035; /* Dourado vibrante extraído do flyer */
+  --gold-dim: #997420;
+  --green: #4a9e6a;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:"Courier New", monospace; line-height:1.6;
+}
+a{color:inherit;text-decoration:none}
+.container{max-width:1180px;margin:auto;padding:0 28px}
+.grid{display:grid;gap:18px}
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:20;
+  background:rgba(11,11,11,.95);border-bottom:1px solid var(--line);
+  backdrop-filter:blur(10px)
+}
+.navin{height:68px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{
+  width:40px;height:40px;border-radius:50%;background:var(--gold);color:#0b0b0b;
+  display:grid;place-items:center;font-weight:900;font-size:14px
+}
+.brand strong{letter-spacing:2px}
+.navlinks{display:flex;gap:25px;color:var(--muted);font-size:12px}
+.navlinks a:hover{color:var(--gold)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:14px 20px;border:1px solid var(--gold);background:var(--gold);
+  color:#0b0b0b;font-weight:bold;letter-spacing:1px;font-family:inherit;
+  cursor:pointer;transition:.2s
+}
+.btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--text);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--gold);color:var(--gold)}
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.hero{padding:145px 0 70px;border-bottom:1px solid var(--line)}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:55px;align-items:center}
+.eyebrow{color:var(--gold);font-size:11px;letter-spacing:3px;margin-bottom:8px}
+h1{font-size:clamp(44px,6.5vw,80px);line-height:.98;margin:14px 0 24px;letter-spacing:-3px}
+.lead{font-size:17px;max-width:680px;color:#bbb5aa}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0 16px}
+.micro{font-size:11px;color:var(--muted)}
 
-    :root {
-      --bg:      #0c0c0c;
-      --surface:   #141414;
-      --surface2:    #1c1c1c;
-      --border:    #2a2a2a;
-      --border-lt:   #333;
-      --text:    #e4e0d8;
-      --text-mid:    #888;
-      --text-faint:  #444;
-      --accent:    #e4e0d8;
-      --green:     #4a9e6a;
-      --red:       #b84848;
-      --gold:      #c8a030;
-      --sidebar-w:   220px;
-      --mono: 'DM Mono', monospace;
-      --serif: 'Playfair Display', serif;
-    }
+.app-window{
+  border:1px solid var(--line);background:var(--panel);box-shadow:0 25px 70px rgba(0,0,0,.6)
+}
+.window-top{height:42px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 16px;color:var(--muted);font-size:11px;letter-spacing:2px}
+.window-body{padding:22px}
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--mono);
-      font-size: 13px;
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: var(--sidebar-w) 1fr;
-      align-items: start;
-    }
+.section{padding:90px 0;border-bottom:1px solid var(--line)}
+.section-label{font-size:11px;letter-spacing:3px;color:var(--gold);margin-bottom:12px}
+h2{font-size:clamp(28px,3.8vw,48px);line-height:1.05;margin:0 0 18px;letter-spacing:-1px}
+.sub{color:var(--muted);max-width:700px;font-size:14px}
 
-    body::after {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 9999;
-    }
+.problem{grid-template-columns:repeat(3,1fr);margin-top:42px}
+.card{border:1px solid var(--line);padding:26px;background:linear-gradient(145deg,#111,#0d0d0d)}
+.card h3{font-size:15px;margin:10px 0;color:var(--text)}
+.num{font-size:28px;color:var(--gold)}
+.card p{color:var(--muted);font-size:13px}
 
-    .sidebar {
-      position: sticky; top: 0; width: var(--sidebar-w); height: 100vh;
-      background: var(--surface); border-right: 1px solid var(--border);
-      display: flex; flex-direction: column; z-index: 200;
-      transition: transform 0.28s cubic-bezier(.4,0,.2,1);
-      overflow-y: auto; overflow-x: hidden;
-    }
+.statement{font-size:clamp(22px,3.2vw,38px);line-height:1.2;border-left:2px solid var(--gold);padding:5px 0 5px 24px;margin-top:45px}
 
-    @media (max-width: 768px) {
-      body { grid-template-columns: 1fr; }
-      .sidebar { position: fixed; top: 0; left: 0; transform: translateX(-100%); }
-      .sidebar.open { transform: translateX(0); }
-    }
+.interval-grid{display:grid;grid-template-columns:280px 1fr;gap:24px;margin-top:45px}
+.ruler{border:1px solid var(--line);padding:22px;background:var(--panel)}
+.ruler .r{display:flex;justify-content:space-between;border-bottom:1px solid #1f1f1f;padding:7px 0;font-size:12px}
+.ruler .r.active{color:var(--gold);background:#18160d;padding-left:8px;padding-right:8px;border-left:2px solid var(--gold)}
+.trainer{border:1px solid var(--line);padding:24px;background:var(--panel)}
+.question{font-size:11px;color:var(--muted);letter-spacing:2px;border-bottom:1px solid var(--line);padding-bottom:12px}
+.note{font-size:52px;margin:25px 0 8px;font-family:Georgia,serif;color:var(--text)}
+.choices{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.choice{border:1px solid var(--line);padding:12px;text-align:center;color:var(--muted);font-size:12px}
+.choice:hover{border-color:var(--gold);color:var(--gold)}
 
-    .sidebar-logo { padding: 1.4rem 1.2rem 1.2rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
-    .bem-circle { width: 42px; height: 42px; border-radius: 50%; background: #e8e2d4; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .bem-letters { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 900; letter-spacing: 0.02em; color: #0c0c0c; line-height: 1; user-select: none; }
-    .bem-text { display: flex; flex-direction: column; gap: 2px; }
-    .bem-fullname { font-family: var(--mono); font-size: 9px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); line-height: 1.3; }
-    .bem-tagline { font-family: var(--mono); font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); }
+.features{grid-template-columns:repeat(2,1fr);margin-top:42px}
+.feature{display:grid;grid-template-columns:46px 1fr;gap:18px;padding:22px 0;border-top:1px solid var(--line)}
+.icon{width:40px;height:40px;border:1px solid var(--line);display:grid;place-items:center;color:var(--gold);background:#0f0f0f}
+.feature h3{margin:0 0 5px;font-size:15px}
+.feature p{margin:0;color:var(--muted);font-size:12px}
 
-    .sidebar-score { display: flex; border-bottom: 1px solid var(--border); }
-    .sc-cell { flex: 1; padding: 10px 8px; text-align: center; border-right: 1px solid var(--border); }
-    .sc-cell:last-child { border-right: none; }
-    .sc-val { font-family: var(--serif); font-size: 20px; font-weight: 700; line-height: 1; display: block; }
-    .sc-val.ok  { color: var(--green); }
-    .sc-val.bad { color: var(--red); }
-    .sc-lbl { font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); margin-top: 2px; display: block; }
+.audience{grid-template-columns:repeat(2,1fr);margin-top:42px}
+.audience-card{border:1px solid var(--line);padding:24px;background:var(--panel)}
+.audience-card ul{margin:12px 0 0;padding-left:18px;color:var(--muted);font-size:13px}
+.audience-card li{margin-bottom:6px}
 
-    .reset-btn { width: 100%; font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; background: none; border: none; border-bottom: 1px solid var(--border); color: var(--text-faint); padding: 6px; cursor: pointer; transition: all .15s; text-transform: uppercase; }
-    .reset-btn:hover { color: var(--red); background: rgba(184,72,72,.06); }
+.offer{background:var(--panel);border:1px solid #332912;padding:38px;margin-top:45px}
+.offer-grid{display:grid;grid-template-columns:1fr 340px;gap:40px;align-items:center}
+.checks{list-style:none;padding:0;margin:25px 0}
+.checks li{padding:8px 0;border-bottom:1px solid var(--line);color:#c5c0b7;font-size:13px}
+.checks li::before{content:"✓";color:var(--gold);margin-right:10px}
+.pricebox{border:1px solid var(--line);padding:28px;text-align:center;background:#0d0d0d}
+.price{font-size:42px;color:var(--text);margin:10px 0}
+.price small{font-size:12px;color:var(--muted)}
 
-    .sidebar-nav { flex: 1; display: flex; flex-direction: column; padding: .5rem 0; }
-    .snav-btn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: .75rem 1.2rem; background: none; border: none; border-left: 3px solid transparent; color: var(--text-mid); cursor: pointer; text-align: left; width: 100%; display: flex; align-items: center; justify-content: space-between; transition: all .14s; }
-    .snav-btn:hover { color: var(--text); background: rgba(255,255,255,.03); }
-    .snav-btn.active { color: var(--accent); border-left-color: var(--accent); background: rgba(228,224,216,.05); }
-    .snav-group-label { font-size: 8px; letter-spacing: .2em; text-transform: uppercase; color: var(--text-faint); padding: .7rem 1.2rem .2rem; margin-top: .3rem; }
-    .tab-badge { font-size: 8px; padding: 1px 5px; background: var(--surface2); border: 1px solid var(--border); color: var(--text-faint); }
-    .snav-btn.active .tab-badge { background: var(--gold); color: var(--bg); border-color: var(--gold); }
-    .snav-icon { font-size: 12px; margin-right: 8px; opacity: .6; flex-shrink: 0; }
+.faq{margin-top:35px}
+details{border-top:1px solid var(--line);padding:20px 0}
+summary{cursor:pointer;font-size:14px;color:var(--text)}
+summary:hover{color:var(--gold)}
+details p{color:var(--muted);max-width:800px;font-size:13px;padding-top:12px}
 
-    .sidebar-mode { border-top: 1px solid var(--border); padding: .8rem 1rem; display: flex; gap: 4px; }
-    .mode-btn { flex: 1; font-family: var(--mono); font-size: 10px; padding: 5px 4px; border: 1px solid var(--border); background: none; color: var(--text-faint); cursor: pointer; transition: all .12s; letter-spacing: .04em; }
-    .mode-btn:hover  { color: var(--text-mid); }
-    .mode-btn.active { background: var(--surface2); color: var(--accent); border-color: var(--border-lt); }
+.final{text-align:center;padding:90px 0}
+.final h2{max-width:850px;margin:0 auto 24px}
 
-    .hamburger { display: none; position: fixed; top: 14px; left: 14px; z-index: 300; width: 40px; height: 40px; background: var(--surface); border: 1px solid var(--border-lt); flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; }
-    .hamburger span { display: block; width: 18px; height: 1.5px; background: var(--text); transition: all .22s; }
-    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4px,4px); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4px,-4px); }
-    @media (max-width: 768px) { .hamburger { display: flex; } }
+footer{border-top:1px solid var(--line);padding:35px 0;color:var(--muted);font-size:11px;display:flex;justify-content:space-between;align-items:center}
+.footer-contact{color:var(--gold);font-weight:bold;letter-spacing:1px}
 
-    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 190; }
-    .sidebar-overlay.show { display: block; }
+.sticky-cta{display:none}
 
-    .main-content { margin-left: var(--sidebar-w); flex: 1; min-width: 0; padding: 2rem 1.8rem 5rem; max-width: 780px; }
-    @media (max-width: 768px) { .main-content { margin-left: 0; padding: 4.5rem 1rem 5rem; max-width: 100%; } }
-
-    .view { display: none; flex-direction: column; gap: 1.2rem; }
-    .view.active { display: flex; }
-
-    .panel { border: 1px solid var(--border); background: var(--surface); padding: 1.4rem 1.6rem; animation: fadeUp 0.25s ease both; }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-    .panel-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
-    .panel-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
-    .btn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.8rem 0.6rem; border: 1px solid var(--border-lt); background: transparent; color: var(--text); cursor: pointer; transition: all 0.14s; position: relative; overflow: hidden; }
-    .btn::before { content: ''; position: absolute; inset: 0; background: var(--accent); transform: translateY(101%); transition: transform 0.16s ease; z-index: 0; }
-    .btn:hover::before { transform: translateY(0); }
-    .btn:hover { color: var(--bg); border-color: var(--accent); }
-    .btn span { position: relative; z-index: 1; }
-    .btn.playing { border-color: var(--gold); color: var(--gold); animation: pulse 0.9s ease infinite; }
-    @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(200,160,48,.3); } 50% { box-shadow: 0 0 0 4px rgba(200,160,48,0); } }
-    .btn-primary { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 500; letter-spacing: 0.14em; }
-    .btn-primary::before { background: var(--text-mid); }
-    .btn-primary:hover { color: var(--bg); }
-
-    .tab-btn { font-family: var(--mono); font-size: 10px; padding: 4px 11px; border: 1px solid var(--border); background: none; color: var(--text-mid); cursor: pointer; letter-spacing: 0.05em; transition: all 0.12s; }
-    .tab-btn:hover  { border-color: var(--text-mid); color: var(--text); }
-    .tab-btn.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
-
-    .btn-check { width: 100%; font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.9rem; border: 1px solid var(--border-lt); background: transparent; color: var(--text); cursor: pointer; transition: all 0.14s; }
-    .btn-check:hover:not(:disabled) { background: var(--accent); color: var(--bg); border-color: var(--accent); }
-    .btn-check:disabled { opacity: 0.28; cursor: not-allowed; }
-
-    select { font-family: var(--mono); font-size: 10px; background: var(--bg); color: var(--text); border: 1px solid var(--border-lt); padding: 4px 10px; cursor: pointer; outline: none; }
-    select:focus { border-color: var(--text-mid); }
-    input[type=range] { -webkit-appearance: none; height: 2px; background: var(--border-lt); outline: none; cursor: pointer; width: 90px; }
-    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 11px; height: 11px; background: var(--accent); border-radius: 0; cursor: pointer; }
-
-    .opts-row { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; margin-top: 10px; }
-    .opts-label { font-size: 10px; color: var(--text-faint); letter-spacing: 0.05em; }
-
-    .feedback { display: none; margin-top: 1rem; padding: 1rem 1.2rem; border-left: 3px solid var(--border); }
-    .feedback.show  { display: block; }
-    .feedback.ok    { border-color: var(--green); background: rgba(74,158,106,.06); }
-    .feedback.bad   { border-color: var(--red);   background: rgba(184,72,72,.06);  }
-    .fb-result { font-family: var(--serif); font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-    .feedback.ok  .fb-result { color: var(--green); }
-    .feedback.bad .fb-result { color: var(--red); }
-    .fb-exp    { font-size: 11px; color: var(--text-mid); line-height: 1.7; }
-    .fb-theory { margin-top: 8px; font-size: 11px; color: var(--text-mid); font-style: italic; padding-top: 8px; border-top: 1px solid var(--border); line-height: 1.6; }
-
-    .history-list { display: flex; flex-direction: column; gap: 3px; max-height: 180px; overflow-y: auto; }
-    .history-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-mid); padding: 5px 0; border-bottom: 1px solid var(--border); }
-    .history-item:last-child { border: none; }
-    .hdot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-    .hdot.ok  { background: var(--green); }
-    .hdot.bad { background: var(--red); }
-    .hmod  { font-size: 9px; color: var(--text-faint); min-width: 14px; letter-spacing: .05em; text-transform: uppercase; }
-    .hpair { font-weight: 500; color: var(--text); min-width: 70px; }
-    .hans  { flex: 1; }
-    .htime { font-size: 9px; color: var(--text-faint); }
-    .history-empty { font-size: 11px; color: var(--text-faint); font-style: italic; padding: 6px 0; }
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: var(--surface); }
-    ::-webkit-scrollbar-thumb { background: var(--border-lt); }
-
-    .chord-area { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-    .chord-name { font-family: var(--serif); font-size: 54px; font-weight: 700; letter-spacing: -0.04em; color: var(--accent); line-height: 1; transition: filter 0.3s; }
-    .chord-name.hidden { filter: blur(9px); user-select: none; }
-    .chord-type-tag { font-size: 10px; letter-spacing: 0.1em; color: var(--text-mid); text-transform: uppercase; margin-top: 3px; }
-    .chord-notes { font-size: 11px; color: var(--text-mid); margin-top: 4px; letter-spacing: 0.05em; transition: filter 0.3s; }
-    .chord-notes.hidden { filter: blur(6px); user-select: none; }
-    .a-func-hint { display: inline-block; margin-top: 7px; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(200,160,48,.35); padding: 2px 10px; background: rgba(200,160,48,.06); transition: filter 0.3s; }
-    .a-func-hint.hidden { display: none; }
-    .reveal-btn { font-family: var(--mono); font-size: 10px; background: none; border: 1px solid var(--border-lt); color: var(--text-mid); padding: 4px 11px; cursor: pointer; letter-spacing: 0.06em; transition: all 0.14s; }
-    .reveal-btn:hover { border-color: var(--text-mid); color: var(--text); }
-
-    .audio-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .rand-row { display: flex; align-items: center; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
-    .rand-label { font-size: 10px; color: var(--text-faint); letter-spacing: 0.05em; }
-    .chord-sel-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; }
-    .chord-guess-grid { display: grid; gap: 4px; grid-template-columns: repeat(5,1fr); }
-    .chord-guess-grid.both-mode { grid-template-columns: repeat(6,1fr); }
-    .chord-sel-btn, .chord-guess-btn { font-family: var(--mono); font-size: 10px; padding: 6px 2px; border: 1px solid var(--border); background: transparent; color: var(--text-mid); cursor: pointer; transition: all 0.12s; text-align: center; }
-    .chord-sel-btn:hover, .chord-guess-btn:hover  { border-color: var(--text-mid); color: var(--text); }
-    .chord-sel-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(228,224,216,.05); }
-    .func-btn { font-family: var(--mono); font-size: 12px; font-weight: 500; padding: 0.65rem 0.3rem; border: 1px solid var(--border-lt); background: transparent; color: var(--text-mid); cursor: pointer; transition: all 0.12s; letter-spacing: 0.05em; }
-    .func-btn:hover { border-color: var(--text); color: var(--text); }
-
-    .selected     { border-color: var(--gold) !important; color: var(--gold) !important; background: rgba(200,160,48,.07) !important; }
-    .correct-ans { border-color: var(--green) !important; color: var(--green) !important; background: rgba(74,158,106,.09) !important; }
-    .wrong-ans    { border-color: var(--red) !important;   color: var(--red) !important;   background: rgba(184,72,72,.08) !important; }
-    .answer-grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; margin-bottom: 12px; }
-
-    .interval-display { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-    .notes-visual { display: flex; align-items: center; gap: 16px; }
-    .note-pill { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-    .note-big { font-family: var(--serif); font-size: 48px; font-weight: 700; line-height: 1; color: var(--accent); transition: filter 0.3s; }
-    .note-big.hidden { filter: blur(10px); user-select: none; }
-    .note-sub { font-size: 10px; color: var(--text-faint); letter-spacing: 0.08em; }
-    .interval-arrow { font-size: 20px; color: var(--text-faint); }
-    .int-label-area { text-align: right; }
-    .int-name-big { font-family: var(--serif); font-size: 20px; font-weight: 700; color: var(--accent); transition: filter 0.3s; }
-    .int-name-big.hidden { filter: blur(8px); user-select: none; }
-    .int-semis { font-size: 11px; color: var(--text-faint); margin-top: 3px; transition: filter 0.3s; }
-    .int-semis.hidden { filter: blur(5px); }
-    .dir-tag { display: inline-block; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; padding: 2px 8px; border: 1px solid var(--border-lt); color: var(--text-mid); margin-top: 6px; }
-
-    .audio-grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; }
-    .interval-table { display: grid; grid-template-columns: repeat(7,1fr); gap: 5px; margin-bottom: 14px; }
-    .int-opt { font-family: var(--mono); font-size: 11px; padding: 7px 3px 5px; border: 1px solid var(--border); background: var(--bg); color: var(--text-mid); cursor: pointer; transition: all 0.12s; text-align: center; line-height: 1.3; }
-    .int-opt .is  { display: block; font-weight: 500; font-size: 12px; color: var(--text); }
-    .int-opt .ist { display: block; font-size: 9px; color: var(--text-faint); margin-top: 1px; }
-    .int-opt:hover { border-color: var(--text-mid); background: var(--surface2); }
-
-    .filter-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 4px; }
-    .filter-item { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--text-mid); cursor: pointer; padding: 5px 8px; border: 1px solid var(--border); background: var(--bg); transition: all 0.12s; user-select: none; }
-    .filter-item:hover  { border-color: var(--text-mid); }
-    .filter-item.active { border-color: var(--text); background: var(--surface2); color: var(--text); }
-    .filter-check { width: 10px; height: 10px; border: 1px solid var(--border-lt); display: flex; align-items: center; justify-content: center; font-size: 8px; flex-shrink: 0; color: transparent; }
-    .filter-item.active .filter-check { background: var(--accent); color: var(--bg); border-color: var(--accent); }
-    .filter-semis { margin-left: auto; font-size: 9px; color: var(--text-faint); }
-
-    .stat-row { display: grid; gap: 1px; margin-bottom: 10px; }
-    .stat-cell { background: var(--surface2); padding: 7px 8px; text-align: center; border: 1px solid var(--border); }
-    .stat-val { font-family: var(--serif); font-size: 18px; font-weight: 700; color: var(--text); }
-    .stat-lbl { font-size: 9px; color: var(--text-faint); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 1px; }
-
-    .pilares-list { display:flex; flex-direction:column; gap:10px; }
-    .pilar-item { border-left:2px solid var(--gold); padding:.5rem .9rem; }
-    .pilar-titulo { font-size:12px; font-weight:500; color:var(--accent); letter-spacing:.04em; }
-    .pilar-desc   { font-size:11px; color:var(--text-mid); margin-top:2px; line-height:1.5; }
-
-    .diary-input { width:100%; background:var(--bg); border:1px solid var(--border-lt); color:var(--text); font-family:var(--mono); font-size:12px; padding:.5rem .7rem; outline:none; resize:none; display:block; transition:border-color .15s; margin-bottom:6px; }
-    .diary-input:focus { border-color:var(--text-mid); }
-    .diary-item { display:flex; align-items:flex-start; gap:8px; font-size:11px; color:var(--text-mid); padding:6px 0; border-bottom:1px solid var(--border); }
-    .diary-item:last-child { border:none; }
-    .diary-del { margin-left:auto; cursor:pointer; color:var(--text-faint); font-size:13px; flex-shrink:0; opacity:.5; transition:opacity .12s; }
-    .diary-del:hover { opacity:1; color:var(--red); }
-
-    .pomo-display { font-family:var(--serif); font-size:56px; font-weight:700; color:var(--accent); letter-spacing:-.02em; line-height:1; margin-bottom:.4rem; }
-    .pomo-display.running { color:var(--gold); }
-    .pomo-display.done    { color:var(--green); }
-
-    .metro-bpm-display { font-family:var(--serif); font-size:64px; font-weight:700; color:var(--accent); letter-spacing:-.03em; line-height:1; margin-bottom:.3rem; }
-    .metro-led { width:11px; height:11px; border-radius:50%; background:var(--border-lt); transition:background .05s; }
-    .metro-led.beat { background:var(--gold); box-shadow:0 0 8px var(--gold); }
-
-    .regua-wrap { background: #0a0a0a; border: 1px solid var(--border); padding: 1.4rem 1.2rem; display: flex; flex-direction: column; gap: 1.2rem; font-family: var(--mono); }
-    .regua-logo-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: .6rem; }
-    .regua-brand { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; color: var(--accent); letter-spacing: -.01em; }
-    .regua-system { font-size: 9px; letter-spacing: .18em; color: var(--text-faint); text-transform: uppercase; }
-    .regua-dash { color: var(--text-faint); font-size: 18px; margin-bottom: 4px; }
-    .regua-title { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 900; color: var(--accent); line-height: 1; letter-spacing: .02em; }
-    .regua-subtitle { font-size: 9px; letter-spacing: .12em; color: var(--text-faint); text-transform: uppercase; margin-top: 6px; line-height: 1.5; }
-    .regua-body { display: flex; gap: 1rem; align-items: flex-start; }
-    .regua-ref-box { border: 1px solid var(--border-lt); padding: .8rem; min-width: 90px; flex-shrink: 0; }
-    .regua-ref-label { font-size: 8px; letter-spacing: .12em; color: var(--text-faint); text-transform: uppercase; margin-bottom: 6px; }
-    .regua-ref-note { font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 900; color: var(--accent); line-height: 1; }
-    .regua-ref-note sub { font-size: 18px; color: var(--text-mid); }
-    .regua-ref-name { font-size: 8px; letter-spacing: .1em; color: var(--text-faint); text-transform: uppercase; margin-top: 4px; margin-bottom: 10px; }
-    .regua-ref-btns { display: flex; flex-direction: column; gap: 3px; }
-    .regua-ref-btn { font-family: var(--mono); font-size: 10px; padding: 3px 8px; border: 1px solid var(--border); background: none; color: var(--text-mid); cursor: pointer; transition: all .12s; text-align: left; }
-    .regua-ref-btn:hover  { border-color: var(--text-mid); color: var(--text); }
-    .regua-ref-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(228,224,216,.05); }
-
-    .regua-ruler-col { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; gap: 0; }
-    .regua-top-marker, .regua-bottom-marker { font-size: 9px; color: var(--text-faint); letter-spacing: .06em; padding: 3px 0; }
-    .regua-intervals { display: flex; flex-direction: column-reverse; position: relative; }
-    .regua-row { display: flex; align-items: center; position: relative; height: 64px; cursor: pointer; }
-    .regua-line { width: 1px; height: 100%; background: var(--border); position: absolute; left: 14px; top: 0; }
-    .regua-dot-btn { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid; background: transparent; cursor: pointer; position: relative; z-index: 1; flex-shrink: 0; transition: transform .15s, box-shadow .15s; margin-right: 6px; }
-    .regua-row:hover .regua-dot-btn { transform: scale(1.5); box-shadow: 0 0 8px currentColor; }
-    .regua-row.playing .regua-dot-btn { transform: scale(1.8); box-shadow: 0 0 12px currentColor; animation: reguaPulse .6s ease infinite; }
-    @keyframes reguaPulse { 0%,100% { transform: scale(1.8); } 50% { transform: scale(2.1); } }
-    .regua-row.tritone-row { background: rgba(184,72,72,.04); border-top: 1px solid rgba(184,72,72,.15); border-bottom: 1px solid rgba(184,72,72,.15); }
-    .regua-table-col { flex: 1; display: flex; flex-direction: column-reverse; gap: 0; }
-    .regua-table-row { height: 64px; display: flex; align-items: center; gap: .6rem; border-bottom: 1px solid rgba(255,255,255,.04); cursor: pointer; padding: 0 4px; transition: background .12s; }
-    .regua-table-row:hover { background: rgba(255,255,255,.03); }
-    .regua-table-row.playing { background: rgba(228,224,216,.06); }
-    .regua-table-row.tritone-row { background: rgba(184,72,72,.04); }
-    .rtr-name { display: flex; flex-direction: column; min-width: 70px; }
-    .rtr-full { font-size: 9px; letter-spacing: .08em; color: var(--text-mid); text-transform: uppercase; line-height: 1.2; }
-    .rtr-symbol { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; color: var(--accent); line-height: 1; letter-spacing: -.01em; }
-    .rtr-semis { font-size: 13px; font-weight: 700; min-width: 20px; text-align: center; }
-
-    .regua-bohumil-legend { border: 1px solid var(--border); background: var(--surface2); padding: .9rem 1.1rem; }
-    .regua-legend-title { font-size: 9px; letter-spacing: .12em; color: var(--text-faint); text-transform: uppercase; margin-right: .5rem; }
-    .regua-bohumil-cats { display: flex; flex-direction: column; gap: 7px; margin-top: .6rem; }
-    .regua-bcat { display: flex; align-items: flex-start; gap: 10px; }
-    .regua-bcat .regua-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
-    .regua-bcat-name { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; font-weight: 500; line-height: 1.3; }
-    .regua-bcat-desc { font-size: 10px; color: var(--text-faint); margin-top: 1px; line-height: 1.4; }
-    .regua-scale-row { display: flex; align-items: center; gap: 1rem; }
-    .regua-scale-label { font-size: 8px; letter-spacing: .1em; color: var(--text-faint); text-transform: uppercase; flex-shrink: 0; }
-    .regua-scale-bar { display: flex; gap: 0; flex: 1; max-width: 200px; position: relative; }
-    .regua-scale-bar::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--border-lt); }
-    .regua-scale-bar span { flex: 1; font-size: 8px; color: var(--text-faint); text-align: left; position: relative; }
-    .regua-player-hint { display: flex; align-items: center; gap: .8rem; padding: .8rem 1rem; border: 1px solid var(--border); background: var(--surface2); font-size: 9px; letter-spacing: .1em; color: var(--text-faint); text-transform: uppercase; line-height: 1.5; }
-    .regua-player-icon { font-size: 18px; color: var(--text-mid); flex-shrink: 0; }
-    .regua-play-all-btn { margin-left: auto; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border-lt); background: var(--surface); color: var(--text); font-size: 12px; cursor: pointer; flex-shrink: 0; transition: all .14s; display: flex; align-items: center; justify-content: center; }
-    .regua-play-all-btn:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
-
-    .color-green { color: var(--green); border-color: var(--green); }
-    .color-gold  { color: var(--gold);  border-color: var(--gold);  }
-    .color-red   { color: var(--red);   border-color: var(--red);   }
-    .color-imperfect{ color: #6dbf8a;        border-color: #6dbf8a; }
-    .color-amber    { color: var(--gold);    border-color: var(--gold); }
-    .color-neutral  { color: #c8602a;        border-color: #c8602a; }
-
-    .regua-mode-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: .4rem; }
-    .regua-mode-label { font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-faint); }
-    .regua-mode-btn { font-family: var(--mono); font-size: 10px; padding: 4px 12px; border: 1px solid var(--border-lt); background: none; color: var(--text-mid); cursor: pointer; letter-spacing: .06em; transition: all .12s; }
-    .regua-mode-btn:hover  { border-color: var(--text-mid); color: var(--text); }
-    .regua-mode-btn.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
-
-    .apreciacao-instruct { font-size: 11px; color: var(--text-mid); font-style: italic; line-height: 1.7; margin-bottom: 1rem; padding: .7rem .9rem; border-left: 2px solid var(--gold); }
-    .spotify-wrap { border-radius: 0; overflow: hidden; border: 1px solid var(--border); }
-    .apreciacao-tips { display: flex; flex-direction: column; gap: 10px; }
-    .tip-item { display: flex; gap: 12px; align-items: flex-start; font-size: 12px; color: var(--text-mid); line-height: 1.6; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-    .tip-item:last-child { border: none; }
-    .tip-num { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; color: var(--text-faint); flex-shrink: 0; line-height: 1; min-width: 28px; }
-
-    .csel-name { font-size: 12px; font-weight: 500; color: var(--text); }
-    .csel-func { font-size: 8px; color: var(--gold); letter-spacing: .04em; line-height: 1.2; text-align: center; }
-    .csel-chromatic { color: var(--text-faint); }
-    .panel-professor { border-color: var(--border-lt); border-left: 3px solid var(--gold); background: rgba(200,160,48,.03); }
-    .prof-badge { font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--bg); background: var(--gold); padding: 1px 7px; margin-left: 6px; }
-    .prof-instruct { font-size: 11px; color: var(--text-mid); font-style: italic; line-height: 1.6; margin-bottom: 10px; padding: .6rem .8rem; border: 1px solid var(--border); background: var(--surface2); }
-  </style>
+@media(max-width:850px){
+ .navlinks{display:none}.hero-grid,.interval-grid,.offer-grid,.features,.audience{grid-template-columns:1fr}
+ .choices{grid-template-columns:repeat(2,1fr)}
+ .hero{padding-top:115px}
+ h1{font-size:48px}
+ .sticky-cta{display:block;position:fixed;bottom:0;left:0;right:0;z-index:30;padding:12px;background:rgba(11,11,11,.98);border-top:1px solid var(--line)}
+ .sticky-cta .btn{width:100%}
+ footer{display:block;text-align:center;gap:15px}
+}
+</style>
 </head>
 <body>
 
-<!-- ══════ TELA DE LOGIN ══════ -->
-<div id="loginOverlay" style="position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center;">
-  <div style="background: var(--surface); border: 1px solid var(--border); padding: 2.5rem 2rem; width: 100%; max-width: 320px; animation: fadeUp 0.4s ease; display: flex; flex-direction: column; gap: 10px;">
-    <div style="text-align: center; margin-bottom: 1.5rem;">
-      <span style="font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 900; color: var(--accent); letter-spacing: 0.02em;">B.E.M</span>
-      <div style="font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-faint); margin-top: 4px;">Bloco de Estudos Musicais</div>
+<nav>
+  <div class="container navin">
+    <a class="brand" href="#">
+      <div class="logo">BEM</div>
+      <div><strong>B.E.M.</strong><br><span style="font-size:9px;color:var(--muted);letter-spacing:1px">BLOCO DE ESTUDOS MUSICAIS</span></div>
+    </a>
+    <div class="navlinks">
+      <a href="#metodo">O MÉTODO</a>
+      <a href="#app">O APLICATIVO</a>
+      <a href="#oferta">ACESSO</a>
+      <a href="#faq">DÚVIDAS</a>
     </div>
-    
-    <input type="email" id="emailInput" placeholder="E-mail do Aluno" style="width: 100%; background: var(--bg); border: 1px solid var(--border-lt); color: var(--text); font-family: var(--mono); font-size: 11px; padding: 0.8rem; outline: none;">
-    
-    <input type="password" id="senhaInput" placeholder="Senha" style="width: 100%; background: var(--bg); border: 1px solid var(--border-lt); color: var(--text); font-family: var(--mono); font-size: 11px; padding: 0.8rem; outline: none; margin-bottom: 10px;">
-    
-    <button class="btn btn-primary" style="width: 100%; padding: 1rem;" onclick="fazerLogin()"><span>ENTRAR NO B.E.M</span></button>
-    
-    <div id="loginErro" style="color: var(--red); font-size: 10px; margin-top: 5px; text-align: center; font-family: var(--mono); min-height: 15px;"></div>
+    <a class="btn" href="https://wa.me/5521978940184?text=Olá!%20Gostaria%20de%20acessar%20o%20B.E.M." target="_blank">WHATSAPP →</a>
   </div>
-</div>
+</nav>
 
-<!-- ══════ HAMBURGER (mobile) ══════ -->
-<button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu">
-  <span></span><span></span><span></span>
-</button>
+<header class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow">ESCUTA • CRIAÇÃO • COLETIVIDADE</div>
+      <h1><span>DO ZERO AO</span> <span style="color:var(--gold)">OUVIDO</span> <span>RELATIVO.</span></h1>
+      <p class="lead">Treinamento auditivo para músicos que querem ouvir, entender e transformar música de verdade. Comece pelos intervalos e avance até a percepção harmônica.</p>
+      <div class="cta-row">
+        <a class="btn" href="https://wa.me/5521978940184?text=Olá!%20Gostaria%20de%20acessar%20o%20B.E.M." target="_blank">QUERO TREINAR MEU OUVIDO →</a>
+        <a class="btn ghost" href="#metodo">VER COMO FUNCIONA</a>
+      </div>
+      <div class="micro">PERCEPÇÃO • PRÁTICA • AUTONOMIA &nbsp; / &nbsp; ACESSO IMEDIATO</div>
+    </div>
 
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-<!-- ══════ SIDEBAR ══════ -->
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo">
-    <div class="bem-circle"><span class="bem-letters">BEM</span></div>
-    <div class="bem-text">
-      <div class="bem-fullname">Bloco de Estudos<br>Musicais</div>
-      <div class="bem-tagline">Escuta · Criação · Coletividade</div>
+    <div class="app-window">
+      <div class="window-top">B.E.M. / TREINO / INTERVALOS</div>
+      <div class="window-body">
+        <div class="question">INTERVALO ATUAL</div>
+        <div class="note">Lá <span style="font-family:monospace;color:var(--muted);font-size:16px">→ nota 2</span></div>
+        <div style="color:var(--gold);font-size:11px;letter-spacing:1px">↑ ASCENDENTE</div>
+        <div style="margin:22px 0;border-top:1px solid var(--line)"></div>
+        <div class="question">REPRODUÇÃO</div>
+        <div class="choices" style="margin-top:16px">
+          <div class="choice">♪ NOTA 1</div><div class="choice">♪ NOTA 2</div>
+          <div class="choice">♫ SEQ.</div><div class="choice">♫ HARM.</div>
+        </div>
+        <div class="btn" style="width:100%;margin-top:14px">↻ NOVO INTERVALO</div>
+      </div>
     </div>
   </div>
+</header>
 
-  <div class="sidebar-score">
-    <div class="sc-cell">
-      <span class="sc-val ok"  id="gScoreC">0</span>
-      <span class="sc-lbl">acertos</span>
+<section class="section">
+  <div class="container">
+    <div class="section-label">O PROBLEMA</div>
+    <h2>VOCÊ OUVE.<br>MAS CONSEGUE IDENTIFICAR?</h2>
+    <p class="sub">Muitos músicos estudam durante anos, mas continuam dependentes da partitura, cifra ou instrumento para descobrir o que está acontecendo musicalmente.</p>
+    <div class="grid problem">
+      <div class="card"><div class="num">01</div><h3>VOCÊ ESCUTA</h3><p>Percebe que os sons mudaram, mas não sabe nomear a relação exata.</p></div>
+      <div class="card"><div class="num">02</div><h3>TENTA ADIVINHAR</h3><p>Testa notas no instrumento até encontrar algo que pareça certo.</p></div>
+      <div class="card"><div class="num">03</div><h3>QUER AUTONOMIA</h3><p>Deseja ouvir uma música e compreender sua estrutura sem tentativa e erro.</p></div>
     </div>
-    <div class="sc-cell">
-      <span class="sc-val bad" id="gScoreW">0</span>
-      <span class="sc-lbl">erros</span>
+    <div class="statement">Ouvido relativo não é um dom reservado a poucos.<br><strong style="color:var(--gold)">É uma habilidade que pode ser treinada.</strong></div>
+  </div>
+</section>
+
+<section class="section" id="metodo">
+  <div class="container">
+    <div class="section-label">O MÉTODO</div>
+    <h2>COMECE PELA DISTÂNCIA<br>ENTRE OS SONS.</h2>
+    <p class="sub">O B.E.M. organiza o treinamento a partir das relações musicais. Você aprende a ouvir a distância, reconhecer o intervalo e transformar percepção em ação.</p>
+    <div class="interval-grid">
+      <div class="ruler">
+        <div style="font-size:11px;color:var(--muted);letter-spacing:2px;margin-bottom:12px">RÉGUA DE INTERVALOS</div>
+        <div class="r"><span>12</span><span>OITAVA JUSTA</span></div>
+        <div class="r"><span>11</span><span>7ª MAIOR</span></div>
+        <div class="r"><span>10</span><span>7ª MENOR</span></div>
+        <div class="r"><span>9</span><span>6ª MAIOR</span></div>
+        <div class="r"><span>8</span><span>6ª MENOR</span></div>
+        <div class="r"><span>7</span><span>5ª JUSTA</span></div>
+        <div class="r active"><span>6</span><span>TRÍTONO</span></div>
+        <div class="r"><span>5</span><span>4ª JUSTA</span></div>
+        <div class="r"><span>4</span><span>3ª MAIOR</span></div>
+        <div class="r"><span>3</span><span>3ª MENOR</span></div>
+        <div class="r"><span>2</span><span>2ª MAIOR</span></div>
+        <div class="r"><span>1</span><span>2ª MENOR</span></div>
+        <div class="r"><span>0</span><span>UNÍSSONO</span></div>
+      </div>
+      <div class="trainer">
+        <div class="question">QUAL INTERVALO VOCÊ OUVIU?</div>
+        <div class="note">Lá → ?</div>
+        <p style="color:var(--muted);font-size:12px;margin-bottom:20px">Ouça. Cante. Reconheça. Responda com precisão.</p>
+        <div class="choices">
+          <div class="choice">2ª m</div><div class="choice">2ª M</div><div class="choice">3ª m</div><div class="choice">3ª M</div>
+          <div class="choice">4ª J</div><div class="choice">Trítono</div><div class="choice">5ª J</div><div class="choice">6ª M</div>
+        </div>
+        <div class="btn" style="width:100%;margin-top:18px">VERIFICAR RESPOSTA</div>
+      </div>
     </div>
   </div>
-  <button class="reset-btn" onclick="resetScores()">↺ zerar pontuação</button>
+</section>
 
-  <nav class="sidebar-nav">
-    <div class="snav-group-label">Treino Auditivo</div>
-    <button class="snav-btn active" id="snav-harmonica" onclick="switchTab('harmonica')">
-      <span><span class="snav-icon">🎸</span>Percepção Harmônica</span>
-      <span class="tab-badge" id="badgeH">0</span>
-    </button>
-    <button class="snav-btn" id="snav-intervalos" onclick="switchTab('intervalos')">
-      <span><span class="snav-icon">🎼</span>Intervalos</span>
-      <span class="tab-badge" id="badgeI">0</span>
-    </button>
-    <button class="snav-btn" id="snav-regua" onclick="switchTab('regua')">
-      <span><span class="snav-icon">📏</span>Régua de Intervalos</span>
-    </button>
-
-    <div class="snav-group-label">Ferramentas</div>
-    <button class="snav-btn" id="snav-metronomo" onclick="switchTab('metronomo')">
-      <span><span class="snav-icon">⏱️</span>Metrônomo</span>
-    </button>
-
-    <div class="snav-group-label">Estudo</div>
-    <button class="snav-btn" id="snav-pratica" onclick="switchTab('pratica')">
-      <span><span class="snav-icon">📓</span>Prática</span>
-    </button>
-    <button class="snav-btn" id="snav-historico" onclick="switchTab('historico')">
-      <span><span class="snav-icon">🕐</span>Histórico</span>
-    </button>
-    
-    <div class="snav-group-label" style="margin-top: 1rem;">Conta</div>
-    <button class="snav-btn" onclick="fazerLogout()" style="color: var(--red);">
-      <span><span class="snav-icon">🚪</span>Sair (Logout)</span>
-    </button>
-  </nav>
-
-  <div class="sidebar-mode">
-    <button class="mode-btn active" id="btnModeSpeaker"    onclick="setMode('speaker')">📱 Caixa</button>
-    <button class="mode-btn"        id="btnModeHeadphone" onclick="setMode('headphone')">🎧 Fone</button>
+<section class="section" id="app">
+  <div class="container">
+    <div class="section-label">O APLICATIVO</div>
+    <h2>UM AMBIENTE DE TREINO.<br>NÃO APENAS UMA AULA.</h2>
+    <p class="sub">Ferramentas desenhadas para transformar percepção musical em prática recorrente, mensurável e consciente.</p>
+    <div class="grid features">
+      <div class="feature"><div class="icon">↕</div><div><h3>INTERVALOS</h3><p>Reconheça distâncias entre os sons com raiz, direção e dificuldade configuráveis.</p></div></div>
+      <div class="feature"><div class="icon">◎</div><div><h3>PERCEPÇÃO HARMÔNICA</h3><p>Identifique acordes, notas e funções a partir da escuta.</p></div></div>
+      <div class="feature"><div class="icon">⌁</div><div><h3>RÉGUA DE INTERVALOS</h3><p>Visualize e compreenda as relações entre as notas no seu mapa auditivo.</p></div></div>
+      <div class="feature"><div class="icon">◷</div><div><h3>PRÁTICA</h3><p>Organize seu estudo diário com método e acompanhamento contínuo.</p></div></div>
+      <div class="feature"><div class="icon">📈</div><div><h3>HISTÓRICO</h3><p>Acompanhe seu progresso e evolução técnica ao longo do tempo.</p></div></div>
+      <div class="feature"><div class="icon">⏱</div><div><h3>METRÔNOMO</h3><p>Integre treinamento auditivo, percepção e ritmo em um só lugar.</p></div></div>
+    </div>
   </div>
-</aside>
+</section>
 
-<!-- ══════ MAIN CONTENT ══════ -->
-<main class="main-content">
+<section class="section">
+  <div class="container">
+    <div class="section-label">PARA QUEM É</div>
+    <h2>PARA QUEM QUER<br>OUVIR MELHOR.</h2>
+    <div class="grid audience">
+      <div class="audience-card">
+        <h3 style="color:var(--gold);margin-top:0">PÚBLICO-ALVO</h3>
+        <ul>
+          <li>Estudantes de música e instrumentistas</li>
+          <li>Músicos em busca de autonomia auditiva</li>
+          <li>Compositores e arranjadores</li>
+          <li>Produtores e educadores musicais</li>
+        </ul>
+      </div>
+      <div class="audience-card">
+        <h3 style="color:var(--gold);margin-top:0">EVOLUÇÃO CONSTANTE</h3>
+        <p style="color:var(--muted);font-size:13px;margin:12px 0 0">Seu progresso reflete sua prática diária, não comparações. Desenvolva consistência com um ambiente focado em resultados reais.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- ==================== VIEW: HARMÔNICA ==================== -->
-  <div class="view active" id="view-harmonica">
-    <div class="panel">
-      <div class="panel-label">Acorde atual</div>
-      <div class="chord-area">
+<section class="section" id="oferta">
+  <div class="container">
+    <div class="section-label">ACESSO AO B.E.M.</div>
+    <h2>COMECE A TREINAR<br>SEU OUVIDO HOJE.</h2>
+    <div class="offer">
+      <div class="offer-grid">
         <div>
-          <div class="chord-name hidden" id="hChordName">—</div>
-          <div class="chord-type-tag"    id="hChordType">—</div>
-          <div class="chord-notes hidden" id="hChordNotes">—</div>
-          <div class="a-func-hint hidden" id="hAFuncHint"></div>
+          <div style="font-size:11px;color:var(--gold);letter-spacing:3px">B.E.M. · BLOCO DE ESTUDOS MUSICAIS</div>
+          <h3 style="font-size:24px;margin:12px 0;color:var(--text)">TREINAMENTO AUDITIVO COMPLETO</h3>
+          <p style="color:var(--muted);font-size:13px">Acesso total ao ambiente de prática auditiva, ferramentas de apoio e acompanhamento de desempenho.</p>
+          <ul class="checks">
+            <li>Módulo completo de Intervalos e Escuta</li>
+            <li>Régua de Intervalos interativa</li>
+            <li>Percepção harmônica e ferramentas de prática</li>
+            <li>Histórico de evolução de estudos</li>
+            <li>Suporte direto via WhatsApp</li>
+          </ul>
         </div>
-        <div style="text-align:right">
-          <button class="reveal-btn" id="hRevealBtn" onclick="hToggleReveal()">Revelar acorde</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="panel-label">Reprodução</div>
-      <div class="audio-grid-2">
-        <button class="btn" id="hBtnA"      onclick="hPlayRef()"><span>♩ Tocar Lá (A)</span></button>
-        <button class="btn" id="hBtnChord" onclick="hPlayChord()"><span>♬ Tocar acorde</span></button>
-        <button class="btn btn-primary"    onclick="hNewRandom()"><span>↻ Novo acorde aleatório</span></button>
-      </div>
-      <div class="rand-row">
-        <span class="rand-label">Sortear:</span>
-        <button class="tab-btn active" id="hRandBoth"  onclick="hSetRand('both')">Maior + Menor</button>
-        <button class="tab-btn"        id="hRandMaj"   onclick="hSetRand('major')">Só maiores</button>
-        <button class="tab-btn"        id="hRandMin"   onclick="hSetRand('minor')">Só menores</button>
-      </div>
-      <div class="opts-row">
-        <span class="opts-label">Oitava do A:</span>
-        <select id="hOctave" onchange="hSetOctave(this.value)">
-          <option value="3">A3 — 220 Hz</option>
-          <option value="4" selected>A4 — 440 Hz</option>
-          <option value="5">A5 — 880 Hz</option>
-        </select>
-        <span class="opts-label" style="margin-left:8px">Vol:</span>
-        <input type="range" id="hVol" min="0" max="100" value="70" oninput="setVol(this.value)"/>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="panel-label">Qual acorde está tocando?</div>
-      <div class="opts-row" style="margin-top:0;margin-bottom:10px">
-        <button class="tab-btn active" id="hGuessMaj"  onclick="hSetGuessType('major')">Maior</button>
-        <button class="tab-btn"        id="hGuessMin"  onclick="hSetGuessType('minor')">Menor</button>
-        <button class="tab-btn"        id="hGuessBoth" onclick="hSetGuessType('both')">Ambos</button>
-      </div>
-      <div class="chord-guess-grid" id="hGuessGrid"></div>
-      <div class="feedback" id="hFbChord">
-        <div class="fb-result" id="hFbChordRes"></div>
-        <div class="fb-exp"    id="hFbChordExp"></div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="panel-label">Qual função o A exerce?</div>
-      <div class="answer-grid-4" id="hFuncGrid"></div>
-      <button class="btn-check" id="hBtnCheck" onclick="hCheckFunc()" disabled>Verificar função</button>
-      <div class="feedback" id="hFbFunc">
-        <div class="fb-result" id="hFbFuncRes"></div>
-        <div class="fb-exp"    id="hFbFuncExp"></div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="panel-label">Desempenho por acorde</div>
-      <div id="hChordStatsGrid" style="gap:1px;margin-bottom:4px">
-        <div style="font-size:11px;color:var(--text-faint);font-style:italic">Nenhum acorde treinado ainda.</div>
-      </div>
-    </div>
-
-    <div class="panel panel-professor">
-      <div class="panel-label">
-        Modo professor
-        <span class="prof-badge">sem pontuação</span>
-      </div>
-      <p class="prof-instruct">Selecione qualquer acorde para demonstrar em aula. O acorde é carregado oculto — os alunos tentam identificar antes de revelar.</p>
-      <div class="opts-row" style="margin-top:0;margin-bottom:10px">
-        <button class="tab-btn active" id="hTypeMaj" onclick="hSetType('major')">Maior</button>
-        <button class="tab-btn"        id="hTypeMin" onclick="hSetType('minor')">Menor</button>
-      </div>
-      <div class="chord-sel-grid" id="hSelGrid"></div>
-    </div>
-  </div><!-- /view-harmonica -->
-
-  <!-- ==================== VIEW: INTERVALOS ==================== -->
-  <div class="view" id="view-intervalos">
-    <div class="panel" id="iPanelInt">
-      <div class="panel-label">Intervalo atual</div>
-      <div class="interval-display">
-        <div>
-          <div class="notes-visual">
-            <div class="note-pill">
-              <div class="note-big" id="iNoteA">—</div>
-              <div class="note-sub">nota 1</div>
-            </div>
-            <div class="interval-arrow">↗</div>
-            <div class="note-pill">
-              <div class="note-big hidden" id="iNoteB">—</div>
-              <div class="note-sub">nota 2</div>
-            </div>
-          </div>
-          <div class="dir-tag" id="iDirTag">—</div>
-        </div>
-        <div class="int-label-area">
-          <div class="int-name-big hidden" id="iIntName">—</div>
-          <div class="int-semis  hidden" id="iIntSemis">—</div>
-          <div style="margin-top:8px">
-            <button class="reveal-btn" id="iRevealBtn" onclick="iToggleReveal()">Revelar resposta</button>
-          </div>
+        <div class="pricebox">
+          <div style="font-size:11px;color:var(--muted);letter-spacing:2px">CONTATO & ACESSO</div>
+          <div style="margin:15px 0;font-size:14px;color:var(--gold)">Fale direto no WhatsApp</div>
+          <a class="btn" style="width:100%" href="https://wa.me/5521978940184?text=Olá!%20Gostaria%20de%20acessar%20o%20B.E.M." target="_blank">+55 21 97894-0184</a>
+          <div class="micro" style="margin-top:12px">Atendimento e liberação via Pix</div>
         </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <div class="panel">
-      <div class="panel-label">Reprodução</div>
-      <div class="audio-grid-4">
-        <button class="btn" id="iBtnN1"   onclick="iPlayNote1()"><span>♩ Nota 1</span></button>
-        <button class="btn" id="iBtnN2"   onclick="iPlayNote2()"><span>♩ Nota 2</span></button>
-        <button class="btn" id="iBtnSeq"  onclick="iPlaySeq()"><span>♫ Seq.</span></button>
-        <button class="btn" id="iBtnHarm" onclick="iPlayHarm()"><span>♬ Harm.</span></button>
-        <button class="btn btn-primary" style="grid-column:1/-1" onclick="iNew()"><span>↻ Novo intervalo</span></button>
-      </div>
-      <div class="opts-row">
-        <span class="opts-label">Direção:</span>
-        <button class="tab-btn active" id="iDirAsc"  onclick="iSetDir('asc')">Ascendente</button>
-        <button class="tab-btn"        id="iDirDesc" onclick="iSetDir('desc')">Descendente</button>
-        <button class="tab-btn"        id="iDirBoth" onclick="iSetDir('both')">Aleatória</button>
-      </div>
-      <div class="opts-row">
-        <span class="opts-label">Raiz:</span>
-        <select id="iRootMode" onchange="iRootMode=this.value">
-          <option value="fixed_A">Fixo: Lá (A)</option>
-          <option value="fixed_C">Fixo: Dó (C)</option>
-          <option value="random">Aleatório</option>
-        </select>
-        <span class="opts-label" style="margin-left:8px">Vol:</span>
-        <input type="range" id="iVol" min="0" max="100" value="70" oninput="setVol(this.value)"/>
-      </div>
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-label">DÚVIDAS</div>
+    <h2>ANTES DE COMEÇAR.</h2>
+    <div class="faq">
+      <details><summary>PRECISO TER EXPERIÊNCIA MUSICAL?</summary><p>Não. A proposta começa pelas relações sonoras e serve como excelente complemento ao seu estudo diário de instrumento.</p></details>
+      <details><summary>COMO FUNCIONA O ACESSO?</summary><p>O acesso é liberado diretamente após a confirmação do pagamento via Pix combinado pelo WhatsApp com suporte individualizado.</p></details>
+      <details><summary>PRECISO DE UM INSTRUMENTO PARA TREINAR?</summary><p>O B.E.M. coloca a escuta no centro do exercício. O foco é o treinamento auditivo puro, embora o instrumento possa apoiar sua prática.</p></details>
+      <details><summary>ONDE CONSIGO ACESSAR O APP?</summary><p>A plataforma roda diretamente no navegador do seu celular, tablet ou computador, com total praticidade.</p></details>
     </div>
-
-    <div class="panel">
-      <div class="panel-label">Intervalos ativos</div>
-      <div class="filter-grid" id="iFilterGrid"></div>
-      <div class="opts-row" style="margin-top:10px">
-        <button class="tab-btn active" onclick="iFilterAll()">Todos</button>
-        <button class="tab-btn" onclick="iFilterGroup('consonant')">Consonantes</button>
-        <button class="tab-btn" onclick="iFilterGroup('dissonant')">Dissonantes</button>
-        <button class="tab-btn" onclick="iFilterGroup('diatonic')">Diatônicos</button>
-      </div>
-    </div>
-
-    <div class="panel" id="iPanelAnswer">
-      <div class="panel-label">Qual é o intervalo?</div>
-      <div class="interval-table" id="iIntTable"></div>
-      <button class="btn-check" id="iBtnCheck" onclick="iCheck()" disabled>Verificar</button>
-      <div class="feedback" id="iFb">
-        <div class="fb-result" id="iFbRes"></div>
-        <div class="fb-exp"    id="iFbExp"></div>
-        <div class="fb-theory" id="iFbTheory"></div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="panel-label">Desempenho por intervalo</div>
-      <div class="stat-row" id="iStatsRow">
-        <div style="font-size:11px;color:var(--text-faint);font-style:italic">Nenhum intervalo treinado ainda.</div>
-      </div>
-      <div class="panel-label" style="margin-top:1rem">Histórico desta sessão</div>
-      <div class="history-list" id="iHistory">
-        <div class="history-empty">Nenhuma resposta ainda.</div>
-      </div>
-    </div>
-  </div><!-- /view-intervalos -->
-
-  <!-- ==================== VIEW: PRÁTICA ==================== -->
-  <div class="view" id="view-pratica">
-    <div class="panel">
-      <div class="panel-label">Os 10 Pilares do B.E.M</div>
-      <div class="pilares-list" id="pilaresListEl"></div>
-    </div>
-
-    <div class="panel">
-      <div class="panel-label">Diário de prática</div>
-      <form id="diarioForm" onsubmit="dSave(event)">
-        <input  type="text" id="diarioTitulo" placeholder="O que eu estudei hoje?"
-                class="diary-input" style="margin-bottom:6px"/>
-        <textarea id="diarioObs" rows="2" placeholder="Como foi meu estudo hoje?"
-                  class="diary-input" style="margin-bottom:8px"></textarea>
-        <div style="display:flex;gap:6px">
-          <button type="submit" class="btn"><span>Registrar</span></button>
-          <button type="button" class="btn" style="border-color:var(--red);color:var(--red)"
-                  onclick="dClearAll()"><span>Apagar tudo</span></button>
-          <button type="button" class="btn" onclick="dExport()"><span>↓ JSON</span></button>
-        </div>
-      </form>
-      <div class="history-list" id="diarioList" style="margin-top:10px">
-        <div class="history-empty">Nenhum registro ainda.</div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="panel-label">Ciclo Pomodoro</div>
-      <div class="pomo-display" id="pomodoroTimer">25:00</div>
-      <div style="font-size:10px;color:var(--text-faint);margin-bottom:.8rem;letter-spacing:.07em"
-            id="pomoStatus">Pronto para começar</div>
-      <div class="opts-row" style="margin-top:0">
-        <button class="btn" onclick="startPomodoro()"><span>▶ Iniciar</span></button>
-        <button class="btn" onclick="stopPomodoro()"><span>⏸ Parar</span></button>
-        <button class="btn" onclick="resetPomodoro()"><span>↺ Reset</span></button>
-      </div>
-      <div class="opts-row">
-        <span class="opts-label">Ciclo:</span>
-        <button class="tab-btn active" id="pomo25" onclick="setPomoTime(25)">25 min</button>
-        <button class="tab-btn"        id="pomo50" onclick="setPomoTime(50)">50 min</button>
-      </div>
-    </div>
-  </div><!-- /view-pratica -->
-
-  <!-- ==================== VIEW: METRÔNOMO ==================== -->
-  <div class="view" id="view-metronomo">
-    <div class="panel" style="max-width:520px">
-      <div class="panel-label">Metrônomo</div>
-      <div class="metro-bpm-display" id="metroBpmDisp">90</div>
-      <div style="font-size:10px;color:var(--text-faint);margin-bottom:.8rem;letter-spacing:.1em">BPM</div>
-      <div style="display:flex;gap:8px;margin:.6rem 0" id="metroLedsBar"></div>
-      <input type="range" id="metroBpmSlider" min="40" max="220" value="90"
-             style="width:100%;margin:.6rem 0"
-             oninput="metroBPM=parseInt(this.value);document.getElementById('metroBpmDisp').textContent=metroBPM;if(metroActive){stopMetronome();startMetronome();}"/>
-      <div class="opts-row" style="margin-top:0">
-        <button class="btn" id="metroPlayBtn" onclick="toggleMetronome()"><span>▶ Iniciar</span></button>
-        <button class="btn" onclick="metroTap()"><span>Tap Tempo</span></button>
-      </div>
-    </div>
-  </div><!-- /view-metronomo -->
-
-  <!-- ==================== VIEW: RÉGUA DE INTERVALOS ==================== -->
-  <div class="view" id="view-regua">
-    <div class="regua-wrap">
-      <div class="regua-header">
-        <div class="regua-logo-row">
-          <span class="regua-brand">B.E.M</span>
-          <span class="regua-system">SISTEMA DE PERCEPÇÃO MUSICAL</span>
-        </div>
-        <div class="regua-title-block">
-          <div class="regua-dash">—</div>
-          <div class="regua-title">RÉGUA DE<br>INTERVALOS</div>
-          <div class="regua-subtitle">CLASSIFICAÇÃO SEGUNDO BOHUMIL MED<br><em>Teoria da Música</em>, 4ª ed.</div>
-        </div>
-      </div>
-      <div class="regua-mode-row">
-        <span class="regua-mode-label">MODO DE ESCUTA:</span>
-        <button class="regua-mode-btn active" id="reguaMelodic"  onclick="reguaSetPlayMode('melodic')">↗ Melódico</button>
-        <button class="regua-mode-btn"        id="reguaHarmonic" onclick="reguaSetPlayMode('harmonic')">♬ Harmônico</button>
-      </div>
-      <div class="regua-body">
-        <div class="regua-ref-box">
-          <div class="regua-ref-label">NOTA DE REFERÊNCIA</div>
-          <div class="regua-ref-note" id="reguaRefNote">C<sub>4</sub></div>
-          <div class="regua-ref-name" id="reguaRefName">DÓ CENTRAL</div>
-          <div class="regua-ref-btns">
-            <button class="regua-ref-btn active" onclick="reguaSetRoot('C',60,'DÓ CENTRAL')">C</button>
-            <button class="regua-ref-btn" onclick="reguaSetRoot('A',69,'LÁ — 440 HZ')">A</button>
-            <button class="regua-ref-btn" onclick="reguaSetRoot('G',67,'SOL')">G</button>
-            <button class="regua-ref-btn" onclick="reguaSetRoot('D',62,'RÉ')">D</button>
-            <button class="regua-ref-btn" onclick="reguaSetRoot('E',64,'MI')">E</button>
-          </div>
-        </div>
-        <div class="regua-ruler-col">
-          <div class="regua-top-marker">+12</div>
-          <div class="regua-intervals" id="reguaIntervals"></div>
-          <div class="regua-bottom-marker">0</div>
-        </div>
-        <div class="regua-table-col" id="reguaTable"></div>
-      </div>
-      <div class="regua-bohumil-legend">
-        <div class="regua-legend-title">CLASSIFICAÇÃO — BOHUMIL MED, <em>Teoria da Música</em> 4ª ed.</div>
-        <div class="regua-bohumil-cats">
-          <div class="regua-bcat">
-            <span class="regua-dot" style="background:var(--green)"></span>
-            <div>
-              <div class="regua-bcat-name" style="color:var(--green)">CONSONANTES PERFEITOS (invariáveis)</div>
-              <div class="regua-bcat-desc">1J · 4J · 5J · 8J — não mudam ao ser invertidos</div>
-            </div>
-          </div>
-          <div class="regua-bcat">
-            <span class="regua-dot" style="background:#6dbf8a"></span>
-            <div>
-              <div class="regua-bcat-name" style="color:#6dbf8a">CONSONANTES IMPERFEITOS (variáveis)</div>
-              <div class="regua-bcat-desc">3m · 3M · 6m · 6M — mudam de maior para menor (ou vice-versa) na inversão</div>
-            </div>
-          </div>
-          <div class="regua-bcat">
-            <span class="regua-dot" style="background:var(--gold)"></span>
-            <div>
-              <div class="regua-bcat-name" style="color:var(--gold)">DISSONANTES SUAVES</div>
-              <div class="regua-bcat-desc">2M · 7m — tensão leve, resolução gradual</div>
-            </div>
-          </div>
-          <div class="regua-bcat">
-            <span class="regua-dot" style="background:#c8602a"></span>
-            <div>
-              <div class="regua-bcat-name" style="color:#c8602a">DISSONANTES NEUTROS</div>
-              <div class="regua-bcat-desc">4A / 5d — trítono, enarmônico, instabilidade máxima</div>
-            </div>
-          </div>
-          <div class="regua-bcat">
-            <span class="regua-dot" style="background:var(--red)"></span>
-            <div>
-              <div class="regua-bcat-name" style="color:var(--red)">DISSONANTES FORTES</div>
-              <div class="regua-bcat-desc">2m · 7M — tensão forte, resolução urgente</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="regua-scale-row">
-        <span class="regua-scale-label">ESCALA DE SEMITONS</span>
-        <div class="regua-scale-bar">
-          <span>0</span><span>2</span><span>4</span><span>6</span><span>8</span><span>10</span><span>12</span>
-        </div>
-      </div>
-      <div class="regua-player-hint" id="reguaPlayerHint">
-        <span class="regua-player-icon">◉</span>
-        <span id="reguaHintText">TOQUE EM QUALQUER INTERVALO PARA INTERNALIZAR SUA DISTÂNCIA SONORA.</span>
-        <button class="regua-play-all-btn" onclick="reguaPlayAll()" title="Tocar todos em sequência">▶</button>
-      </div>
-    </div>
-  </div><!-- /view-regua -->
-
-  <!-- ==================== VIEW: APRECIAÇÃO ==================== -->
-  <div class="view" id="view-apreciacao">
-    <div class="panel">
-      <div class="panel-label">Playlist — B.E.M Apreciação Musical</div>
-      <div class="apreciacao-instruct">
-        Escuta ativa como prática deliberada — ouça com atenção, identifique intervalos, funções harmônicas e movimentos melódicos.
-      </div>
-      <div class="spotify-wrap">
-        <iframe id="spotifyEmbed" src="https://open.spotify.com/embed/playlist/3HvTNGj1RAWolEB1ojNDok?utm_source=generator&theme=0" width="100%" height="500" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-      </div>
-    </div>
-  </div><!-- /view-apreciacao -->
-
-  <!-- ==================== VIEW: HISTÓRICO ==================== -->
-  <div class="view" id="view-historico">
-    <div class="panel">
-      <div class="panel-label">Desempenho por acorde — Percepção Harmônica</div>
-      <div id="hChordStatsHist" style="gap:1px;margin-bottom:4px">
-        <div style="font-size:11px;color:var(--text-faint);font-style:italic">Nenhum acorde treinado ainda.</div>
-      </div>
-    </div>
-    <div class="panel">
-      <div class="panel-label">Desempenho por intervalo</div>
-      <div class="stat-row" id="iStatsRowHist">
-        <div style="font-size:11px;color:var(--text-faint);font-style:italic">Nenhum intervalo treinado ainda.</div>
-      </div>
-    </div>
-    <div class="panel">
-      <div class="panel-label">Histórico completo da sessão</div>
-      <div class="history-list" style="max-height:500px" id="allHistory">
-        <div class="history-empty">Nenhuma resposta ainda.</div>
-      </div>
-    </div>
-  </div><!-- /view-historico -->
-
-</main><!-- /main-content -->
-
-<!-- LÓGICA DO APLICATIVO -->
-<script>
-'use strict';
-// ================================================================
-//  GLOBAL STATE & CLOUD SYNC BRIDGE
-// ================================================================
-let audioCtx   = null;
-let masterGain = null;
-let eqLow, eqMid, eqHigh, reverbNode, reverbGain;
-let _vol       = 0.70;
-let _mode      = 'speaker';
-
-let gScoreC = 0, gScoreW = 0;
-let hScoreC = 0, hScoreW = 0;
-let iScoreC = 0, iScoreW = 0;
-let diarioEntries = [];
-
-const PILARES = [
-  { titulo: "01. Solfejo", desc: "Arte de cantar as notas escritas, desenvolvendo o ouvido interno." },
-  { titulo: "02. Leitura Musical", desc: "Fluidez na decodificação e compreensão estrutural da partitura." },
-  { titulo: "03. Transcrição", desc: "Fixação auditiva direta do repertório para o instrumento." },
-  { titulo: "04. Improvisação", desc: "Fluência criativa estruturada sobre o conhecimento harmônico e melódico." },
-  { titulo: "05. Harmonia Clássica", desc: "Estudo das conduções de vozes, regras e sintaxe tonal tradicional." },
-  { titulo: "06. Harmonia Analítica", desc: "Compreensão profunda das funções, tensões e estruturas dos acordes." },
-  { titulo: "07. Apreciação Musical", desc: "Escuta atenta e analítica voltada para a construção do repertório." },
-  { titulo: "08. Técnica", desc: "Desenvolvimento motor e instrumental fundamentado na biomecânica." },
-  { titulo: "09. Bibliografia", desc: "Estudo teórico continuado através de métodos e tratados de referência." },
-  { titulo: "10. Repertório", desc: "O campo prático onde todos os saberes se sintetizam em obra viva." }
-];
-
-// Função que o Firebase vai chamar quando baixar os dados do aluno logado
-window.applyCloudData = (data) => {
-  if (data.diario) {
-    diarioEntries = data.diario;
-    dRender();
-  }
-  if (data.scores) {
-    gScoreC = data.scores.gScoreC || 0;
-    gScoreW = data.scores.gScoreW || 0;
-    hScoreC = data.scores.hScoreC || 0;
-    hScoreW = data.scores.hScoreW || 0;
-    iScoreC = data.scores.iScoreC || 0;
-    iScoreW = data.scores.iScoreW || 0;
-    
-    document.getElementById('gScoreC').textContent = gScoreC;
-    document.getElementById('gScoreW').textContent = gScoreW;
-    const hT = hScoreC + hScoreW;
-    const iT = iScoreC + iScoreW;
-    document.getElementById('badgeH').textContent = hT ? `${hScoreC}/${hT}` : '0';
-    document.getElementById('badgeI').textContent = iT ? `${iScoreC}/${iT}` : '0';
-  }
-};
-
-// ================================================================
-//  AUDIO ENGINE
-// ================================================================
-const PROFILES = {
-  speaker: { lowShelfFreq: 300, lowShelfGain: -8, peakFreq: 900, peakGain: +5, peakQ: 1.2, highShelfFreq:3500, highShelfGain: +2, reverbMix: 0.06, reverbDur: 0.6, reverbDecay: 2.0 },
-  headphone: { lowShelfFreq: 200, lowShelfGain: +3, peakFreq: 700, peakGain: +1, peakQ: 0.8, highShelfFreq:4000, highShelfGain: +1, reverbMix: 0.20, reverbDur: 1.8, reverbDecay: 2.8 }
-};
-const OSC_PROFILES = {
-  speaker: [ { gain: 0.55, factor: 1.0, detune: 0 }, { gain: 0.42, factor: 2.0, detune: 0 }, { gain: 0.28, factor: 3.0, detune: 0 }, { gain: 0.18, factor: 4.0, detune: 0 }, { gain: 0.38, factor: 1.0, detune: +6 }, { gain: 0.38, factor: 1.0, detune: -6 }, { gain: 0.22, factor: 2.0, detune: +8 }, { gain: 0.22, factor: 2.0, detune: -8 } ],
-  headphone: [ { gain: 0.50, factor: 1.0, detune: 0 }, { gain: 0.14, factor: 0.5, detune: 0 }, { gain: 0.22, factor: 2.0, detune: 0 }, { gain: 0.12, factor: 3.0, detune: 0 }, { gain: 0.06, factor: 4.0, detune: 0 }, { gain: 0.28, factor: 1.0, detune: +4 }, { gain: 0.28, factor: 1.0, detune: -4 } ]
-};
-const ENV = {
-  speaker: { attack: 0.008, peak: 0.42, decay: 0.12, sustain: 0.26, release: 0.35, dur: 1.6 },
-  headphone: { attack: 0.022, peak: 0.36, decay: 0.18, sustain: 0.24, release: 0.50, dur: 2.0 }
-};
-
-function initAudio() { if (audioCtx) return; audioCtx = new (window.AudioContext || window.webkitAudioContext)(); _buildGraph(); }
-function _buildGraph() {
-  if (masterGain) masterGain.disconnect();
-  const p = PROFILES[_mode];
-  eqLow = audioCtx.createBiquadFilter(); eqLow.type = 'lowshelf'; eqLow.frequency.value = p.lowShelfFreq; eqLow.gain.value = p.lowShelfGain;
-  eqMid = audioCtx.createBiquadFilter(); eqMid.type = 'peaking'; eqMid.frequency.value = p.peakFreq; eqMid.Q.value = p.peakQ; eqMid.gain.value = p.peakGain;
-  eqHigh = audioCtx.createBiquadFilter(); eqHigh.type = 'highshelf'; eqHigh.frequency.value = p.highShelfFreq; eqHigh.gain.value = p.highShelfGain;
-  const comp = audioCtx.createDynamicsCompressor(); comp.threshold.value = -14; comp.knee.value = 6; comp.ratio.value = 4; comp.attack.value = 0.003; comp.release.value = 0.15;
-  reverbNode = audioCtx.createConvolver(); reverbNode.buffer = _mkImpulse(p.reverbDur, p.reverbDecay);
-  reverbGain = audioCtx.createGain(); reverbGain.gain.value = p.reverbMix;
-  masterGain = audioCtx.createGain(); masterGain.gain.value = _vol;
-  masterGain.connect(eqLow); eqLow.connect(eqMid); eqMid.connect(eqHigh); eqHigh.connect(comp); comp.connect(audioCtx.destination);
-  eqHigh.connect(reverbNode); reverbNode.connect(reverbGain); reverbGain.connect(audioCtx.destination);
-}
-function _mkImpulse(dur, decay) {
-  const sr = audioCtx.sampleRate, len = Math.floor(sr * dur), b = audioCtx.createBuffer(2, len, sr);
-  for (let c = 0; c < 2; c++) { const d = b.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay); }
-  return b;
-}
-function midiToFreq(m) { return 440 * Math.pow(2, (m - 69) / 12); }
-function playNote(freq, t, durOverride) {
-  initAudio();
-  const env = ENV[_mode], oscs = OSC_PROFILES[_mode], dur = durOverride !== undefined ? durOverride : env.dur;
-  const g = audioCtx.createGain(); g.connect(masterGain); g.gain.setValueAtTime(0, t);
-  g.gain.linearRampToValueAtTime(env.peak, t + env.attack); g.gain.linearRampToValueAtTime(env.sustain, t + env.attack + env.decay);
-  g.gain.setValueAtTime(env.sustain, t + dur - env.release); g.gain.linearRampToValueAtTime(0, t + dur);
-  const lfoDepthCents = _mode === 'speaker' ? 1.5 : 3.0, lfoDepthHz = freq * (Math.pow(2, lfoDepthCents / 1200) - 1);
-  const lfo = audioCtx.createOscillator(), lfoG = audioCtx.createGain();
-  lfo.frequency.value = 5.2; lfoG.gain.value = lfoDepthHz; lfo.connect(lfoG); lfo.start(t); lfo.stop(t + dur + 0.15);
-  oscs.forEach(({ gain, factor, detune }) => {
-    const osc = audioCtx.createOscillator(), og = audioCtx.createGain();
-    osc.type = 'sine'; osc.frequency.value = freq * factor; osc.detune.value = detune;
-    lfoG.connect(osc.frequency); osc.connect(og); og.connect(g); og.gain.value = gain;
-    osc.start(t); osc.stop(t + dur + 0.15);
-  });
-}
-function setMode(mode) {
-  _mode = mode;
-  document.getElementById('btnModeSpeaker').classList.toggle('active', mode === 'speaker');
-  document.getElementById('btnModeHeadphone').classList.toggle('active', mode === 'headphone');
-  if (!audioCtx) return;
-  if (masterGain) {
-    masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-    masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.08);
-    setTimeout(() => { _buildGraph(); masterGain.gain.linearRampToValueAtTime(_vol, audioCtx.currentTime + 0.08); }, 100);
-  }
-}
-function setVol(v) {
-  _vol = v / 100; if (masterGain) masterGain.gain.value = _vol;
-  document.getElementById('hVol').value = v; document.getElementById('iVol').value = v;
-}
-document.addEventListener('click', () => { if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); });
-
-// ================================================================
-//  SCORES & HISTORY LOGIC
-// ================================================================
-function addScore(isCorrect, module) {
-  if (isCorrect) { gScoreC++; if (module === 'h') hScoreC++; else iScoreC++; }
-  else           { gScoreW++; if (module === 'h') hScoreW++; else iScoreW++; }
-  document.getElementById('gScoreC').textContent = gScoreC; document.getElementById('gScoreW').textContent = gScoreW;
-  const hT = hScoreC + hScoreW, iT = iScoreC + iScoreW;
-  document.getElementById('badgeH').textContent = hT ? `${hScoreC}/${hT}` : '0';
-  document.getElementById('badgeI').textContent = iT ? `${iScoreC}/${iT}` : '0';
-  
-  if (window.dbSyncScores) window.dbSyncScores({ gScoreC, gScoreW, hScoreC, hScoreW, iScoreC, iScoreW });
-}
-
-function resetScores() {
-  if (!confirm('Zerar toda a pontuação desta sessão?')) return;
-  gScoreC = gScoreW = hScoreC = hScoreW = iScoreC = iScoreW = 0;
-  INTERVALS.forEach(iv => { iStats[iv.semitones].c = 0; iStats[iv.semitones].w = 0; });
-  ['gScoreC','gScoreW'].forEach(id => document.getElementById(id).textContent = '0');
-  document.getElementById('badgeH').textContent = '0'; document.getElementById('badgeI').textContent = '0';
-  iRenderStats();
-  ['allHistory','iHistory'].forEach(id => { document.getElementById(id).innerHTML = '<div class="history-empty">Nenhuma resposta ainda.</div>'; });
-
-  if (window.dbSyncScores) window.dbSyncScores({ gScoreC, gScoreW, hScoreC, hScoreW, iScoreC, iScoreW });
-}
-
-function addHistory(module, pair, answer, isCorrect, subtype) {
-  const now = new Date();
-  const t = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
-  const modLabel = module === 'h' ? (subtype === 'acorde' ? 'H·A' : subtype === 'função' ? 'H·F' : 'H') : 'I';
-
-  function mkItem(listId, withMod) {
-    const list = document.getElementById(listId);
-    const empty = list.querySelector('.history-empty');
-    if (empty) empty.remove();
-    const item = document.createElement('div'); item.className = 'history-item';
-    item.innerHTML = `<span class="hdot ${isCorrect ? 'ok' : 'bad'}"></span>${withMod ? `<span class="hmod">${modLabel}</span>` : ''}<span class="hpair">${pair}</span><span class="hans">${answer}</span><span class="htime">${t}</span>`;
-    list.insertBefore(item, list.firstChild);
-    if (list.querySelectorAll('.history-item').length > 30) list.removeChild(list.lastChild);
-  }
-  mkItem('allHistory', true);
-  if (module === 'i') mkItem('iHistory', false);
-}
-
-function switchTab(tab) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.snav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('view-' + tab).classList.add('active');
-  document.getElementById('snav-' + tab)?.classList.add('active');
-}
-
-// ================================================================
-//  MODULE H — HARMÔNICA
-// ================================================================
-const H_NOTE_NAMES = ['C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B'];
-const H_CHORDS_PROF = {
-  major: [ { name:'C', root:60, type:'maior', intervals:[0,4,7], aFunc:'6ª maior (6)' }, { name:'C#', root:61, type:'maior', intervals:[0,4,7], aFunc:'6ª menor (b6)' }, { name:'D', root:62, type:'maior', intervals:[0,4,7], aFunc:'5ª justa (5)' }, { name:'Eb', root:63, type:'maior', intervals:[0,4,7], aFunc:'—' }, { name:'E', root:64, type:'maior', intervals:[0,4,7], aFunc:'4ª justa (4)' }, { name:'F', root:65, type:'maior', intervals:[0,4,7], aFunc:'3ª maior (3)' }, { name:'F#', root:66, type:'maior', intervals:[0,4,7], aFunc:'—' }, { name:'G', root:67, type:'maior', intervals:[0,4,7], aFunc:'2ª maior (2)' }, { name:'Ab', root:68, type:'maior', intervals:[0,4,7], aFunc:'—' }, { name:'A', root:69, type:'maior', intervals:[0,4,7], aFunc:'fund (1)' }, { name:'Bb', root:70, type:'maior', intervals:[0,4,7], aFunc:'7ª maior (7)' }, { name:'B', root:71, type:'maior', intervals:[0,4,7], aFunc:'7ª menor (b7)' } ],
-  minor: [ { name:'Cm', root:60, type:'menor', intervals:[0,3,7], aFunc:'6ª maior (6)' }, { name:'C#m', root:61, type:'menor', intervals:[0,3,7], aFunc:'6ª menor (b6)' }, { name:'Dm', root:62, type:'menor', intervals:[0,3,7], aFunc:'5ª justa (5)' }, { name:'Ebm', root:63, type:'menor', intervals:[0,3,7], aFunc:'—' }, { name:'Em', root:64, type:'menor', intervals:[0,3,7], aFunc:'4ª justa (4)' }, { name:'Fm', root:65, type:'menor', intervals:[0,3,7], aFunc:'—' }, { name:'F#m', root:66, type:'menor', intervals:[0,3,7], aFunc:'3ª menor (b3)' }, { name:'Gm', root:67, type:'menor', intervals:[0,3,7], aFunc:'2ª maior (2)' }, { name:'Abm', root:68, type:'menor', intervals:[0,3,7], aFunc:'—' }, { name:'Am', root:69, type:'menor', intervals:[0,3,7], aFunc:'fund (1)' }, { name:'Bbm', root:70, type:'menor', intervals:[0,3,7], aFunc:'7ª maior (7)' }, { name:'Bm', root:71, type:'menor', intervals:[0,3,7], aFunc:'7ª menor (b7)' } ]
-};
-const H_CHORDS = {
-  major: [ { name:'A', root:69, type:'maior', intervals:[0,4,7], aFunc:'fund (1)' }, { name:'G', root:67, type:'maior', intervals:[0,4,7], aFunc:'2ª maior (2)' }, { name:'F', root:65, type:'maior', intervals:[0,4,7], aFunc:'3ª maior (3)' }, { name:'E', root:64, type:'maior', intervals:[0,4,7], aFunc:'4ª justa (4)' }, { name:'D', root:62, type:'maior', intervals:[0,4,7], aFunc:'5ª justa (5)' }, { name:'C#', root:61, type:'maior', intervals:[0,4,7], aFunc:'6ª menor (b6)' }, { name:'C', root:60, type:'maior', intervals:[0,4,7], aFunc:'6ª maior (6)' }, { name:'B', root:71, type:'maior', intervals:[0,4,7], aFunc:'7ª menor (b7)' }, { name:'Bb', root:70, type:'maior', intervals:[0,4,7], aFunc:'7ª maior (7)' } ],
-  minor: [ { name:'Am', root:69, type:'menor', intervals:[0,3,7], aFunc:'fund (1)' }, { name:'Gm', root:67, type:'menor', intervals:[0,3,7], aFunc:'2ª maior (2)' }, { name:'F#m', root:66, type:'menor', intervals:[0,3,7], aFunc:'3ª menor (b3)' }, { name:'Em', root:64, type:'menor', intervals:[0,3,7], aFunc:'4ª justa (4)' }, { name:'Dm', root:62, type:'menor', intervals:[0,3,7], aFunc:'5ª justa (5)' }, { name:'C#m', root:61, type:'menor', intervals:[0,3,7], aFunc:'6ª menor (b6)' }, { name:'Cm', root:60, type:'menor', intervals:[0,3,7], aFunc:'6ª maior (6)' }, { name:'Bm', root:71, type:'menor', intervals:[0,3,7], aFunc:'7ª menor (b7)' }, { name:'Bbm', root:70, type:'menor', intervals:[0,3,7], aFunc:'7ª maior (7)' } ]
-};
-const H_FUNC_NAMES = { 0:'fundamental (1)', 1:'segunda menor (b2)', 2:'segunda maior (2)', 3:'terça menor (b3)', 4:'terça maior (3)', 5:'quarta justa (4)', 6:'trítono (b5)', 7:'quinta justa (5)', 8:'sexta menor (b6)', 9:'sexta maior (6)', 10:'sétima menor (b7)', 11:'sétima maior (7)' };
-const H_FUNCS = ['1','b2','2','b3','3','4','b5','5','b6','6','b7','7'];
-
-let hOctave = 4, hRandMode = 'both', hManType = 'major', hGuessType = 'major', hCurrentChord = null, hChordRevealed = false, hSelectedFunc = null, hAnswered = false, hGuessAnswered = false, hCurrentIsProfMode = false;
-function hGetAMidi() { return 12 * (hOctave + 1) + 9; }
-function hGetChordMidis(c) { let r = c.root; if (hOctave===3) r-=12; if (hOctave===5) r+=12; return c.intervals.map(i=>r+i); }
-function hSetOctave(v) { hOctave = parseInt(v); }
-function hSetRand(m) { hRandMode = m; ['hRandBoth','hRandMaj','hRandMin'].forEach(id => document.getElementById(id).classList.remove('active')); document.getElementById({both:'hRandBoth', major:'hRandMaj', minor:'hRandMin'}[m]).classList.add('active'); }
-function hPlayRef() { initAudio(); playNote(midiToFreq(hGetAMidi()), audioCtx.currentTime); hFlash('hBtnA'); }
-function hPlayChord() { if (!hCurrentChord) return; initAudio(); const midis = hGetChordMidis(hCurrentChord), t = audioCtx.currentTime; midis.forEach((m, i) => playNote(midiToFreq(m), t + i * 0.07, 2.2)); hFlash('hBtnChord'); }
-function hFlash(id) { document.getElementById(id).classList.add('playing'); setTimeout(() => document.getElementById(id).classList.remove('playing'), 2400); }
-function hNewRandom() { let pool = hRandMode === 'major' ? H_CHORDS.major : hRandMode === 'minor' ? H_CHORDS.minor : [...H_CHORDS.major, ...H_CHORDS.minor]; hLoadChord(pool[Math.floor(Math.random() * pool.length)]); }
-function hLoadChord(chord, isProfMode = false) {
-  hCurrentChord = chord; hChordRevealed = false; hAnswered = false; hGuessAnswered = false; hSelectedFunc = null; hCurrentIsProfMode = isProfMode;
-  document.getElementById('hChordName').textContent = chord.name; document.getElementById('hChordName').classList.add('hidden');
-  document.getElementById('hChordType').textContent = chord.type.toUpperCase(); document.getElementById('hChordNotes').classList.add('hidden');
-  document.getElementById('hRevealBtn').textContent = 'Revelar acorde';
-  const hintEl = document.getElementById('hAFuncHint'); if (hintEl) { hintEl.textContent = `A = ${chord.aFunc}`; hintEl.classList.add('hidden'); }
-  document.getElementById('hChordNotes').textContent = hGetChordMidis(chord).map(m => H_NOTE_NAMES[m % 12]).join(' — ');
-  document.getElementById('hFbChord').className = 'feedback'; document.getElementById('hFbFunc').className = 'feedback'; document.getElementById('hBtnCheck').disabled = true;
-  document.querySelectorAll('#hFuncGrid .func-btn').forEach(b => b.classList.remove('selected','correct-ans','wrong-ans'));
-  document.querySelectorAll('#hGuessGrid .chord-guess-btn').forEach(b => b.classList.remove('correct-ans','wrong-ans'));
-  hUpdateSelHighlight(chord.name); setTimeout(() => hPlayChord(), 80);
-}
-function hRevealAll() { if (!hChordRevealed) { hChordRevealed = true; document.getElementById('hChordName').classList.remove('hidden'); document.getElementById('hChordNotes').classList.remove('hidden'); document.getElementById('hRevealBtn').textContent = 'Ocultar acorde'; const hintEl = document.getElementById('hAFuncHint'); if (hintEl) hintEl.classList.remove('hidden'); } }
-function hToggleReveal() { hChordRevealed = !hChordRevealed; document.getElementById('hChordName').classList.toggle('hidden', !hChordRevealed); document.getElementById('hChordNotes').classList.toggle('hidden', !hChordRevealed); document.getElementById('hRevealBtn').textContent = hChordRevealed ? 'Ocultar acorde' : 'Revelar acorde'; const hintEl = document.getElementById('hAFuncHint'); if (hintEl) hintEl.classList.toggle('hidden', !hChordRevealed); }
-function hSetType(type) { hManType = type; document.getElementById('hTypeMaj').classList.toggle('active', type === 'major'); document.getElementById('hTypeMin').classList.toggle('active', type === 'minor'); hRenderSelGrid(); }
-function hRenderSelGrid() {
-  const grid = document.getElementById('hSelGrid'); grid.innerHTML = '';
-  H_CHORDS_PROF[hManType].forEach(c => {
-    const btn = document.createElement('button'); btn.className = 'chord-sel-btn'; btn.dataset.chordName = c.name;
-    const funcLabel = c.aFunc !== '—' ? c.aFunc : '—';
-    btn.innerHTML = `<span class="csel-name">${c.name}</span><span class="csel-func${c.aFunc === '—' ? ' csel-chromatic' : ''}">${funcLabel}</span>`;
-    btn.title = c.aFunc !== '—' ? `A = ${c.aFunc}` : 'Lá não pertence a este acorde';
-    if (hCurrentChord && hCurrentChord.name === c.name) btn.classList.add('active');
-    btn.onclick = () => hLoadChord(c, true); grid.appendChild(btn);
-  });
-}
-function hUpdateSelHighlight(name) { document.querySelectorAll('#hSelGrid .chord-sel-btn').forEach(b => b.classList.toggle('active', b.dataset.chordName === name)); }
-
-const hChordStats = {};
-function hRegisterChordStat(name, isOk) { if (!hChordStats[name]) hChordStats[name] = { c:0, w:0 }; if (isOk) hChordStats[name].c++; else hChordStats[name].w++; hRenderChordStats(); }
-function hRenderChordStats() {
-  const el = document.getElementById('hChordStatsGrid'); if (!el) return;
-  const tried = Object.entries(hChordStats).filter(([,s]) => s.c + s.w > 0);
-  if (!tried.length) { el.innerHTML = '<div style="font-size:11px;color:var(--text-faint);font-style:italic">Nenhum acorde treinado ainda.</div>'; return; }
-  tried.sort((a,b) => (a[1].c/(a[1].c+a[1].w)) - (b[1].c/(b[1].c+b[1].w)));
-  el.innerHTML = ''; el.style.display = 'grid'; el.style.gridTemplateColumns = `repeat(${Math.min(tried.length, 6)}, 1fr)`;
-  tried.forEach(([name, s]) => {
-    const t = s.c + s.w, pct = Math.round(s.c / t * 100), col = pct >= 70 ? 'var(--green)' : pct >= 40 ? 'var(--gold)' : 'var(--red)';
-    const cell = document.createElement('div'); cell.className = 'stat-cell'; cell.title = `${name}: ${s.c} acertos, ${s.w} erros`;
-    cell.innerHTML = `<div class="stat-val" style="color:${col}">${pct}%</div><div class="stat-lbl">${name}</div>`; el.appendChild(cell);
-  });
-  hRenderChordStatsHistorico();
-}
-function hRenderChordStatsHistorico() {
-  const el = document.getElementById('hChordStatsHist'); if (!el) return;
-  const tried = Object.entries(hChordStats).filter(([,s]) => s.c + s.w > 0);
-  if (!tried.length) { el.innerHTML = '<div style="font-size:11px;color:var(--text-faint);font-style:italic">Nenhum acorde treinado ainda.</div>'; return; }
-  tried.sort((a,b) => (a[1].c/(a[1].c+a[1].w)) - (b[1].c/(b[1].c+b[1].w)));
-  el.style.display = 'grid'; el.style.gridTemplateColumns = `repeat(${Math.min(tried.length, 6)}, 1fr)`; el.innerHTML = '';
-  tried.forEach(([name, s]) => {
-    const t = s.c + s.w, pct = Math.round(s.c / t * 100), col = pct >= 70 ? 'var(--green)' : pct >= 40 ? 'var(--gold)' : 'var(--red)';
-    const cell = document.createElement('div'); cell.className = 'stat-cell';
-    cell.innerHTML = `<div class="stat-val" style="color:${col}">${pct}%</div><div class="stat-lbl">${name}</div>`; el.appendChild(cell);
-  });
-}
-function hSetGuessType(type) { hGuessType = type; ['hGuessMaj','hGuessMin','hGuessBoth'].forEach(id => document.getElementById(id).classList.remove('active')); document.getElementById({major:'hGuessMaj', minor:'hGuessMin', both:'hGuessBoth'}[type]).classList.add('active'); hRenderGuessGrid(); }
-function hRenderGuessGrid() {
-  const grid = document.getElementById('hGuessGrid'); grid.innerHTML = '';
-  const pool = hGuessType === 'major' ? H_CHORDS.major : hGuessType === 'minor' ? H_CHORDS.minor : [...H_CHORDS.major, ...H_CHORDS.minor];
-  grid.className = 'chord-guess-grid' + (hGuessType === 'both' ? ' both-mode' : '');
-  pool.forEach(c => {
-    const btn = document.createElement('button'); btn.className = 'chord-guess-btn'; btn.textContent = c.name; btn.dataset.guessName = c.name;
-    btn.onclick = () => hGuessChord(c); grid.appendChild(btn);
-  });
-}
-function hGuessChord(chord) {
-  if (hGuessAnswered) return; hGuessAnswered = true; const isOk = chord.name === hCurrentChord.name;
-  document.querySelectorAll('#hGuessGrid .chord-guess-btn').forEach(b => { if (b.dataset.guessName === hCurrentChord.name) b.classList.add('correct-ans'); else if (b.dataset.guessName === chord.name && !isOk) b.classList.add('wrong-ans'); });
-  hRevealAll(); const semi = hComputeAFunc(); const fb = document.getElementById('hFbChord'); fb.className = 'feedback show ' + (isOk ? 'ok' : 'bad');
-  document.getElementById('hFbChordRes').textContent = isOk ? '✓ Acorde correto!' : `✗ Era ${hCurrentChord.name}.`;
-  document.getElementById('hFbChordExp').textContent = isOk ? `É o acorde ${hCurrentChord.name} (${hCurrentChord.type}). O Lá (A) é a ${H_FUNC_NAMES[semi]} — ${semi} semitom${semi!==1?'s':''} acima da fundamental.` : `Você escolheu ${chord.name}. O acorde correto é ${hCurrentChord.name} (${hCurrentChord.type}) — o Lá (A) é a ${H_FUNC_NAMES[semi]} dele.`;
-  if (!hCurrentIsProfMode) { addScore(isOk, 'h'); addHistory('h', `${chord.name} → ${hCurrentChord.name}`, isOk ? '✓' : `✗ era ${hCurrentChord.name}`, isOk, 'acorde'); hRegisterChordStat(hCurrentChord.name, isOk); }
-}
-function hComputeAFunc() { return ( (hGetAMidi() % 12) - (hCurrentChord.root % 12) + 12 ) % 12; }
-function hRenderFuncGrid() {
-  const grid = document.getElementById('hFuncGrid'); grid.innerHTML = '';
-  H_FUNCS.forEach(fn => { const btn = document.createElement('button'); btn.className = 'func-btn'; btn.textContent = fn; btn.dataset.fn = fn; btn.onclick = () => hSelectFunc(fn); grid.appendChild(btn); });
-}
-function hSelectFunc(fn) { if (hAnswered) return; hSelectedFunc = fn; document.querySelectorAll('#hFuncGrid .func-btn').forEach(b => b.classList.toggle('selected', b.dataset.fn === fn)); document.getElementById('hBtnCheck').disabled = false; }
-function hCheckFunc() {
-  if (!hSelectedFunc || !hCurrentChord || hAnswered) return; hAnswered = true;
-  const semi = hComputeAFunc(), correct = ['1','b2','2','b3','3','4','b5','5','b6','6','b7','7'][semi] || '?', isOk = hSelectedFunc === correct;
-  document.querySelectorAll('#hFuncGrid .func-btn').forEach(b => { b.classList.remove('selected'); if (b.dataset.fn === correct) b.classList.add('correct-ans'); else if (b.dataset.fn === hSelectedFunc && !isOk) b.classList.add('wrong-ans'); });
-  hRevealAll(); const fb = document.getElementById('hFbFunc'); fb.className = 'feedback show ' + (isOk ? 'ok' : 'bad');
-  document.getElementById('hFbFuncRes').textContent = isOk ? '✓ Correto!' : '✗ Errado.';
-  document.getElementById('hFbFuncExp').textContent = isOk ? `O Lá (A) é a ${H_FUNC_NAMES[semi]} do acorde ${hCurrentChord.name}. (${semi} semitons acima da fundamental)` : `Você respondeu "${hSelectedFunc}", mas o correto é "${correct}". O Lá (A) é a ${H_FUNC_NAMES[semi]} do acorde ${hCurrentChord.name} — ${semi} semitons acima da fundamental ${hCurrentChord.name}.`;
-  document.getElementById('hBtnCheck').disabled = true;
-  if (!hCurrentIsProfMode) { addScore(isOk, 'h'); addHistory('h', hCurrentChord.name, `A = ${hSelectedFunc}${isOk ? '' : ' → ' + correct}`, isOk, 'função'); hRegisterChordStat(hCurrentChord.name, isOk); }
-}
-function hInit() { hRenderFuncGrid(); hRenderSelGrid(); hRenderGuessGrid(); hNewRandom(); }
-
-// ================================================================
-//  MODULE I — INTERVALOS (COM SUPORTE ASCENDENTE E DESCENDENTE)
-// ================================================================
-const INTERVALS = [
-  { semitones:0, symbol:'Uníssimo', short:'U', name:'Uníssono Justo', groups:['consonant','diatonic'], theory:'Duas notas idênticas.' }, { semitones:1, symbol:'2ª m', short:'2m', name:'Segunda Menor', groups:['dissonant'], theory:'Tensão máxima.' }, { semitones:2, symbol:'2ª M', short:'2M', name:'Segunda Maior', groups:['dissonant','diatonic'], theory:'Passo diatônico.' }, { semitones:3, symbol:'3ª m', short:'3m', name:'Terça Menor', groups:['consonant','diatonic'], theory:'Base menor.' }, { semitones:4, symbol:'3ª M', short:'3M', name:'Terça Maior', groups:['consonant','diatonic'], theory:'Base maior.' }, { semitones:5, symbol:'4ª J', short:'4J', name:'Quarta Justa', groups:['consonant','diatonic'], theory:'Aberto, estável.' }, { semitones:6, symbol:'Trítono', short:'TT', name:'Trítono', groups:['dissonant'], theory:'Divide a oitava.' }, { semitones:7, symbol:'5ª J', short:'5J', name:'Quinta Justa', groups:['consonant','diatonic'], theory:'Série harmônica.' }, { semitones:8, symbol:'6ª m', short:'6m', name:'Sexta Menor', groups:['consonant','diatonic'], theory:'Melancólico.' }, { semitones:9, symbol:'6ª M', short:'6M', name:'Sexta Maior', groups:['consonant','diatonic'], theory:'Aberto e afetuoso.' }, { semitones:10, symbol:'7ª m', short:'7m', name:'Sétima Menor', groups:['dissonant','diatonic'], theory:'Tensão (V7).' }, { semitones:11, symbol:'7ª M', short:'7M', name:'Sétima Maior', groups:['dissonant'], theory:'Tenso e moderno.' }, { semitones:12, symbol:'Oitava', short:'8ª', name:'Oitava Justa', groups:['consonant','diatonic'], theory:'Repouso máximo.' }
-];
-const I_ROOTS = { fixed_A: [{name:'A', midi:69}], fixed_C: [{name:'C', midi:60}], random: [{name:'C',midi:60},{name:'D',midi:62},{name:'E',midi:64},{name:'F',midi:65},{name:'G',midi:67},{name:'A',midi:69},{name:'B',midi:71}] };
-const NOTE_PT = {C:'Dó',D:'Ré',E:'Mi',F:'Fá',G:'Sol',A:'Lá',B:'Si','C#':'Dó#','Eb':'Ré♭','F#':'Fá#','Ab':'Lá♭','Bb':'Si♭'};
-
-let iDirection = 'asc', iRootMode = 'fixed_A', iActiveFilters = new Set(INTERVALS.map(iv => iv.semitones)), iCurrent = null, iSelected = null, iAnswered = false, iRevealed = false;
-const iStats = {}; INTERVALS.forEach(iv => { iStats[iv.semitones] = { c:0, w:0 }; });
-
-function iSetDir(d) { 
-  iDirection = d; 
-  ['iDirAsc','iDirDesc','iDirBoth'].forEach(id => document.getElementById(id).classList.remove('active')); 
-  document.getElementById({asc:'iDirAsc', desc:'iDirDesc', both:'iDirBoth'}[d]).classList.add('active'); 
-  iNew();
-}
-
-function iGetFreqs() { 
-  if (!iCurrent) return [440,440]; 
-  const {rootMidi, interval, actualDir} = iCurrent; 
-  // No modo ascendente: Nota 1 (grave) -> Nota 2 (aguda)
-  // No modo descendente: Nota 1 (aguda) -> Nota 2 (grave)
-  if (actualDir === 'asc') {
-    return [midiToFreq(rootMidi), midiToFreq(rootMidi + interval.semitones)];
-  } else {
-    return [midiToFreq(rootMidi + interval.semitones), midiToFreq(rootMidi)];
-  }
-}
-
-function iFlash(id) { document.getElementById(id).classList.add('playing'); setTimeout(() => document.getElementById(id).classList.remove('playing'), 2400); }
-function iPlayNote1() { initAudio(); playNote(iGetFreqs()[0], audioCtx.currentTime); iFlash('iBtnN1'); }
-function iPlayNote2() { initAudio(); playNote(iGetFreqs()[1], audioCtx.currentTime); iFlash('iBtnN2'); }
-function iPlaySeq() { initAudio(); const [fA, fB] = iGetFreqs(), now = audioCtx.currentTime; playNote(fA, now, 1.6); playNote(fB, now + 1.7, 1.6); iFlash('iBtnSeq'); }
-function iPlayHarm() { initAudio(); const [fA,fB] = iGetFreqs(), t = audioCtx.currentTime; playNote(fA, t, 2.2); playNote(fB, t, 2.2); iFlash('iBtnHarm'); }
-
-function iNew() {
-  iAnswered = false; iSelected = null; iRevealed = false;
-  const pool = INTERVALS.filter(iv => iActiveFilters.has(iv.semitones));
-  if (!pool.length) return;
-  const interval = pool[Math.floor(Math.random() * pool.length)], roots = I_ROOTS[iRootMode], root = roots[Math.floor(Math.random() * roots.length)];
-  
-  let actualDir = iDirection === 'both' ? (Math.random() > .5 ? 'asc' : 'desc') : iDirection;
-  iCurrent = { rootMidi: root.midi, rootName: root.name, interval, actualDir };
-  
-  // Cálculo das notas visuais e sonoras considerando a direção
-  let midiNote1, midiNote2;
-  if (actualDir === 'asc') {
-    midiNote1 = root.midi;
-    midiNote2 = root.midi + interval.semitones;
-  } else {
-    midiNote1 = root.midi + interval.semitones; // Nota mais aguda (início do descendente)
-    midiNote2 = root.midi;                      // Nota mais grave (destino)
-  }
-
-  const name1 = ['C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B'][((midiNote1%12)+12)%12];
-  const name2 = ['C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B'][((midiNote2%12)+12)%12];
-
-  document.getElementById('iNoteA').textContent = NOTE_PT[name1] || name1; 
-  document.getElementById('iNoteB').textContent = NOTE_PT[name2] || name2; 
-  document.getElementById('iNoteB').classList.add('hidden');
-  
-  document.getElementById('iIntName').textContent = interval.name; 
-  document.getElementById('iIntName').classList.add('hidden');
-  document.getElementById('iIntSemis').textContent = interval.semitones + ' semitons'; 
-  document.getElementById('iIntSemis').classList.add('hidden');
-  
-  // Atualiza a seta visual conforme a direção
-  const arrowEl = document.querySelector('.interval-arrow');
-  if (arrowEl) arrowEl.textContent = actualDir === 'asc' ? '↗' : '↘';
-
-  const dirTag = document.getElementById('iDirTag'); 
-  dirTag.textContent = actualDir === 'asc' ? '↑ ascendente' : '↓ descendente'; 
-  dirTag.style.display = iDirection === 'both' ? 'none' : 'inline-block';
-  
-  document.getElementById('iRevealBtn').textContent = 'Revelar resposta'; 
-  document.getElementById('iFb').className = 'feedback'; 
-  document.getElementById('iBtnCheck').disabled = true;
-  
-  document.querySelectorAll('#iIntTable .int-opt').forEach(b => b.classList.remove('selected','correct-ans','wrong-ans'));
-  setTimeout(() => iPlaySeq(), 80);
-}
-
-function iToggleReveal() {
-  iRevealed = !iRevealed; 
-  document.getElementById('iNoteB').classList.toggle('hidden', !iRevealed); 
-  document.getElementById('iIntName').classList.toggle('hidden', !iRevealed); 
-  document.getElementById('iIntSemis').classList.toggle('hidden', !iRevealed);
-  
-  if (iDirection === 'both') { 
-    const dt = document.getElementById('iDirTag'); 
-    dt.style.display = iRevealed ? 'inline-block' : 'none'; 
-    if (iRevealed) dt.textContent = iCurrent.actualDir === 'asc' ? '↑ ascendente' : '↓ descendente'; 
-  }
-  document.getElementById('iRevealBtn').textContent = iRevealed ? 'Ocultar' : 'Revelar resposta';
-}
-
-function iRevealAll() {
-  if (iRevealed) return; 
-  iRevealed = true; 
-  document.getElementById('iNoteB').classList.remove('hidden'); 
-  document.getElementById('iIntName').classList.remove('hidden'); 
-  document.getElementById('iIntSemis').classList.remove('hidden');
-  
-  if (iDirection === 'both') { 
-    const dt = document.getElementById('iDirTag'); 
-    dt.style.display = 'inline-block'; 
-    dt.textContent = iCurrent.actualDir === 'asc' ? '↑ ascendente' : '↓ descendente'; 
-  }
-  document.getElementById('iRevealBtn').textContent = 'Ocultar';
-}
-
-function iRenderFilterGrid() {
-  const g = document.getElementById('iFilterGrid'); g.innerHTML = '';
-  INTERVALS.forEach(iv => {
-    const item = document.createElement('label'); item.className = 'filter-item' + (iActiveFilters.has(iv.semitones) ? ' active' : '');
-    item.innerHTML = `<div class="filter-check">${iActiveFilters.has(iv.semitones) ? '✓' : ''}</div><span>${iv.symbol}</span><span class="filter-semis">${iv.semitones}st</span>`;
-    item.onclick = () => { if (iActiveFilters.has(iv.semitones)) { if (iActiveFilters.size <= 1) return; iActiveFilters.delete(iv.semitones); } else { iActiveFilters.add(iv.semitones); } iRenderFilterGrid(); iRenderAnswerGrid(); if (iCurrent && !iActiveFilters.has(iCurrent.interval.semitones)) iNew(); }; g.appendChild(item);
-  });
-}
-function iFilterAll() { INTERVALS.forEach(iv => iActiveFilters.add(iv.semitones)); iRenderFilterGrid(); iRenderAnswerGrid(); }
-function iFilterGroup(group) { iActiveFilters.clear(); INTERVALS.forEach(iv => { if (iv.groups.includes(group)) iActiveFilters.add(iv.semitones); }); if (!iActiveFilters.size) iFilterAll(); iRenderFilterGrid(); iRenderAnswerGrid(); if (iCurrent && !iActiveFilters.has(iCurrent.interval.semitones)) iNew(); }
-function iRenderAnswerGrid() {
-  const table = document.getElementById('iIntTable'); table.innerHTML = ''; const active = INTERVALS.filter(iv => iActiveFilters.has(iv.semitones)), cols = active.length <= 7 ? active.length : active.length <= 10 ? 5 : 7; table.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-  active.forEach(iv => {
-    const btn = document.createElement('button'); btn.className = 'int-opt'; btn.dataset.s = iv.semitones; btn.innerHTML = `<span class="is">${iv.symbol}</span><span class="ist">${iv.semitones}st</span>`;
-    btn.onclick = () => { if (iAnswered) return; iSelected = iv.semitones; document.querySelectorAll('#iIntTable .int-opt').forEach(b => b.classList.toggle('selected', parseInt(b.dataset.s) === iv.semitones)); document.getElementById('iBtnCheck').disabled = false; }; table.appendChild(btn);
-  });
-}
-function iCheck() {
-  if (iAnswered || iSelected === null || !iCurrent) return; iAnswered = true;
-  const correct = iCurrent.interval.semitones, isOk = iSelected === correct;
-  document.querySelectorAll('#iIntTable .int-opt').forEach(b => { const s = parseInt(b.dataset.s); b.classList.remove('selected'); if (s === correct) b.classList.add('correct-ans'); else if (s === iSelected && !isOk) b.classList.add('wrong-ans'); });
-  iRevealAll(); const iv = iCurrent.interval, wrongIv = INTERVALS.find(i => i.semitones === iSelected), fb = document.getElementById('iFb'); fb.className = 'feedback show ' + (isOk ? 'ok' : 'bad');
-  document.getElementById('iFbRes').textContent = isOk ? '✓ Correto!' : `✗ Era uma ${iv.name}.`;
-  document.getElementById('iFbExp').textContent = isOk ? `É uma ${iv.name} (${iv.semitones} semitons).` : `Você respondeu ${wrongIv ? wrongIv.name : iSelected + ' st'}. O correto é ${iv.name} (${iv.semitones} st).`;
-  document.getElementById('iFbTheory').textContent = iv.theory; document.getElementById('iBtnCheck').disabled = true;
-  if (isOk) iStats[correct].c++; else iStats[correct].w++;
-  addScore(isOk, 'i');
-  
-  const m1 = iCurrent.actualDir === 'asc' ? iCurrent.rootMidi : iCurrent.rootMidi + iv.semitones;
-  const m2 = iCurrent.actualDir === 'asc' ? iCurrent.rootMidi + iv.semitones : iCurrent.rootMidi;
-  const n1 = ['C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B'][((m1%12)+12)%12];
-  const n2 = ['C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B'][((m2%12)+12)%12];
-
-  addHistory('i', `${NOTE_PT[n1]||n1} ${iCurrent.actualDir==='asc'?'↗':'↘'} ${NOTE_PT[n2]||n2}`, isOk ? iv.short : `${wrongIv ? wrongIv.short : '?'} → ${iv.short}`, isOk); iRenderStats();
-}
-function iRenderStats() {
-  ['iStatsRow', 'iStatsRowHist'].forEach(elId => {
-    const row = document.getElementById(elId); if (!row) return; const tried = INTERVALS.filter(iv => iStats[iv.semitones].c + iStats[iv.semitones].w > 0);
-    if (!tried.length) { row.innerHTML = '<div style="font-size:11px;color:var(--text-faint);font-style:italic">Nenhum intervalo treinado ainda.</div>'; return; }
-    row.style.gridTemplateColumns = `repeat(${Math.min(tried.length, 7)}, 1fr)`; row.style.display = 'grid'; row.innerHTML = '';
-    tried.forEach(iv => {
-      const s = iStats[iv.semitones], total = s.c + s.w, pct = total > 0 ? Math.round(s.c / total * 100) : 0, cell = document.createElement('div'); cell.className = 'stat-cell'; cell.title = `${iv.name}: ${s.c} acertos, ${s.w} erros`;
-      cell.innerHTML = `<div class="stat-val" style="color:${pct>=70?'var(--green)':pct>=40?'var(--gold)':'var(--red)'}">${pct}%</div><div class="stat-lbl">${iv.short}</div>`; row.appendChild(cell);
-    });
-  });
-}
-function iInit() { iRenderFilterGrid(); iRenderAnswerGrid(); iRenderStats(); iNew(); }
-
-// ================================================================
-//  PRÁTICA — DIÁRIO & POMODORO
-// ================================================================
-function praticaInit() {
-  const pl = document.getElementById('pilaresListEl');
-  if (pl) pl.innerHTML = PILARES.map(p => `<div class="pilar-item"><div class="pilar-titulo">${p.titulo}</div><div class="pilar-desc">${p.desc}</div></div>`).join('');
-  dRender();
-}
-
-function dRender() {
-  const list = document.getElementById('diarioList'); if (!list) return;
-  if (!diarioEntries.length) { list.innerHTML = '<div class="history-empty">Nenhum registro ainda.</div>'; return; }
-  list.innerHTML = '';
-  diarioEntries.slice(0, 20).forEach((e, idx) => {
-    const div = document.createElement('div'); div.className = 'diary-item';
-    div.innerHTML = `<span class="hdot ok"></span><span class="hans"><strong>${e.titulo}</strong><br><span style="font-size:10px;color:var(--text-faint)">${e.data}</span>${e.obs ? `<br>${e.obs}` : ''}</span><span class="diary-del" data-idx="${idx}">🗑</span>`;
-    list.appendChild(div);
-  });
-  list.querySelectorAll('.diary-del').forEach(el => {
-    el.addEventListener('click', () => {
-      diarioEntries.splice(parseInt(el.dataset.idx), 1);
-      dRender();
-      if(window.dbSyncDiary) window.dbSyncDiary(diarioEntries);
-    });
-  });
-}
-
-function dSave(e) {
-  e.preventDefault();
-  const titulo = document.getElementById('diarioTitulo').value.trim();
-  const obs = document.getElementById('diarioObs').value.trim();
-  if (!titulo) return;
-  diarioEntries.unshift({ titulo, obs, data: new Date().toLocaleString('pt-BR') });
-  dRender();
-  document.getElementById('diarioTitulo').value = ''; document.getElementById('diarioObs').value = '';
-  
-  if(window.dbSyncDiary) window.dbSyncDiary(diarioEntries);
-}
-
-function dClearAll() {
-  if (!confirm('Apagar todo o diário?')) return;
-  diarioEntries = []; dRender();
-  if(window.dbSyncDiary) window.dbSyncDiary(diarioEntries);
-}
-
-function dExport() {
-  const blob = new Blob([JSON.stringify(diarioEntries, null, 2)], { type: 'application/json' }), url = URL.createObjectURL(blob), a = document.createElement('a');
-  a.href = url; a.download = 'diario_bem.json'; a.click(); URL.revokeObjectURL(url);
-}
-
-let pomoSecs = 25*60, pomoInterval = null, pomoRunning = false;
-function _updatePomoDisplay() { const m = Math.floor(pomoSecs/60), s = pomoSecs%60, el = document.getElementById('pomodoroTimer'); if (el) el.textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; }
-function setPomoTime(min) { resetPomodoro(); pomoSecs = min * 60; _updatePomoDisplay(); document.getElementById('pomo25').classList.toggle('active', min === 25); document.getElementById('pomo50').classList.toggle('active', min === 50); }
-function startPomodoro() {
-  if (pomoRunning) return; pomoRunning = true; const disp = document.getElementById('pomodoroTimer'), stat = document.getElementById('pomoStatus');
-  if (disp) disp.classList.add('running'); if (stat) stat.textContent = 'Sessão em andamento…';
-  pomoInterval = setInterval(() => {
-    if (pomoSecs <= 0) {
-      clearInterval(pomoInterval); pomoRunning = false; if (disp) { disp.classList.remove('running'); disp.classList.add('done'); } if (stat) stat.textContent = 'Ciclo concluído! Faça uma pausa.';
-      if (audioCtx) { const t = audioCtx.currentTime; [0, 0.35, 0.7].forEach(d => { const o = audioCtx.createOscillator(), g = audioCtx.createGain(); o.frequency.value = 880; g.gain.setValueAtTime(0.28, t+d); g.gain.exponentialRampToValueAtTime(0.001, t+d+1.4); o.connect(g); g.connect(audioCtx.destination); o.start(t+d); o.stop(t+d+1.5); }); }
-    } else { pomoSecs--; _updatePomoDisplay(); }
-  }, 1000);
-}
-function stopPomodoro() { if (pomoInterval) { clearInterval(pomoInterval); pomoInterval = null; } pomoRunning = false; const disp = document.getElementById('pomodoroTimer'), stat = document.getElementById('pomoStatus'); if (disp) disp.classList.remove('running'); if (stat) stat.textContent = 'Pausado.'; }
-function resetPomodoro() { stopPomodoro(); pomoSecs = 25*60; _updatePomoDisplay(); const disp = document.getElementById('pomodoroTimer'), stat = document.getElementById('pomoStatus'); if (disp) { disp.classList.remove('running','done'); } if (stat) stat.textContent = 'Pronto para começar'; document.getElementById('pomo25').classList.add('active'); document.getElementById('pomo50').classList.remove('active'); }
-
-// ================================================================
-//  METRÔNOMO & BOOT
-// ================================================================
-let metroBPM = 90, metroActive = false, metroInterval = null, _metroBeat = 0, _lastTap = null;
-function metroInitLeds() { const bar = document.getElementById('metroLedsBar'); if (!bar) return; bar.innerHTML = ''; for (let i = 0; i < 4; i++) { const d = document.createElement('div'); d.className = 'metro-led'; d.id = 'mled' + i; bar.appendChild(d); } }
-function metroTick() { initAudio(); const t = audioCtx.currentTime, osc = audioCtx.createOscillator(), g = audioCtx.createGain(); osc.frequency.value = _metroBeat === 0 ? 1800 : 1200; osc.type = 'sine'; g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.28, t+0.005); g.gain.exponentialRampToValueAtTime(0.001, t+0.07); osc.connect(g); g.connect(audioCtx.destination); osc.start(t); osc.stop(t+0.08); document.querySelectorAll('.metro-led').forEach(l => l.classList.remove('beat')); const led = document.getElementById('mled' + _metroBeat); if (led) { led.classList.add('beat'); setTimeout(() => led.classList.remove('beat'), 60); } _metroBeat = (_metroBeat + 1) % 4; }
-function startMetronome() { if (metroInterval) clearInterval(metroInterval); metroTick(); metroInterval = setInterval(metroTick, 60000 / metroBPM); }
-function stopMetronome() { clearInterval(metroInterval); metroInterval = null; _metroBeat = 0; document.querySelectorAll('.metro-led').forEach(l => l.classList.remove('beat')); }
-function toggleMetronome() { metroActive = !metroActive; const btn = document.getElementById('metroPlayBtn'); if (metroActive) { startMetronome(); if (btn) btn.innerHTML = '<span>⏹ Parar</span>'; } else { stopMetronome(); if (btn) btn.innerHTML = '<span>▶ Iniciar</span>'; } }
-function metroTap() { const now = Date.now(); if (_lastTap && (now - _lastTap) < 2000) { metroBPM = Math.min(220, Math.max(40, Math.round(60000 / (now - _lastTap)))); const sl = document.getElementById('metroBpmSlider'), dp = document.getElementById('metroBpmDisp'); if (sl) sl.value = metroBPM; if (dp) dp.textContent = metroBPM; if (metroActive) { stopMetronome(); startMetronome(); } } _lastTap = now; }
-
-function toggleSidebar() { const sidebar = document.getElementById('sidebar'), overlay = document.getElementById('sidebarOverlay'), burger = document.getElementById('hamburger'), isOpen = sidebar.classList.contains('open'); if (isOpen) { closeSidebar(); } else { sidebar.classList.add('open'); overlay.classList.add('show'); burger.classList.add('open'); } }
-function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('show'); document.getElementById('hamburger').classList.remove('open'); }
-
-// ================================================================
-//  MÓDULO RÉGUA — RÉGUA DE INTERVALOS (BOHUMIL MED)
-// ================================================================
-const REGUA_INTERVALS = [
-  { semitones: 0, symbol: 'Uníssimo', short: 'U', name: 'Uníssono Justo', cat: 'perfeita', colorClass: 'color-green' },
-  { semitones: 1, symbol: '2ª m', short: '2m', name: 'Segunda Menor', cat: 'forte', colorClass: 'color-red' },
-  { semitones: 2, symbol: '2ª M', short: '2M', name: 'Segunda Maior', cat: 'suave', colorClass: 'color-gold' },
-  { semitones: 3, symbol: '3ª m', short: '3m', name: 'Terça Menor', cat: 'imperfect', colorClass: 'color-imperfect' },
-  { semitones: 4, symbol: '3ª M', short: '3M', name: 'Terça Maior', cat: 'imperfect', colorClass: 'color-imperfect' },
-  { semitones: 5, symbol: '4ª J', short: '4J', name: 'Quarta Justa', cat: 'perfeita', colorClass: 'color-green' },
-  { semitones: 6, symbol: 'Trítono', short: 'TT', name: 'Quarta Aumentada / Quinta Diminuta', cat: 'neutral', colorClass: 'color-neutral' },
-  { semitones: 7, symbol: '5ª J', short: '5J', name: 'Quinta Justa', cat: 'perfeita', colorClass: 'color-green' },
-  { semitones: 8, symbol: '6ª m', short: '6m', name: 'Sexta Menor', cat: 'imperfect', colorClass: 'color-imperfect' },
-  { semitones: 9, symbol: '6ª M', short: '6M', name: 'Sexta Maior', cat: 'imperfect', colorClass: 'color-imperfect' },
-  { semitones: 10, symbol: '7ª m', short: '7m', name: 'Sétima Menor', cat: 'suave', colorClass: 'color-gold' },
-  { semitones: 11, symbol: '7ª M', short: '7M', name: 'Sétima Maior', cat: 'forte', colorClass: 'color-red' },
-  { semitones: 12, symbol: 'Oitava', short: '8ª', name: 'Oitava Justa', cat: 'perfeita', colorClass: 'color-green' }
-];
-
-let reguaRootMidi = 60;
-let reguaRootName = 'C';
-let reguaPlayMode = 'melodic';
-
-function reguaSetPlayMode(mode) {
-  reguaPlayMode = mode;
-  document.getElementById('reguaMelodic').classList.toggle('active', mode === 'melodic');
-  document.getElementById('reguaHarmonic').classList.toggle('active', mode === 'harmonic');
-}
-
-function reguaSetRoot(name, midi, label) {
-  reguaRootName = name;
-  reguaRootMidi = midi;
-  document.getElementById('reguaRefNote').innerHTML = `${name}<sub>${Math.floor(midi/12)-1}</sub>`;
-  document.getElementById('reguaRefName').textContent = label;
-  
-  document.querySelectorAll('.regua-ref-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent.trim().startsWith(name));
-  });
-}
-
-function reguaPlayInterval(semis, rowElementId) {
-  initAudio();
-  const fA = midiToFreq(reguaRootMidi);
-  const fB = midiToFreq(reguaRootMidi + semis);
-  const t = audioCtx.currentTime;
-
-  if (rowElementId) {
-    const el = document.getElementById(rowElementId);
-    if (el) {
-      el.classList.add('playing');
-      setTimeout(() => el.classList.remove('playing'), reguaPlayMode === 'harmonic' ? 2200 : 1600);
-    }
-  }
-
-  if (reguaPlayMode === 'harmonic') {
-    playNote(fA, t, 2.2);
-    playNote(fB, t, 2.2);
-  } else {
-    playNote(fA, t, 1.2);
-    playNote(fB, t + 1.3, 1.4);
-  }
-}
-
-function reguaPlayAll() {
-  let delay = 0;
-  const step = reguaPlayMode === 'harmonic' ? 1200 : 1800;
-  REGUA_INTERVALS.forEach((iv) => {
-    setTimeout(() => {
-      reguaPlayInterval(iv.semitones, 'regua-row-' + iv.semitones);
-    }, delay);
-    delay += step;
-  });
-}
-
-function reguaBuildUI() {
-  const intervalsContainer = document.getElementById('reguaIntervals');
-  const tableContainer = document.getElementById('reguaTable');
-  if (!intervalsContainer || !tableContainer) return;
-
-  intervalsContainer.innerHTML = '';
-  tableContainer.innerHTML = '';
-
-  REGUA_INTERVALS.forEach((iv) => {
-    const isTritone = iv.semitones === 6;
-
-    const row = document.createElement('div');
-    row.className = 'regua-row' + (isTritone ? ' tritone-row' : '');
-    row.id = 'regua-row-' + iv.semitones;
-    row.onclick = () => reguaPlayInterval(iv.semitones, row.id);
-    row.innerHTML = `
-      <div class="regua-line"></div>
-      <button class="regua-dot-btn ${iv.colorClass}" title="${iv.name} (${iv.semitones} st)"></button>
-    `;
-    intervalsContainer.appendChild(row);
-
-    const tRow = document.createElement('div');
-    tRow.className = 'regua-table-row' + (isTritone ? ' tritone-row' : '');
-    tRow.id = 'regua-trow-' + iv.semitones;
-    tRow.onclick = () => reguaPlayInterval(iv.semitones, tRow.id);
-    tRow.innerHTML = `
-      <div class="rtr-name">
-        <span class="rtr-full">${iv.name}</span>
-        <span class="rtr-symbol ${iv.colorClass}">${iv.symbol}</span>
-      </div>
-      <div class="rtr-semis ${iv.colorClass}">${iv.semitones}</div>
-    `;
-    tableContainer.appendChild(tRow);
-  });
-}
-
-// Inicializações gerais
-setVol(70); 
-hInit(); 
-iInit(); 
-praticaInit(); 
-metroInitLeds(); 
-reguaBuildUI(); 
-_updatePomoDisplay();
-</script>
-
-<!-- ══════ FIREBASE E SISTEMA DE LOGIN ══════ -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-  import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyC1gz3lEuKhnd_TvXUNNIYRq8HEzdxtVGw",
-    authDomain: "b-e-m-2b022.firebaseapp.com",
-    projectId: "b-e-m-2b022",
-    storageBucket: "b-e-m-2b022.firebasestorage.app",
-    messagingSenderId: "915349324107",
-    appId: "1:915349324107:web:43491b00674b5d8b1c28ce"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-  window.currentUser = null;
-
-  window.fazerLogin = () => {
-    const email = document.getElementById('emailInput').value;
-    const senha = document.getElementById('senhaInput').value;
-    const erroDiv = document.getElementById('loginErro');
-    
-    if(!email || !senha) { erroDiv.textContent = "Preencha o e-mail e a senha."; return; }
-    erroDiv.textContent = "Autenticando...";
-    
-    signInWithEmailAndPassword(auth, email, senha)
-      .catch((error) => {
-        console.error(error);
-        erroDiv.textContent = "Acesso negado. Verifique suas credenciais.";
-      });
-  };
-
-  window.fazerLogout = () => {
-    if(confirm("Deseja sair da sua conta?")) {
-        signOut(auth);
-    }
-  };
-
-  window.dbSyncDiary = async (entriesArr) => {
-    if (!window.currentUser) return;
-    try {
-      const userRef = doc(db, "alunos", window.currentUser.uid);
-      await updateDoc(userRef, { diario: entriesArr });
-    } catch (e) { console.error("Erro ao salvar diário na nuvem:", e); }
-  };
-
-  window.dbSyncScores = async (scoresObj) => {
-    if (!window.currentUser) return;
-    try {
-      const userRef = doc(db, "alunos", window.currentUser.uid);
-      await updateDoc(userRef, { scores: scoresObj });
-    } catch (e) { console.error("Erro ao salvar pontuação na nuvem:", e); }
-  };
-
-  onAuthStateChanged(auth, async (user) => {
-    const overlay = document.getElementById('loginOverlay');
-    if (user) {
-      overlay.style.display = 'none';
-      window.currentUser = user;
-      
-      const userRef = doc(db, "alunos", user.uid);
-      const docSnap = await getDoc(userRef);
-      
-      if (docSnap.exists()) {
-        window.applyCloudData(docSnap.data());
-      } else {
-        await setDoc(userRef, {
-          email: user.email,
-          diario: [],
-          scores: { gScoreC: 0, gScoreW: 0, hScoreC: 0, hScoreW: 0, iScoreC: 0, iScoreW: 0 }
-        });
-      }
-    } else {
-      overlay.style.display = 'flex';
-      window.currentUser = null;
-    }
-  });
-</script>
+  </div>
+</section>
+
+<section class="final">
+  <div class="container">
+    <div class="section-label">B.E.M.</div>
+    <h2>MÚSICA SE APRENDE JUNTO.<br><span style="color:var(--gold)">SE CONSTRÓI NA PRÁTICA. SE TRANSFORMA EM COLETIVO.</span></h2>
+    <p class="sub" style="margin:0 auto 30px">Escuta • Criação • Coletividade.</p>
+    <a class="btn" href="https://wa.me/5521978940184?text=Olá!%20Gostaria%20de%20acessar%20o%20B.E.M." target="_blank">FALAR NO WHATSAPP →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;width:100%;padding:0">
+    <div>B.E.M. — BLOCO DE ESTUDOS MUSICAIS</div>
+    <div class="footer-contact">+55 21 97894-0184</div>
+    <div>ESCUTA • CRIAÇÃO • COLETIVIDADE</div>
+  </div>
+</footer>
+
+<div class="sticky-cta"><a class="btn" href="https://wa.me/5521978940184?text=Olá!%20Gostaria%20de%20acessar%20o%20B.E.M." target="_blank">FALAR NO WHATSAPP →</a></div>
 </body>
 </html>
