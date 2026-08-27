@@ -3,332 +3,154 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>B.E.M. — Bloco de Estudos Musicais</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@500;700&display=swap" rel="stylesheet">
+<title>B.E.M. — Acesso ao Treinamento</title>
 <style>
-  :root {
-    --bg: #0b0b0b;
-    --panel: #111111;
-    --panel2: #151515;
-    --line: #262626;
-    --text: #eae6df;
-    --muted: #8c877d;
-    --gold: #e2b035;
-    --gold-dim: #997420;
-    --danger: #b5533f;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'IBM Plex Mono', monospace;
-    padding: 24px 20px 80px;
-  }
-  .wrap { max-width: 960px; margin: 0 auto; }
-  
-  /* Topbar com Segurança e Identidade */
-  header {
-    border-bottom: 2px solid var(--gold);
-    padding-bottom: 16px;
-    margin-bottom: 28px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .brand-area {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .logo {
-    width: 42px; height: 42px; border-radius: 50%; background: var(--gold); color: #0b0b0b;
-    display: grid; place-items: center; font-weight: 900; font-size: 14px;
-  }
-  h1 {
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-weight: 700;
-    font-size: 22px;
-    margin: 0;
-    letter-spacing: -0.5px;
-    text-transform: uppercase;
-  }
-  h1 span { color: var(--gold); }
-  .user-bar {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 12px;
-    color: var(--muted);
-  }
-  .logout-btn {
-    background: transparent;
-    border: 1px solid var(--line);
-    color: var(--text);
-    padding: 8px 14px;
-    font-family: inherit;
-    font-size: 11px;
-    cursor: pointer;
-    letter-spacing: 1px;
-    transition: .2s;
-  }
-  .logout-btn:hover {
-    border-color: var(--danger);
-    color: var(--danger);
-  }
-
-  /* Painéis e Formulários */
-  .panel {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    padding: 24px;
-    margin-bottom: 24px;
-    box-shadow: 0 15px 40px rgba(0,0,0,.5);
-  }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 16px;
-  }
-  label {
-    display: block;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--gold);
-    margin-bottom: 6px;
-  }
-  select, input[type=number], input[type=text] {
-    width: 100%;
-    background: #000;
-    color: var(--text);
-    border: 1px solid var(--line);
-    padding: 10px 12px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
-    outline: none;
-  }
-  select:focus, input:focus { border-color: var(--gold); }
-  
-  .mode-switch {
-    display: flex; gap: 0; margin-bottom: 20px; border: 1px solid var(--line);
-  }
-  .mode-btn {
-    flex: 1;
-    background: #000;
-    color: var(--muted);
-    border: none;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-weight: 700;
-    font-size: 11px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 12px 10px;
-    cursor: pointer;
-    border-right: 1px solid var(--line);
-  }
-  .mode-btn:last-child { border-right: none; }
-  .mode-btn.active { background: var(--gold); color: #0b0b0b; }
-
-  .preset-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
-  .preset-btn {
-    background: #000;
-    border: 1px solid var(--line);
-    color: #c9c6ba;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    padding: 6px 10px;
-    cursor: pointer;
-  }
-  .preset-btn:hover { border-color: var(--gold); color: var(--gold); }
-  
-  .toggle-row {
-    display: flex; align-items: center; gap: 10px; margin-top: 10px; font-size: 12px; color: #c9c6ba;
-  }
-  .toggle-row input { accent-color: var(--gold); width: auto; }
-  .hint { font-size: 11px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
-
-  button.generate {
-    margin-top: 22px;
-    width: 100%;
-    background: var(--gold);
-    color: #0b0b0b;
-    border: none;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-weight: 700;
-    font-size: 12px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: 14px;
-    cursor: pointer;
-    transition: filter .2s;
-  }
-  button.generate:hover { filter: brightness(1.1); }
-
-  /* Resultados e Listagem */
-  .meta {
-    display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;
-  }
-  .count { font-size: 12px; color: var(--muted); }
-  .count b { color: var(--gold); }
-  
-  .warn {
-    background: #241d13; border-left: 3px solid var(--danger); padding: 10px 14px; font-size: 12px; color: #d9a48f; margin-bottom: 14px;
-  }
-  .result {
-    border: 1px solid var(--line);
-    border-left: 3px solid var(--gold-dim);
-    background: var(--panel2);
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-  }
-  .idx { font-size: 11px; color: #665f4e; min-width: 28px; }
-  .notes { flex: 1; min-width: 0; }
-  .note-line { font-size: 15px; letter-spacing: 0.5px; word-break: break-word; }
-  .note-line .pillar { color: var(--gold); font-weight: 600; }
-  .note-line .interp { color: #c9c6ba; }
-  .note-line .sep { color: #514c3d; margin: 0 3px; }
-  .intervals { font-size: 11px; color: var(--muted); margin-top: 4px; }
-  .classif { font-size: 10px; color: var(--gold-dim); margin-top: 3px; text-transform: uppercase; }
-  
-  .play-btn {
-    background: none; border: 1px solid var(--gold-dim); color: var(--gold);
-    width: 38px; height: 38px; flex-shrink: 0; cursor: pointer; font-size: 14px;
-    display: flex; align-items: center; justify-content: center; transition: .2s;
-  }
-  .play-btn:hover { background: var(--gold); color: #0b0b0b; }
-  
-  .empty {
-    text-align: center; color: var(--muted); padding: 50px 0; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; border: 1px dashed var(--line);
-  }
-  .legend {
-    display: flex; gap: 20px; margin-bottom: 16px; font-size: 11px; color: var(--muted); flex-wrap: wrap;
-  }
-  .legend span.dot { display: inline-block; width: 8px; height: 8px; margin-right: 6px; vertical-align: middle; }
-  .legend .p .dot { background: var(--gold); }
-  .legend .i .dot { background: #c9c6ba; }
+:root {
+  --bg: #0c0c0c;
+  --panel: #111111;
+  --line: #2a2a2a;
+  --text: #e4e0d8;
+  --muted: #88847c;
+  --gold: #c8a030;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; 
+  background: var(--bg); 
+  color: var(--text);
+  font-family: "Courier New", monospace; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  min-height: 100vh;
+}
+.login-box {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 25px 70px rgba(0,0,0,.5);
+}
+.logo-container {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.logo {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  background: var(--text);
+  color: #0c0c0c;
+  display: inline-grid;
+  place-items: center;
+  font-weight: 900;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+h2 {
+  font-size: 20px;
+  margin: 0 0 5px;
+  letter-spacing: -1px;
+}
+.sub {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 25px;
+}
+.input-group {
+  margin-bottom: 18px;
+}
+label {
+  display: block;
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+input {
+  width: 100%;
+  padding: 12px;
+  background: #000;
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-family: inherit;
+  outline: none;
+}
+input:focus {
+  border-color: var(--gold);
+}
+.btn {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  margin-top: 10px;
+  border: 1px solid var(--gold);
+  background: var(--gold);
+  color: #0c0c0c;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: .2s;
+}
+.btn:hover {
+  filter: brightness(1.08);
+}
+.actions {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 12px;
+}
+.actions a {
+  color: var(--muted);
+  text-decoration: none;
+}
+.actions a:hover {
+  color: var(--text);
+}
+.error-msg {
+  color: #b84848;
+  font-size: 12px;
+  margin-top: 10px;
+  text-align: center;
+  display: none;
+}
 </style>
 </head>
 <body>
 
-<div class="wrap">
-  <header>
-    <div class="brand-area">
-      <div class="logo">BEM</div>
-      <div>
-        <h1>B.E.M. <span>Laboratório Auditivo</span></h1>
-        <div style="font-size:10px; color:var(--muted); letter-spacing:1px;">MOTOR SLONIMSKY & TREINAMENTO</div>
-      </div>
-    </div>
-    <div class="user-bar">
-      <span id="userEmail">Carregando...</span>
-      <button class="logout-btn" id="logoutBtn">SAIR</button>
-    </div>
-  </header>
-
-  <div class="panel">
-    <div class="mode-switch">
-      <button class="mode-btn active" id="modeBtnPattern" data-mode="pattern">Padrão intervalar</button>
-      <button class="mode-btn" id="modeBtnPillars" data-mode="pillars">Pilares simétricos</button>
-    </div>
-
-    <div class="grid" style="margin-bottom:16px;">
-      <div>
-        <label for="startNote">Nota inicial</label>
-        <select id="startNote"></select>
-      </div>
-    </div>
-
-    <!-- MODO 1: PADRÃO INTERVALAR -->
-    <div id="patternPanel">
-      <label for="patternInput">Padrão intervalar (semitons, separados por espaço)</label>
-      <input type="text" id="patternInput" value="+1 +3" placeholder="ex: +1 +3 ou +4 -1">
-      <div class="preset-row">
-        <button class="preset-btn" data-preset="+6">Trítono +6</button>
-        <button class="preset-btn" data-preset="+3">Diminuta +3</button>
-        <button class="preset-btn" data-preset="+1 +3">Diminuta c/ vizinha</button>
-        <button class="preset-btn" data-preset="+4">Aumentada +4</button>
-        <button class="preset-btn" data-preset="+2">Tons inteiros +2</button>
-        <button class="preset-btn" data-preset="+1">Cromática +1</button>
-      </div>
-      <div class="grid" style="margin-top:16px;">
-        <div>
-          <label for="transposeStep">Transp. por repetição (semitons)</label>
-          <input type="number" id="transposeStep" placeholder="Automático (soma)">
-        </div>
-        <div>
-          <label for="repeatCount">Número de repetições</label>
-          <input type="number" id="repeatCount" value="3" min="1" max="24">
-        </div>
-      </div>
-      <div class="hint" id="patternHint"></div>
-    </div>
-
-    <!-- MODO 2: PILARES -->
-    <div id="pillarsPanel" style="display:none;">
-      <div class="grid">
-        <div>
-          <label for="division">Divisão simétrica</label>
-          <select id="division">
-            <option value="2">2 partes — trítono (6+6)</option>
-            <option value="3" selected>3 partes — diminuta (4+4+4)</option>
-            <option value="4">4 partes — aumentada (3+3+3+3)</option>
-            <option value="6">6 partes — tons inteiros</option>
-            <option value="12">12 partes — cromática</option>
-          </select>
-        </div>
-        <div>
-          <label for="kcount">Notas interpoladas por intervalo</label>
-          <select id="kcount"></select>
-        </div>
-        <div>
-          <label for="orderMode">Ordem das interpoladas</label>
-          <select id="orderMode">
-            <option value="asc">Crescente (clássico)</option>
-            <option value="zigzag">Todas (zig-zag)</option>
-          </select>
-        </div>
-      </div>
-      <div class="toggle-row">
-        <input type="checkbox" id="samePattern" checked>
-        <span>Mesmo padrão de interpolação em todos os intervalos</span>
-      </div>
-      <div class="hint" id="hintText"></div>
-    </div>
-
-    <div class="grid" style="margin-top:16px;" id="transformRow">
-      <div>
-        <label for="transformMode">Transformação melódica</label>
-        <select id="transformMode">
-          <option value="original">Original</option>
-          <option value="retrograde">Retrógrado</option>
-          <option value="inversion">Inversão</option>
-          <option value="retro-inv">Retrógrado-invertido</option>
-        </select>
-      </div>
-    </div>
-
-    <button class="generate" id="genBtn">GERAR MELODIAS PARA TREINO</button>
+<div class="login-box">
+  <div class="logo-container">
+    <div class="logo">BEM</div>
+    <h2>ACESSO AO APP</h2>
+    <div class="sub">TREINAMENTO AUDITIVO</div>
   </div>
 
-  <div id="resultsMeta"></div>
-  <div id="results"><div class="empty">Selecione os parâmetros e gere os estímulos auditivos</div></div>
+  <div class="input-group">
+    <label>E-MAIL</label>
+    <input type="email" id="email" placeholder="seu@email.com" required>
+  </div>
+
+  <div class="input-group">
+    <label>SENHA</label>
+    <input type="password" id="password" placeholder="••••••••" required>
+  </div>
+
+  <button class="btn" id="loginBtn">ENTRAR →</button>
+  <div id="errorMsg" class="error-msg"></div>
+
+  <div class="actions">
+    <a href="#" id="resetBtn">Esqueci minha senha</a>
+  </div>
 </div>
 
 <script type="module">
-  // ==========================================
-  // SEGURANÇA: PROTEÇÃO DE ROTA COM FIREBASE
-  // ==========================================
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+  // Chaves reais do seu projeto
   const firebaseConfig = {
     apiKey: "AIzaSyC1gz3lEuKhnd_TvXUNNIYRq8HEzdxtVGw",
     authDomain: "b-e-m-2b022.firebaseapp.com",
@@ -341,370 +163,71 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  const userEmailSpan = document.getElementById("userEmail");
-  const logoutBtn = document.getElementById("logoutBtn");
+  const loginBtn = document.getElementById("loginBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  const errorMsg = document.getElementById("errorMsg");
 
-  // Trava de segurança: Se o usuário não estiver logado, expulsa para o login
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      window.location.href = "app_login.html";
-    } else {
-      userEmailSpan.textContent = user.email;
-    }
-  });
-
-  // Ação de Sair
-  logoutBtn.addEventListener("click", () => {
-    signOut(auth).then(() => {
-      window.location.href = "app_login.html";
-    });
-  });
-
-  // ==========================================
-  // MOTOR SLONIMSKY — GERADOR DE MELODIAS
-  // ==========================================
-  const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
-  const CAP = 200;
-
-  const startSel = document.getElementById('startNote');
-  NOTE_NAMES.forEach((n,i)=>{
-    const o = document.createElement('option');
-    o.value = i; o.textContent = n;
-    startSel.appendChild(o);
-  });
-
-  const divisionSel = document.getElementById('division');
-  const kSel = document.getElementById('kcount');
-  const orderSel = document.getElementById('orderMode');
-  const transformSel = document.getElementById('transformMode');
-  const sameCheckbox = document.getElementById('samePattern');
-  const hintText = document.getElementById('hintText');
-  const genBtn = document.getElementById('genBtn');
-  const resultsDiv = document.getElementById('results');
-  const resultsMeta = document.getElementById('resultsMeta');
-
-  const patternInput = document.getElementById('patternInput');
-  const transposeStepInput = document.getElementById('transposeStep');
-  const repeatCountInput = document.getElementById('repeatCount');
-  const patternHint = document.getElementById('patternHint');
-  const patternPanel = document.getElementById('patternPanel');
-  const pillarsPanel = document.getElementById('pillarsPanel');
-  const modeBtnPattern = document.getElementById('modeBtnPattern');
-  const modeBtnPillars = document.getElementById('modeBtnPillars');
-  const transformRow = document.getElementById('transformRow');
-
-  let currentMode = 'pattern';
-
-  function setMode(mode){
-    currentMode = mode;
-    modeBtnPattern.classList.toggle('active', mode==='pattern');
-    modeBtnPillars.classList.toggle('active', mode==='pillars');
-    patternPanel.style.display = mode==='pattern' ? '' : 'none';
-    pillarsPanel.style.display = mode==='pillars' ? '' : 'none';
-    transformRow.style.display = mode==='pillars' ? '' : 'none';
-    if(mode==='pattern') updatePatternHint();
-  }
-  modeBtnPattern.addEventListener('click', ()=>setMode('pattern'));
-  modeBtnPillars.addEventListener('click', ()=>setMode('pillars'));
-
-  document.querySelectorAll('.preset-btn').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      patternInput.value = btn.dataset.preset;
-      updatePatternHint();
-    });
-  });
-
-  function parsePattern(str){
-    return str.trim().split(/[\s,]+/).filter(Boolean).map(tok=>parseInt(tok,10)).filter(v=>!isNaN(v) && v!==0);
-  }
-
-  function updatePatternHint(){
-    const pattern = parsePattern(patternInput.value);
-    if(pattern.length === 0){
-      patternHint.textContent = 'Digite ao menos um intervalo.';
+  // Função de Login
+  loginBtn.addEventListener("click", () => {
+    errorMsg.style.display = "none";
+    
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    
+    if(!email || !password) {
+      errorMsg.style.display = "block";
+      errorMsg.innerText = "Preencha e-mail e senha.";
       return;
     }
-    const sum = pattern.reduce((a,b)=>a+b,0);
-    const step = transposeStepInput.value ? parseInt(transposeStepInput.value,10) : sum;
-    const reps = parseInt(repeatCountInput.value || 1, 10);
-    const totalSpan = step * reps;
-    patternHint.textContent = `Célula de ${pattern.length} intervalo(s), soma ${sum>=0?'+':''}${sum}. Passo: ${step>=0?'+':''}${step} × ${reps} = ${totalSpan>=0?'+':''}${totalSpan} semitons.`;
-  }
-  patternInput.addEventListener('input', updatePatternHint);
-  transposeStepInput.addEventListener('input', updatePatternHint);
-  repeatCountInput.addEventListener('input', updatePatternHint);
 
-  function buildFromPattern(start, pattern, transposeStep, repeatCount){
-    const notes = [];
-    for(let r=0; r<=repeatCount; r++){
-      const anchor = start + r*transposeStep;
-      notes.push({offset: anchor, pillar:true});
-      if(r < repeatCount){
-        let cursor = anchor;
-        pattern.forEach(step=>{
-          cursor += step;
-          notes.push({offset: cursor, pillar:false});
-        });
-      }
-    }
-    return notes;
-  }
+    loginBtn.innerText = "CARREGANDO...";
 
-  function factorial(n){ let r=1; for(let i=2;i<=n;i++) r*=i; return r; }
-  function permutations(arr){
-    if(arr.length<=1) return [arr.slice()];
-    const result=[];
-    for(let i=0;i<arr.length;i++){
-      const rest = arr.slice(0,i).concat(arr.slice(i+1));
-      permutations(rest).forEach(p=>result.push([arr[i]].concat(p)));
-    }
-    return result;
-  }
-  function gapSize(){ return 12 / parseInt(divisionSel.value); }
-
-  function refreshKOptions(){
-    const gap = gapSize();
-    const maxK = gap - 1;
-    kSel.innerHTML = '';
-    for(let k=0;k<=maxK;k++){
-      const o = document.createElement('option');
-      o.value = k;
-      o.textContent = k === 0 ? '0 (apenas pilares)' : k;
-      kSel.appendChild(o);
-    }
-    kSel.disabled = maxK === 0;
-    updateHint();
-  }
-
-  function combinations(arr, k){
-    if(k === 0) return [[]];
-    if(k > arr.length) return [];
-    const result = [];
-    function backtrack(start, combo){
-      if(combo.length === k){ result.push(combo.slice()); return; }
-      for(let i=start;i<arr.length;i++){
-        combo.push(arr[i]);
-        backtrack(i+1, combo);
-        combo.pop();
-      }
-    }
-    backtrack(0, []);
-    return result;
-  }
-
-  function updateHint(){
-    const n = parseInt(divisionSel.value);
-    const gap = gapSize();
-    const k = parseInt(kSel.value || 0);
-    const interior = gap - 1;
-    const orderMult = orderSel.value === 'zigzag' ? factorial(k) : 1;
-    const combosPerGap = binomial(interior, k) * orderMult;
-    let total = sameCheckbox.checked ? combosPerGap : Math.pow(combosPerGap, n);
-    hintText.textContent = `Combinações possíveis: ${total.toLocaleString('pt-BR')}` + (total > CAP ? ` (exibindo primeiras ${CAP})` : '');
-  }
-
-  function binomial(n,k){
-    if(k<0||k>n) return 0;
-    let res = 1;
-    for(let i=0;i<k;i++){ res = res * (n-i) / (i+1); }
-    return Math.round(res);
-  }
-
-  divisionSel.addEventListener('change', refreshKOptions);
-  kSel.addEventListener('change', updateHint);
-  orderSel.addEventListener('change', updateHint);
-  sameCheckbox.addEventListener('change', updateHint);
-  refreshKOptions();
-  setMode('pattern');
-
-  function buildMelodySameCombo(start, n, gap, combo){
-    const notes = [];
-    for(let g=0; g<n; g++){
-      const pillarOffset = g*gap;
-      notes.push({offset: start+pillarOffset, pillar:true});
-      combo.forEach(c=>{ notes.push({offset: start+pillarOffset+c, pillar:false}); });
-    }
-    notes.push({offset: start + n*gap, pillar:true});
-    return notes;
-  }
-
-  function buildMelodyVaryCombo(start, n, gap, comboPerGap){
-    const notes = [];
-    for(let g=0; g<n; g++){
-      const pillarOffset = g*gap;
-      notes.push({offset: start+pillarOffset, pillar:true});
-      comboPerGap[g].forEach(c=>{ notes.push({offset: start+pillarOffset+c, pillar:false}); });
-    }
-    notes.push({offset: start + n*gap, pillar:true});
-    return notes;
-  }
-
-  function cartesianProduct(arrays, cap){
-    let results = [[]];
-    for(const arr of arrays){
-      const next = [];
-      for(const prefix of results){
-        for(const item of arr){
-          next.push(prefix.concat([item]));
-          if(next.length >= cap * 50) break;
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Redireciona para o index.html com sucesso
+        window.location.href = "index.html"; 
+      })
+      .catch((error) => {
+        loginBtn.innerText = "ENTRAR →";
+        errorMsg.style.display = "block";
+        
+        // Tratamento de erros
+        if (error.code === 'auth/invalid-credential') {
+            errorMsg.innerText = "Credenciais inválidas. O e-mail não existe ou a senha está errada.";
+        } else if (error.code === 'auth/invalid-email') {
+            errorMsg.innerText = "Formato de e-mail inválido.";
+        } else {
+            errorMsg.innerText = "Erro ao acessar: " + error.message;
         }
-      }
-      results = next;
-      if(results.length > cap * 200) break;
-    }
-    return results.slice(0, cap);
-  }
-
-  function noteName(offset){
-    return NOTE_NAMES[((offset % 12) + 12) % 12];
-  }
-
-  function renderMelody(notes){
-    return notes.map(n => `<span class="${n.pillar?'pillar':'interp'}">${noteName(n.offset)}</span>`).join('<span class="sep">–</span>');
-  }
-
-  function intervalString(notes){
-    const ivs = [];
-    for(let i=1;i<notes.length;i++){ ivs.push(notes[i].offset - notes[i-1].offset); }
-    return ivs.map(v => v>=0 ? '+'+v : String(v)).join(' ');
-  }
-
-  function applyTransform(notes, mode){
-    if(mode === 'original') return notes;
-    const first = notes[0].offset;
-    if(mode === 'retrograde') return notes.slice().reverse();
-    if(mode === 'inversion') return notes.map(n => ({offset: 2*first - n.offset, pillar:n.pillar}));
-    if(mode === 'retro-inv'){
-      const inv = notes.map(n => ({offset: 2*first - n.offset, pillar:n.pillar}));
-      return inv.slice().reverse();
-    }
-    return notes;
-  }
-
-  const SYMMETRIC_SETS = [
-    {name:'tons inteiros', pcs:[0,2,4,6,8,10]},
-    {name:'octatônica', pcs:[0,1,3,4,6,7,9,10]},
-    {name:'aumentada (hexatônica)', pcs:[0,3,4,7,8,11]}
-  ];
-  function classify(notes){
-    const pcSet = [...new Set(notes.map(n => ((n.offset%12)+12)%12))];
-    const matches = SYMMETRIC_SETS.filter(s => pcSet.every(pc => s.pcs.includes(pc)));
-    if(matches.length === 0) return 'padrão intervalar livre';
-    return 'coleção: ' + [...new Set(matches.map(m=>m.name))].join(', ');
-  }
-
-  let audioCtx = null;
-  function playMelody(notes){
-    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    let t = audioCtx.currentTime;
-    const noteDur = 0.75;
-    notes.forEach((n)=>{
-      const midi = 60 + n.offset;
-      const freq = 440 * Math.pow(2, (midi-69)/12);
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = freq;
-      gain.gain.setValueAtTime(0.0001, t);
-      gain.gain.exponentialRampToValueAtTime(0.25, t+0.03);
-      gain.gain.exponentialRampToValueAtTime(0.0001, t+noteDur);
-      osc.connect(gain).connect(audioCtx.destination);
-      osc.start(t);
-      osc.stop(t+noteDur+0.03);
-      t += noteDur*0.95;
-    });
-  }
-
-  genBtn.addEventListener('click', ()=>{
-    if(currentMode === 'pattern') generatePatternMode();
-    else generatePillarsMode();
+      });
   });
 
-  function generatePatternMode(){
-    const start = parseInt(startSel.value);
-    const pattern = parsePattern(patternInput.value);
-    if(pattern.length === 0){
-      resultsMeta.innerHTML = '';
-      resultsDiv.innerHTML = '<div class="empty">Insira um padrão válido</div>';
-      return;
-    }
-    const sum = pattern.reduce((a,b)=>a+b,0);
-    const step = transposeStepInput.value ? parseInt(transposeStepInput.value,10) : sum;
-    const reps = Math.max(1, parseInt(repeatCountInput.value || 1, 10));
-
-    const base = buildFromPattern(start, pattern, step, reps);
-    const forms = [
-      {label:'Original', notes: applyTransform(base,'original')},
-      {label:'Retrógrado', notes: applyTransform(base,'retrograde')},
-      {label:'Inversão', notes: applyTransform(base,'inversion')},
-      {label:'Retrógrado-invertido', notes: applyTransform(base,'retro-inv')}
-    ];
-    renderResults(forms.map(f=>f.notes), forms.length, forms.map(f=>f.label));
-  }
-
-  function generatePillarsMode(){
-    const start = parseInt(startSel.value);
-    const n = parseInt(divisionSel.value);
-    const gap = gapSize();
-    const k = parseInt(kSel.value || 0);
-    const interior = Array.from({length: gap-1}, (_,i)=>i+1);
-    const transformMode = transformSel.value;
-
-    const rawCombos = combinations(interior, k);
-    const variantsPerGap = orderSel.value === 'zigzag' ? rawCombos.flatMap(c => permutations(c)) : rawCombos;
-
-    let melodies = [];
-    let totalCount = 0;
-
-    if(sameCheckbox.checked){
-      totalCount = variantsPerGap.length;
-      melodies = variantsPerGap.slice(0, CAP).map(c => applyTransform(buildMelodySameCombo(start, n, gap, c), transformMode));
-    } else {
-      const perGapArrays = Array.from({length:n}, ()=>variantsPerGap);
-      totalCount = Math.pow(variantsPerGap.length, n);
-      melodies = cartesianProduct(perGapArrays, CAP).map(comboSet => applyTransform(buildMelodyVaryCombo(start, n, gap, comboSet), transformMode));
-    }
-    renderResults(melodies, totalCount);
-  }
-
-  function renderResults(melodies, totalCount, labels){
-    resultsMeta.innerHTML = '';
-    if(melodies.length === 0){
-      resultsDiv.innerHTML = '<div class="empty">Nenhuma combinação gerada</div>';
+  // Função de Redefinir Senha
+  resetBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    
+    const email = document.getElementById("email").value;
+    
+    if(!email) {
+      errorMsg.style.display = "block";
+      errorMsg.style.color = "#b84848";
+      errorMsg.innerText = "Digite seu e-mail no campo acima para redefinir a senha.";
       return;
     }
 
-    const legend = document.createElement('div');
-    legend.className = 'legend';
-    legend.innerHTML = `<span class="p"><span class="dot"></span>pilar / âncora</span><span class="i"><span class="dot"></span>nota interpolada</span>`;
-    resultsMeta.appendChild(legend);
-
-    if(!labels){
-      const metaLine = document.createElement('div');
-      metaLine.className = 'meta';
-      metaLine.innerHTML = `<span class="count">Exibindo <b>${melodies.length}</b> de <b>${totalCount.toLocaleString('pt-BR')}</b> variações</span>`;
-      resultsMeta.appendChild(metaLine);
-    }
-
-    resultsDiv.innerHTML = '';
-    melodies.forEach((notes, idx)=>{
-      const row = document.createElement('div');
-      row.className = 'result';
-      const labelHtml = labels ? `<div style="font-size:10px;color:var(--gold);margin-bottom:4px">${labels[idx]}</div>` : '';
-      row.innerHTML = `
-        <div class="idx">${String(idx+1).padStart(3,'0')}</div>
-        <div class="notes">
-          ${labelHtml}
-          <div class="note-line">${renderMelody(notes)}</div>
-          <div class="intervals">intervalos: ${intervalString(notes)}</div>
-          <div class="classif">${classify(notes)}</div>
-        </div>
-        <button class="play-btn" title="Tocar áudio">▶</button>
-      `;
-      row.querySelector('.play-btn').addEventListener('click', ()=>playMelody(notes));
-      resultsDiv.appendChild(row);
-    });
-  }
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        errorMsg.style.display = "block";
+        errorMsg.style.color = "#4a9e6a"; 
+        errorMsg.innerText = "E-mail de redefinição enviado!";
+      })
+      .catch((error) => {
+        errorMsg.style.display = "block";
+        errorMsg.style.color = "#b84848"; 
+        errorMsg.innerText = "Erro ao enviar e-mail. Verifique se o endereço está correto.";
+      });
+  });
 </script>
+
 </body>
 </html>
