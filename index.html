@@ -183,9 +183,11 @@ input:focus {
     loginBtn.innerText = "CARREGANDO...";
 
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+     .then((userCredential) => {
         // Redireciona para o index.html com sucesso
-        window.location.href = "index.html"; 
+        alert("LOGIN FUNCIONOU! O Firebase autorizou a entrada.");
+        console.log(userCredential);
+        // window.location.href = "index.html"; 
       })
       .catch((error) => {
         loginBtn.innerText = "ENTRAR →";
