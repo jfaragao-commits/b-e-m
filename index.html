@@ -547,6 +547,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, query, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyC1gz3lEuKhnd_TvXUNNIYRq8HEzdxtVGw",
@@ -559,24 +560,29 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
-  let isLoginMode = true; // Controla se a tela atual é "Entrar" ou "Criar Conta"
+  let isLoginMode = true; 
+  window.currentUser = null;
 
   // Monitora o estado da sessão em tempo real
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, async (user) => {
     document.getElementById("auth-loading").style.display = "none";
     if (user) {
-      // Logado: esconde o login e mostra o app
+      window.currentUser = user;
       document.getElementById("login-screen").style.display = "none";
       document.getElementById("app-wrapper").style.display = "block";
+      
+      // Carrega dados do Firestore
+      await window.loadDiarioFromCloud();
     } else {
-      // Deslogado: esconde o app e mostra o login
+      window.currentUser = null;
       document.getElementById("app-wrapper").style.display = "none";
       document.getElementById("login-screen").style.display = "flex";
     }
   });
 
-  // Funções expostas para os botões do HTML
+  // Funções de Autenticação
   window.submitAuth = (e) => {
     e.preventDefault();
     const email = document.getElementById("emailInput").value;
@@ -606,6 +612,51 @@
 
   window.logoutApp = () => {
     signOut(auth);
+  };
+
+  // ==========================================
+  // FUNÇÕES DE NUVEM (FIRESTORE)
+  // ==========================================
+  window.loadDiarioFromCloud = async () => {
+    if (!window.currentUser) return;
+    const q = query(collection(db, `users/${window.currentUser.uid}/diario`), orderBy("timestamp", "desc"));
+    const snap = await getDocs(q);
+    window.diarioEntries = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    window.dRender(); 
+  };
+
+  window.dSaveCloud = async (titulo, obs) => {
+    if (!window.currentUser) return;
+    const newEntry = {
+      titulo,
+      obs,
+      data: new Date().toLocaleString('pt-BR'),
+      timestamp: Date.now()
+    };
+    const docRef = await addDoc(collection(db, `users/${window.currentUser.uid}/diario`), newEntry);
+    window.diarioEntries.unshift({ id: docRef.id, ...newEntry });
+    window.dRender();
+  };
+
+  window.dDeleteCloud = async (docId, index) => {
+    if (!window.currentUser) return;
+    await deleteDoc(doc(db, `users/${window.currentUser.uid}/diario`, docId));
+    window.diarioEntries.splice(index, 1);
+    window.dRender();
+  };
+  
+  window.dClearAllCloud = async () => {
+    if (!window.currentUser) return;
+    for (const entry of window.diarioEntries) {
+      await deleteDoc(doc(db, `users/${window.currentUser.uid}/diario`, entry.id));
+    }
+    window.diarioEntries = [];
+    window.dRender();
+  };
+
+  window.saveStatsToCloud = async (statsObj) => {
+    if (!window.currentUser) return;
+    await setDoc(doc(db, `users/${window.currentUser.uid}/stats`, "current"), statsObj, { merge: true });
   };
 </script>
 
@@ -1301,6 +1352,10 @@ function addScore(isCorrect, module) {
   const hT = hScoreC + hScoreW, iT = iScoreC + iScoreW;
   document.getElementById('badgeH').textContent = hT ? `${hScoreC}/${hT}` : '0';
   document.getElementById('badgeI').textContent = iT ? `${iScoreC}/${iT}` : '0';
+
+  if (window.saveStatsToCloud) {
+    window.saveStatsToCloud({ gScoreC, gScoreW, hScoreC, hScoreW, iScoreC, iScoreW });
+  }
 }
 
 function resetScores() {
@@ -1649,21 +1704,32 @@ function iInit() { iRenderFilterGrid(); iRenderAnswerGrid(); iRenderStats(); iNe
 
 // ── PRÁTICA ──
 const PILARES = [{ titulo:'Solfejo', desc:'Treino do ouvido interno.' },{ titulo:'Leitura Musical', desc:'Decodificação de partituras.' },{ titulo:'Transcrição', desc:'Análise auditiva.' },{ titulo:'Improvisação', desc:'Conversação musical.' },{ titulo:'Harmonia Clássica', desc:'Leis tonais.' },{ titulo:'Harmonia Analítica', desc:'Relação melodia-harmonia.' },{ titulo:'Apreciação Musical', desc:'Escuta ativa.' },{ titulo:'Técnica', desc:'Acabamento motor.' },{ titulo:'Bibliografia', desc:'Pesquisa.' },{ titulo:'Repertório', desc:'Aplicação.' }];
-let diarioEntries = JSON.parse(localStorage.getItem('bemDiario') || '[]');
+window.diarioEntries = [];
+
 function dRender() {
   const list = document.getElementById('diarioList'); if (!list) return;
-  if (!diarioEntries.length) { list.innerHTML = '<div class="history-empty">Nenhum registro ainda.</div>'; return; }
+  if (!window.diarioEntries.length) { list.innerHTML = '<div class="history-empty">Nenhum registro ainda.</div>'; return; }
   list.innerHTML = '';
-  diarioEntries.slice(0, 20).forEach((e, idx) => {
+  window.diarioEntries.slice(0, 20).forEach((e, idx) => {
     const div = document.createElement('div'); div.className = 'diary-item';
-    div.innerHTML = `<span class="hdot ok"></span><span class="hans"><strong>${e.titulo}</strong><br><span style="font-size:10px;color:var(--text-faint)">${e.data}</span>${e.obs ? `<br>${e.obs}` : ''}</span><span class="diary-del" data-idx="${idx}">🗑</span>`;
+    div.innerHTML = `<span class="hdot ok"></span><span class="hans"><strong>${e.titulo}</strong><br><span style="font-size:10px;color:var(--text-faint)">${e.data}</span>${e.obs ? `<br>${e.obs}` : ''}</span><span class="diary-del" data-id="${e.id}" data-idx="${idx}">🗑</span>`;
     list.appendChild(div);
   });
-  list.querySelectorAll('.diary-del').forEach(el => el.addEventListener('click', () => { diarioEntries.splice(parseInt(el.dataset.idx), 1); localStorage.setItem('bemDiario', JSON.stringify(diarioEntries)); dRender(); }));
+  list.querySelectorAll('.diary-del').forEach(el => el.addEventListener('click', () => { window.dDeleteCloud(el.dataset.id, parseInt(el.dataset.idx)); }));
 }
-function dSave(e) { e.preventDefault(); const titulo = document.getElementById('diarioTitulo').value.trim(), obs = document.getElementById('diarioObs').value.trim(); if (!titulo) return; diarioEntries.unshift({ titulo, obs, data: new Date().toLocaleString('pt-BR') }); localStorage.setItem('bemDiario', JSON.stringify(diarioEntries)); dRender(); document.getElementById('diarioTitulo').value = ''; document.getElementById('diarioObs').value = ''; }
-function dClearAll() { if (!confirm('Apagar todo o diário?')) return; diarioEntries = []; localStorage.setItem('bemDiario', '[]'); dRender(); }
-function dExport() { const blob = new Blob([JSON.stringify(diarioEntries, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'diario_bem.json'; a.click(); URL.revokeObjectURL(url); }
+function dSave(e) { 
+  e.preventDefault(); 
+  const titulo = document.getElementById('diarioTitulo').value.trim();
+  const obs = document.getElementById('diarioObs').value.trim(); 
+  if (!titulo) return; 
+  window.dSaveCloud(titulo, obs);
+  document.getElementById('diarioTitulo').value = ''; document.getElementById('diarioObs').value = ''; 
+}
+function dClearAll() { 
+  if (!confirm('Apagar todo o diário da nuvem? Isso não pode ser desfeito.')) return; 
+  window.dClearAllCloud(); 
+}
+function dExport() { const blob = new Blob([JSON.stringify(window.diarioEntries, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'diario_bem.json'; a.click(); URL.revokeObjectURL(url); }
 
 let pomoSecs = 25*60, pomoInterval = null, pomoRunning = false;
 function _updatePomoDisplay() { const el = document.getElementById('pomodoroTimer'); if (el) el.textContent = `${Math.floor(pomoSecs/60).toString().padStart(2,'0')}:${(pomoSecs%60).toString().padStart(2,'0')}`; }
@@ -1769,7 +1835,7 @@ function autoCorrelate(buffer, sampleRate) {
   return sampleRate / T0;
 }
 function updateTunerDisplay(freq) {
-  const noteNum = 12 * Math.log2(freq / refFreq) + 69, rounded = Math.round(noteNum), noteIdx = ((rounded % 12) + 12) % 12, octave = Math.floor(rounded / 12) - 1, noteName = NOTE_NAMES[noteIdx], targetFreq = refFreq * Math.pow(2, (rounded - 69) / 12);
+  const noteNum = 12 * Math.log2(freq / refFreq) + 69, rounded = Math.round(noteNum), noteIdx = ((rounded % 12) + 12) % 12, octave = Math.floor(rounded / 12) - 1, noteName = ['C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B'][noteIdx], targetFreq = refFreq * Math.pow(2, (rounded - 69) / 12);
   let cents = 1200 * Math.log2(freq / targetFreq); cents = Math.max(-50, Math.min(50, cents)); needleTarget = 50 + cents * 0.75;
   stabilityBuf.push(freq); if (stabilityBuf.length > 20) stabilityBuf.shift(); let stability = 0; if (stabilityBuf.length > 5) { const mean = stabilityBuf.reduce((a,b) => a+b, 0) / stabilityBuf.length, dev = Math.sqrt(stabilityBuf.reduce((s,v) => s + (v-mean)**2, 0) / stabilityBuf.length); stability = Math.max(0, Math.min(100, Math.round(100 - dev * 2.5))); }
   centsHistory.push(cents); if (centsHistory.length > 120) centsHistory.shift(); drawSparkline();
