@@ -108,15 +108,6 @@
       min-height: 15px; letter-spacing: 0.05em;
     }
 
-    .login-footer {
-      margin-top: 1rem; text-align: center; font-size: 10px; color: var(--text-faint);
-    }
-
-    .login-toggle {
-      background: none; border: none; color: var(--gold); cursor: pointer;
-      font-family: var(--mono); font-size: 10px; letter-spacing: 0.05em; text-decoration: underline;
-    }
-
     /* ===========================
        SHARED BUTTONS
     =========================== */
@@ -541,9 +532,6 @@
     #micPermissionMsg { text-align: center; padding: 2rem 1rem; }
     #tunerUI { display: none; }
 
-    .login-guest { display: flex; flex-direction: column; gap: .7rem; border-top: 1px solid var(--border); padding-top: 1.2rem; text-align: center; }
-    .login-guest p { font-size: 10px; color: var(--text-mid); line-height: 1.7; }
-
     /* ===========================
        HARMONIA GEOMÉTRICA 3D
        Cor do bloco = qualidade: verde (maior), dourado (menor),
@@ -616,7 +604,7 @@
 <!-- MÓDULO FIREBASE E CONTROLE DE TELA (SPA) -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
   import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, query, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -632,16 +620,13 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  let isLoginMode = true; 
   window.currentUser = null;
 
   // Monitora o estado da sessão em tempo real
   onAuthStateChanged(auth, async (user) => {
     document.getElementById("auth-loading").style.display = "none";
     if (user) {
-      window.guestMode = false;
       window.currentUser = user;
-      var lb = document.getElementById("logoutBtn"); if (lb) lb.textContent = "🚪 Sair do App";
       document.getElementById("login-screen").style.display = "none";
       document.getElementById("app-wrapper").style.display = "block";
       
@@ -649,7 +634,6 @@
       await window.loadDiarioFromCloud();
     } else {
       window.currentUser = null;
-      if (window.guestMode) return;
       document.getElementById("app-wrapper").style.display = "none";
       document.getElementById("login-screen").style.display = "flex";
     }
@@ -663,24 +647,10 @@
     const errorEl = document.getElementById("loginError");
     
     errorEl.textContent = "Processando...";
-    
-    if (isLoginMode) {
-      signInWithEmailAndPassword(auth, email, pass)
-        .then(() => { errorEl.textContent = ""; })
-        .catch(err => { errorEl.textContent = "Erro: Email ou senha incorretos."; });
-    } else {
-      createUserWithEmailAndPassword(auth, email, pass)
-        .then(() => { errorEl.textContent = ""; })
-        .catch(err => { errorEl.textContent = "Erro ao criar conta. Tente uma senha mais forte."; });
-    }
-  };
 
-  window.toggleAuthMode = () => {
-    isLoginMode = !isLoginMode;
-    document.getElementById("loginTitle").textContent = isLoginMode ? "Acesso B.E.M" : "Criar Nova Conta";
-    document.getElementById("authSubmitBtn").innerHTML = isLoginMode ? "<span>Entrar no Sistema</span>" : "<span>Cadastrar</span>";
-    document.getElementById("authToggleBtn").textContent = isLoginMode ? "Não tem uma conta? Crie aqui." : "Já possui conta? Faça o login.";
-    document.getElementById("loginError").textContent = "";
+    signInWithEmailAndPassword(auth, email, pass)
+      .then(() => { errorEl.textContent = ""; })
+      .catch(err => { errorEl.textContent = "Erro: Email ou senha incorretos."; });
   };
 
   window.logoutApp = () => {
@@ -733,24 +703,19 @@
   };
 </script>
 
-<div id="auth-loading">
-  <div>INICIANDO SISTEMA B.E.M...</div>
-  <div id="loaderExtra" style="display:none;margin-top:1.6rem;text-align:center;max-width:440px;padding:0 24px">
-    <div id="loaderMsg" style="color:#888;font-size:10px;letter-spacing:.06em;line-height:1.9;margin-bottom:1rem"></div>
-    <button type="button" class="btn" onclick="enterGuest()"><span>Entrar sem login</span></button>
-  </div>
-</div>
-<!-- Se o Firebase demorar, oferece entrar sem login; se não responder, explica o que verificar -->
+<div id="auth-loading">INICIANDO SISTEMA B.E.M...</div>
+<!-- Se o Firebase não responder, avisa em vez de ficar carregando para sempre -->
 <script>
 setTimeout(function () {
-  var l = document.getElementById('auth-loading'), x = document.getElementById('loaderExtra');
-  if (l && x && l.style.display !== 'none') x.style.display = 'block';
-}, 2500);
-setTimeout(function () {
-  var l = document.getElementById('auth-loading'), m = document.getElementById('loaderMsg');
-  if (l && m && l.style.display !== 'none') {
-    m.innerHTML = 'NÃO FOI POSSÍVEL CONECTAR AO FIREBASE.<br>Abra o app por um endereço https da hospedagem, pois ele não conecta aberto direto do computador nem na pré-visualização do chat. '
-      + 'Confira também a internet e o domínio em Authentication &gt; Settings &gt; Authorized domains. Você pode entrar sem login para usar as ferramentas.';
+  var el = document.getElementById('auth-loading');
+  if (el && el.style.display !== 'none') {
+    el.innerHTML = '<div style="max-width:440px;text-align:center;line-height:1.9;padding:0 24px">'
+      + 'NÃO FOI POSSÍVEL CONECTAR AO FIREBASE.<br>'
+      + '<span style="color:#888;font-size:10px;letter-spacing:.06em">'
+      + 'Abra o app pelo endereço https da sua hospedagem. Ele não funciona aberto direto do computador '
+      + '(arquivo local) nem na pré-visualização do chat. Confira também a conexão com a internet e se o '
+      + 'domínio da hospedagem está em Authentication &gt; Settings &gt; Authorized domains, no Firebase.'
+      + '</span></div>';
   }
 }, 8000);
 </script>
@@ -786,15 +751,6 @@ setTimeout(function () {
         <span>Entrar no Sistema</span>
       </button>
     </form>
-
-    <div class="login-footer">
-      <button class="login-toggle" id="authToggleBtn" onclick="toggleAuthMode()">Não tem uma conta? Crie aqui.</button>
-    </div>
-
-    <div class="login-guest">
-      <button type="button" class="btn" onclick="enterGuest()"><span>Entrar sem login</span></button>
-      <p>Modo visitante: todas as ferramentas funcionam. O diário fica só neste navegador e a pontuação não é salva na nuvem.</p>
-    </div>
 
   </div>
 </div>
@@ -834,7 +790,7 @@ setTimeout(function () {
     </div>
   </div>
   <button class="reset-btn" onclick="resetScores()">↺ zerar pontuação</button>
-  <button class="logout-btn" id="logoutBtn" onclick="appLogout()">🚪 Sair do App</button>
+  <button class="logout-btn" onclick="logoutApp()">🚪 Sair do App</button>
 
   <nav class="sidebar-nav">
     <button class="snav-btn active" id="snav-harmonica" onclick="switchTab('harmonica')">
@@ -1914,19 +1870,19 @@ function dRender() {
     div.innerHTML = `<span class="hdot ok"></span><span class="hans"><strong>${e.titulo}</strong><br><span style="font-size:10px;color:var(--text-faint)">${e.data}</span>${e.obs ? `<br>${e.obs}` : ''}</span><span class="diary-del" data-id="${e.id}" data-idx="${idx}">🗑</span>`;
     list.appendChild(div);
   });
-  list.querySelectorAll('.diary-del').forEach(el => el.addEventListener('click', () => { if (window.guestMode) guestDiaryDelete(parseInt(el.dataset.idx)); else window.dDeleteCloud(el.dataset.id, parseInt(el.dataset.idx)); }));
+  list.querySelectorAll('.diary-del').forEach(el => el.addEventListener('click', () => { window.dDeleteCloud(el.dataset.id, parseInt(el.dataset.idx)); }));
 }
 function dSave(e) { 
   e.preventDefault(); 
   const titulo = document.getElementById('diarioTitulo').value.trim();
   const obs = document.getElementById('diarioObs').value.trim(); 
   if (!titulo) return; 
-  if (window.guestMode) guestDiarySave(titulo, obs); else window.dSaveCloud(titulo, obs);
+  window.dSaveCloud(titulo, obs);
   document.getElementById('diarioTitulo').value = ''; document.getElementById('diarioObs').value = ''; 
 }
 function dClearAll() { 
   if (!confirm('Apagar todo o diário da nuvem? Isso não pode ser desfeito.')) return; 
-  if (window.guestMode) guestDiaryClear(); else window.dClearAllCloud(); 
+  window.dClearAllCloud(); 
 }
 function dExport() { const blob = new Blob([JSON.stringify(window.diarioEntries, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'diario_bem.json'; a.click(); URL.revokeObjectURL(url); }
 
@@ -2054,42 +2010,6 @@ function drawSparkline() {
 }
 function tunerSetMode(mode) { tunerMode = mode; ['tmodeChrom','tmodeGuitar','tmodeVoice'].forEach(id => document.getElementById(id)?.classList.remove('active')); const map = { chromatic:'tmodeChrom', guitar:'tmodeGuitar', voice:'tmodeVoice' }; document.getElementById(map[mode])?.classList.add('active'); smoothedPitch = null; stabilityBuf = []; }
 document.getElementById('requestMicBtn')?.addEventListener('click', initTuner); document.getElementById('refFreq')?.addEventListener('input', e => { refFreq = parseFloat(e.target.value) || 440; });
-
-// ── MODO VISITANTE (entrar sem login) ──
-// Todas as ferramentas funcionam. O diário fica no navegador (localStorage); a pontuação não vai para a nuvem.
-window.guestMode = false;
-const GUEST_KEY = 'bem_diario_visitante';
-function guestLoad() {
-  try { window.diarioEntries = JSON.parse(localStorage.getItem(GUEST_KEY) || '[]'); } catch (e) { window.diarioEntries = []; }
-  dRender();
-}
-function guestPersist() { try { localStorage.setItem(GUEST_KEY, JSON.stringify(window.diarioEntries)); } catch (e) {} }
-function guestDiarySave(titulo, obs) {
-  window.diarioEntries.unshift({ id: 'local-' + Date.now(), titulo, obs, data: new Date().toLocaleString('pt-BR'), timestamp: Date.now() });
-  guestPersist(); dRender();
-}
-function guestDiaryDelete(idx) { window.diarioEntries.splice(idx, 1); guestPersist(); dRender(); }
-function guestDiaryClear() { window.diarioEntries = []; guestPersist(); dRender(); }
-
-function enterGuest() {
-  window.guestMode = true;
-  const l = document.getElementById('auth-loading'); if (l) l.style.display = 'none';
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app-wrapper').style.display = 'block';
-  const b = document.getElementById('logoutBtn'); if (b) b.textContent = '🔑 Entrar com conta';
-  guestLoad();
-}
-function leaveGuest() {
-  window.guestMode = false;
-  document.getElementById('app-wrapper').style.display = 'none';
-  document.getElementById('login-screen').style.display = 'flex';
-  const b = document.getElementById('logoutBtn'); if (b) b.textContent = '🚪 Sair do App';
-  window.diarioEntries = []; dRender();
-}
-function appLogout() {
-  if (window.guestMode) leaveGuest();
-  else if (window.logoutApp) window.logoutApp();
-}
 
 // ── NAVEGAÇÃO ──
 function toggleSidebar() { const sidebar = document.getElementById('sidebar'), overlay = document.getElementById('sidebarOverlay'), burger = document.getElementById('hamburger'), isOpen = sidebar.classList.contains('open'); if (isOpen) closeSidebar(); else { sidebar.classList.add('open'); overlay.classList.add('show'); burger.classList.add('open'); } }
