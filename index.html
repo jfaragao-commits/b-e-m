@@ -268,6 +268,7 @@
     =========================== */
     .main-content { margin-left: var(--sidebar-w); flex: 1; min-width: 0; padding: 2rem 1.8rem 5rem; max-width: 780px; }
     @media (max-width: 768px) { .main-content { margin-left: 0; padding: 4.5rem 1rem 5rem; max-width: 100%; } }
+    .main-content.wide { max-width: 1320px; }
 
     .view { display: none; flex-direction: column; gap: 1.2rem; }
     .view.active { display: flex; }
@@ -539,6 +540,75 @@
     .tuner-history-canvas { width: 100%; height: 100%; display: block; }
     #micPermissionMsg { text-align: center; padding: 2rem 1rem; }
     #tunerUI { display: none; }
+
+    .login-guest { display: flex; flex-direction: column; gap: .7rem; border-top: 1px solid var(--border); padding-top: 1.2rem; text-align: center; }
+    .login-guest p { font-size: 10px; color: var(--text-mid); line-height: 1.7; }
+
+    /* ===========================
+       HARMONIA GEOMÉTRICA 3D
+       Cor do bloco = qualidade: verde (maior), dourado (menor),
+       vermelho (dominante), marfim (diminuto).
+    =========================== */
+    .hg-intro p { font-size: 12px; color: var(--text-mid); line-height: 1.8; max-width: 680px; }
+    .hg-intro p.hg-gold { margin-top: .7rem; color: var(--gold); letter-spacing: .14em; text-transform: uppercase; font-size: 10px; }
+    .hg-grid { display: grid; grid-template-columns: minmax(0,1fr) 340px; gap: 1.2rem; align-items: start; }
+    .hg-stage { position: relative; border: 1px solid var(--border); background: var(--bg); height: 660px; overflow: hidden; touch-action: none; cursor: grab; }
+    .hg-stage:active { cursor: grabbing; }
+    #hgCanvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    .hg-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .hg-msg { position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; padding: 24px; text-align: center; background: var(--bg); color: var(--text-mid); font-size: 11px; letter-spacing: .08em; line-height: 1.8; }
+    .hg-hud { position: absolute; left: 12px; top: 12px; pointer-events: none; font-size: 10.5px; line-height: 1.7; color: #c9c5bc; background: rgba(12,12,12,.74); border: 1px solid var(--border); padding: 8px 12px; max-width: 280px; }
+    .hg-hud b { display: block; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--text-mid); font-size: 9px; margin-bottom: 4px; }
+    .hg-hud i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; }
+    .hg-hud .n { color: var(--text-mid); margin-top: 4px; }
+    .hg-hint { position: absolute; left: 12px; right: 12px; bottom: 10px; font-size: 10px; color: var(--text-mid); background: rgba(12,12,12,.74); border: 1px solid var(--border); padding: 4px 10px; }
+
+    .hg-lab { position: absolute; left: 0; top: 0; white-space: nowrap; will-change: transform; }
+    .hg-evl { --c: var(--accent); translate: -50% -100%; margin-top: -6px; background: var(--bg); color: var(--text); border: 1px solid var(--c); padding: 2px 9px 3px; text-align: center; line-height: 1.2; }
+    .hg-evl.gold { --c: var(--gold); } .hg-evl.green { --c: var(--green); } .hg-evl.red { --c: var(--red); } .hg-evl.ivory { --c: var(--accent); }
+    .hg-evl .rn { display: block; font-weight: 500; font-size: 13px; color: var(--c); }
+    .hg-evl .nm { display: block; font-size: 10.5px; color: #c9c5bc; }
+    .hg-evl.on { background: var(--c); }
+    .hg-evl.on .rn, .hg-evl.on .nm { color: var(--bg); }
+    .hg-ms { translate: -50% -50%; font-size: 10px; color: #c9c5bc; background: rgba(12,12,12,.82); padding: 0 4px; }
+    .hg-tone { translate: -50% -50%; background: var(--bg); color: var(--text); border: 1px solid var(--accent); padding: 0 7px; font-weight: 500; font-size: 12px; }
+    .hg-tone i { font-style: normal; font-size: 9px; color: var(--gold); margin-right: 6px; }
+    .hg-axl { translate: -50% 0; margin-top: 7px; font-size: 10px; color: var(--text-mid); }
+    .hg-axl.big { translate: -50% -50%; margin-top: 0; font-weight: 500; font-size: 12px; color: var(--accent); }
+    .hg-axl.z { color: var(--gold); letter-spacing: .14em; text-transform: uppercase; }
+
+    .hg-side { display: flex; flex-direction: column; gap: 1.2rem; }
+    .hg-side select { width: 100%; font-size: 11px; padding: 6px 10px; }
+    .hg-side input[type=range] { width: 100%; margin: 10px 0; }
+    .hg-side .btn:disabled { opacity: .3; cursor: not-allowed; }
+    .hg-side .opts-row .btn { flex: 1 1 auto; }
+    .hg-note { font-size: 11px; color: var(--text-mid); margin-top: 8px; line-height: 1.6; }
+    .hg-sub { font-size: 10px; letter-spacing: .05em; color: var(--text-mid); margin: 14px 0 6px; }
+    .hg-check { display: flex; align-items: center; gap: 8px; font-size: 11px; margin-top: 12px; cursor: pointer; color: #c9c5bc; }
+    .hg-check input { width: 14px; height: 14px; accent-color: var(--gold); }
+
+    .hg-degs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .hg-deg { --c: var(--accent); display: flex; flex-direction: column; align-items: center; padding: 6px 2px 7px; border: 1px solid var(--border-lt); background: var(--bg); color: var(--text); cursor: pointer; line-height: 1.2; font-family: var(--mono); transition: border-color .14s, background .14s; }
+    .hg-deg.gold { --c: var(--gold); } .hg-deg.green { --c: var(--green); } .hg-deg.red { --c: var(--red); } .hg-deg.ivory { --c: var(--accent); }
+    .hg-deg:hover { border-color: var(--c); background: var(--surface2); }
+    .hg-deg .rn { font-weight: 500; font-size: 13px; color: var(--c); }
+    .hg-deg .nm { font-size: 10px; color: var(--text-mid); }
+    .hg-deg svg { display: block; }
+
+    .hg-progtext { margin-top: 12px; min-height: 40px; font-size: 12px; font-weight: 500; line-height: 1.5; }
+    .hg-axes { list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 11px; color: #c9c5bc; line-height: 1.6; }
+    .hg-axes b { font-weight: 500; color: var(--text); }
+    .hg-legend { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+    .hg-legend li { --c: var(--accent); display: grid; grid-template-columns: 16px 1fr; gap: 10px; align-items: start; font-size: 11px; }
+    .hg-legend li.gold { --c: var(--gold); } .hg-legend li.green { --c: var(--green); } .hg-legend li.red { --c: var(--red); } .hg-legend li.ivory { --c: var(--accent); }
+    .hg-legend i { display: block; width: 14px; height: 14px; border: 1px solid var(--c); background: color-mix(in srgb, var(--c) 30%, transparent); margin-top: 2px; }
+    .hg-legend small { display: block; color: var(--text-mid); font-size: 10px; }
+
+    @media (max-width: 1100px) {
+      .hg-grid { grid-template-columns: minmax(0,1fr); }
+      .hg-stage { height: 520px; }
+      .hg-hud { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -569,7 +639,9 @@
   onAuthStateChanged(auth, async (user) => {
     document.getElementById("auth-loading").style.display = "none";
     if (user) {
+      window.guestMode = false;
       window.currentUser = user;
+      var lb = document.getElementById("logoutBtn"); if (lb) lb.textContent = "🚪 Sair do App";
       document.getElementById("login-screen").style.display = "none";
       document.getElementById("app-wrapper").style.display = "block";
       
@@ -577,6 +649,7 @@
       await window.loadDiarioFromCloud();
     } else {
       window.currentUser = null;
+      if (window.guestMode) return;
       document.getElementById("app-wrapper").style.display = "none";
       document.getElementById("login-screen").style.display = "flex";
     }
@@ -660,7 +733,27 @@
   };
 </script>
 
-<div id="auth-loading">INICIANDO SISTEMA B.E.M...</div>
+<div id="auth-loading">
+  <div>INICIANDO SISTEMA B.E.M...</div>
+  <div id="loaderExtra" style="display:none;margin-top:1.6rem;text-align:center;max-width:440px;padding:0 24px">
+    <div id="loaderMsg" style="color:#888;font-size:10px;letter-spacing:.06em;line-height:1.9;margin-bottom:1rem"></div>
+    <button type="button" class="btn" onclick="enterGuest()"><span>Entrar sem login</span></button>
+  </div>
+</div>
+<!-- Se o Firebase demorar, oferece entrar sem login; se não responder, explica o que verificar -->
+<script>
+setTimeout(function () {
+  var l = document.getElementById('auth-loading'), x = document.getElementById('loaderExtra');
+  if (l && x && l.style.display !== 'none') x.style.display = 'block';
+}, 2500);
+setTimeout(function () {
+  var l = document.getElementById('auth-loading'), m = document.getElementById('loaderMsg');
+  if (l && m && l.style.display !== 'none') {
+    m.innerHTML = 'NÃO FOI POSSÍVEL CONECTAR AO FIREBASE.<br>Abra o app por um endereço https da hospedagem, pois ele não conecta aberto direto do computador nem na pré-visualização do chat. '
+      + 'Confira também a internet e o domínio em Authentication &gt; Settings &gt; Authorized domains. Você pode entrar sem login para usar as ferramentas.';
+  }
+}, 8000);
+</script>
 
 <!-- ============================================== -->
 <!-- ⬐ TELA DE LOGIN ⬎  -->
@@ -696,6 +789,11 @@
 
     <div class="login-footer">
       <button class="login-toggle" id="authToggleBtn" onclick="toggleAuthMode()">Não tem uma conta? Crie aqui.</button>
+    </div>
+
+    <div class="login-guest">
+      <button type="button" class="btn" onclick="enterGuest()"><span>Entrar sem login</span></button>
+      <p>Modo visitante: todas as ferramentas funcionam. O diário fica só neste navegador e a pontuação não é salva na nuvem.</p>
     </div>
 
   </div>
@@ -736,7 +834,7 @@
     </div>
   </div>
   <button class="reset-btn" onclick="resetScores()">↺ zerar pontuação</button>
-  <button class="logout-btn" onclick="logoutApp()">🚪 Sair do App</button>
+  <button class="logout-btn" id="logoutBtn" onclick="appLogout()">🚪 Sair do App</button>
 
   <nav class="sidebar-nav">
     <button class="snav-btn active" id="snav-harmonica" onclick="switchTab('harmonica')">
@@ -749,6 +847,9 @@
     </button>
     <button class="snav-btn" id="snav-regua" onclick="switchTab('regua')">
       <span><span class="snav-icon">◈</span>Régua</span>
+    </button>
+    <button class="snav-btn" id="snav-geometrica" onclick="switchTab('geometrica')">
+      <span><span class="snav-icon">◇</span>Harmonia 3D</span>
     </button>
     <button class="snav-btn" id="snav-apreciacao" onclick="switchTab('apreciacao')">
       <span><span class="snav-icon">♪</span>Apreciação</span>
@@ -1090,6 +1191,104 @@
         <span class="regua-player-icon">◉</span>
         <span>TOQUE EM QUALQUER INTERVALO<br>PARA INTERNALIZAR SUA DISTÂNCIA SONORA.</span>
         <button class="regua-play-all-btn" onclick="reguaPlayAll()">▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== VIEW: HARMONIA GEOMÉTRICA 3D ==================== -->
+  <div class="view" id="view-geometrica">
+
+    <div class="panel hg-intro">
+      <div class="panel-label">Harmonia Geométrica</div>
+      <p>A harmonia em 3D. Cada acorde é um bloco geométrico definido por intervalos (X e Y), e cada sucessão de acordes é uma trajetória no tempo (Z).</p>
+      <p class="hg-gold">Mesma lógica. Mais dimensões.</p>
+    </div>
+
+    <div class="hg-grid">
+
+      <div class="hg-stage" id="hgStage" aria-label="Espaço 3D da Harmonia Geométrica">
+        <canvas id="hgCanvas"></canvas>
+        <div class="hg-labels" id="hgLabels"></div>
+        <div class="hg-hud">
+          <b>Eixos do sistema</b>
+          <div><i style="background:var(--accent)"></i>X (vertical): fundamental → 3ª</div>
+          <div><i style="background:var(--accent)"></i>Y (horizontal): 3ª → 5ª</div>
+          <div><i style="background:var(--gold)"></i>Z (tempo): sucessão dos acordes</div>
+          <div class="n">A 7ª é a terceira perna: 5ª → 7ª.</div>
+        </div>
+        <div class="hg-msg" id="hgMsg">Carregando a projeção 3D…</div>
+        <p class="hg-hint">Arraste para girar · role para aproximar · Shift + arraste para mover</p>
+      </div>
+
+      <div class="hg-side">
+
+        <div class="panel">
+          <div class="panel-label">Campo e tonalidade</div>
+          <div class="opts-row" style="margin-top:0">
+            <button class="tab-btn active" id="hgFMaj" aria-pressed="true">Campo maior</button>
+            <button class="tab-btn" id="hgFMin" aria-pressed="false">Campo menor</button>
+          </div>
+          <p class="hg-sub"><label for="hgTonic">Tonalidade</label></p>
+          <select id="hgTonic"></select>
+          <p class="hg-sub">Acordes</p>
+          <div class="opts-row" style="margin-top:0">
+            <button class="tab-btn active" id="hgMTri" aria-pressed="true">Tríades</button>
+            <button class="tab-btn" id="hgMTet" aria-pressed="false">Tétrades</button>
+          </div>
+          <p class="hg-note">Em tétrades surge a terceira perna do bloco, de 5ª a 7ª, descendo.</p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-label">Graus do campo</div>
+          <div class="hg-degs" id="hgDegs"></div>
+          <p class="hg-note">Clique num grau para ouvi-lo e acrescentá-lo ao tempo.</p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-label">Progressão no tempo</div>
+          <select id="hgPreset" aria-label="Progressão pronta"></select>
+          <p class="hg-progtext" id="hgProgText" aria-live="polite"></p>
+          <p class="hg-note" id="hgProgInfo" style="margin-top:0"></p>
+
+          <p class="hg-sub">Duração do próximo acorde</p>
+          <div class="opts-row" style="margin-top:0">
+            <button class="tab-btn" data-hgdur="1" aria-pressed="false">1 tempo</button>
+            <button class="tab-btn" data-hgdur="2" aria-pressed="false">2 tempos</button>
+            <button class="tab-btn active" data-hgdur="4" aria-pressed="true">4 tempos</button>
+          </div>
+
+          <p class="hg-sub"><label for="hgBpm">Andamento: <output id="hgBpmOut">90</output> BPM</label></p>
+          <input type="range" id="hgBpm" min="50" max="160" value="90">
+
+          <div class="opts-row">
+            <button class="btn btn-primary" id="hgPlay"><span>▶ Tocar</span></button>
+            <button class="btn" id="hgUndo"><span>Desfazer</span></button>
+            <button class="btn" id="hgClear"><span>Limpar</span></button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-label">Vista</div>
+          <div class="opts-row" style="margin-top:0">
+            <button class="tab-btn" data-hgview="front" aria-pressed="false" title="Todos os blocos sobrepostos, no mesmo lugar">Frente</button>
+            <button class="tab-btn active" data-hgview="diag" aria-pressed="true">Diagonal</button>
+            <button class="tab-btn" data-hgview="side" aria-pressed="false" title="Altura de cada bloco ao longo do tempo">Lado</button>
+            <button class="tab-btn" data-hgview="top" aria-pressed="false" title="Largura de cada bloco ao longo do tempo">Cima</button>
+          </div>
+          <label class="hg-check"><input type="checkbox" id="hgMeas" checked> Mostrar medidas em semitons</label>
+        </div>
+
+        <div class="panel">
+          <div class="panel-label">Como ler</div>
+          <ul class="hg-axes">
+            <li><b>X (vertical):</b> fundamental → 3ª.</li>
+            <li><b>Y (horizontal):</b> 3ª → 5ª.</li>
+            <li><b>Z (tempo):</b> cada acorde ocupa um trecho do eixo. O comprimento do bloco é a duração, e 4 tempos formam 1 compasso.</li>
+          </ul>
+          <p class="hg-note">A 7ª não é um eixo: é a terceira perna do bloco (5ª → 7ª), descendo a partir da 5ª. 1 semitom = 1 unidade, então 3ª M mede 4 e 3ª m mede 3. Os blocos ficam sempre na mesma posição, para você comparar só o formato. O dominante tem cor própria (vermelho) em tríades e em tétrades.</p>
+          <ul class="hg-legend" id="hgLegend"></ul>
+        </div>
+
       </div>
     </div>
   </div>
@@ -1715,19 +1914,19 @@ function dRender() {
     div.innerHTML = `<span class="hdot ok"></span><span class="hans"><strong>${e.titulo}</strong><br><span style="font-size:10px;color:var(--text-faint)">${e.data}</span>${e.obs ? `<br>${e.obs}` : ''}</span><span class="diary-del" data-id="${e.id}" data-idx="${idx}">🗑</span>`;
     list.appendChild(div);
   });
-  list.querySelectorAll('.diary-del').forEach(el => el.addEventListener('click', () => { window.dDeleteCloud(el.dataset.id, parseInt(el.dataset.idx)); }));
+  list.querySelectorAll('.diary-del').forEach(el => el.addEventListener('click', () => { if (window.guestMode) guestDiaryDelete(parseInt(el.dataset.idx)); else window.dDeleteCloud(el.dataset.id, parseInt(el.dataset.idx)); }));
 }
 function dSave(e) { 
   e.preventDefault(); 
   const titulo = document.getElementById('diarioTitulo').value.trim();
   const obs = document.getElementById('diarioObs').value.trim(); 
   if (!titulo) return; 
-  window.dSaveCloud(titulo, obs);
+  if (window.guestMode) guestDiarySave(titulo, obs); else window.dSaveCloud(titulo, obs);
   document.getElementById('diarioTitulo').value = ''; document.getElementById('diarioObs').value = ''; 
 }
 function dClearAll() { 
   if (!confirm('Apagar todo o diário da nuvem? Isso não pode ser desfeito.')) return; 
-  window.dClearAllCloud(); 
+  if (window.guestMode) guestDiaryClear(); else window.dClearAllCloud(); 
 }
 function dExport() { const blob = new Blob([JSON.stringify(window.diarioEntries, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'diario_bem.json'; a.click(); URL.revokeObjectURL(url); }
 
@@ -1856,6 +2055,42 @@ function drawSparkline() {
 function tunerSetMode(mode) { tunerMode = mode; ['tmodeChrom','tmodeGuitar','tmodeVoice'].forEach(id => document.getElementById(id)?.classList.remove('active')); const map = { chromatic:'tmodeChrom', guitar:'tmodeGuitar', voice:'tmodeVoice' }; document.getElementById(map[mode])?.classList.add('active'); smoothedPitch = null; stabilityBuf = []; }
 document.getElementById('requestMicBtn')?.addEventListener('click', initTuner); document.getElementById('refFreq')?.addEventListener('input', e => { refFreq = parseFloat(e.target.value) || 440; });
 
+// ── MODO VISITANTE (entrar sem login) ──
+// Todas as ferramentas funcionam. O diário fica no navegador (localStorage); a pontuação não vai para a nuvem.
+window.guestMode = false;
+const GUEST_KEY = 'bem_diario_visitante';
+function guestLoad() {
+  try { window.diarioEntries = JSON.parse(localStorage.getItem(GUEST_KEY) || '[]'); } catch (e) { window.diarioEntries = []; }
+  dRender();
+}
+function guestPersist() { try { localStorage.setItem(GUEST_KEY, JSON.stringify(window.diarioEntries)); } catch (e) {} }
+function guestDiarySave(titulo, obs) {
+  window.diarioEntries.unshift({ id: 'local-' + Date.now(), titulo, obs, data: new Date().toLocaleString('pt-BR'), timestamp: Date.now() });
+  guestPersist(); dRender();
+}
+function guestDiaryDelete(idx) { window.diarioEntries.splice(idx, 1); guestPersist(); dRender(); }
+function guestDiaryClear() { window.diarioEntries = []; guestPersist(); dRender(); }
+
+function enterGuest() {
+  window.guestMode = true;
+  const l = document.getElementById('auth-loading'); if (l) l.style.display = 'none';
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app-wrapper').style.display = 'block';
+  const b = document.getElementById('logoutBtn'); if (b) b.textContent = '🔑 Entrar com conta';
+  guestLoad();
+}
+function leaveGuest() {
+  window.guestMode = false;
+  document.getElementById('app-wrapper').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  const b = document.getElementById('logoutBtn'); if (b) b.textContent = '🚪 Sair do App';
+  window.diarioEntries = []; dRender();
+}
+function appLogout() {
+  if (window.guestMode) leaveGuest();
+  else if (window.logoutApp) window.logoutApp();
+}
+
 // ── NAVEGAÇÃO ──
 function toggleSidebar() { const sidebar = document.getElementById('sidebar'), overlay = document.getElementById('sidebarOverlay'), burger = document.getElementById('hamburger'), isOpen = sidebar.classList.contains('open'); if (isOpen) closeSidebar(); else { sidebar.classList.add('open'); overlay.classList.add('show'); burger.classList.add('open'); } }
 function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('show'); document.getElementById('hamburger').classList.remove('open'); }
@@ -1865,6 +2100,10 @@ function switchTab(tab) {
   const btn = document.getElementById('snav-' + tab); if (btn) btn.classList.add('active');
   if (window.innerWidth <= 768) closeSidebar();
   if (tab === 'regua') { const built = document.getElementById('reguaIntervals'); if (built && built.children.length === 0) reguaBuildUI(); }
+  // Harmonia Geométrica 3D: aba mais larga, carrega a projeção na primeira abertura e para o som ao sair
+  document.querySelector('.main-content').classList.toggle('wide', tab === 'geometrica');
+  if (tab === 'geometrica') { if (window.hgOpen) window.hgOpen(); }
+  else if (window.hgLeave) window.hgLeave();
 }
 
 // Inicializa o App
@@ -1874,6 +2113,521 @@ iInit();
 praticaInit();
 metroInitLeds();
 _updatePomoDisplay();
+</script>
+
+<!--
+===================================================================
+HARMONIA GEOMÉTRICA 3D (módulo próprio, carregado na primeira abertura da aba)
+Usa o motor de som do app (playNote, Caixa/Fone, volume) e a biblioteca three.js.
+===================================================================
+-->
+<script>
+(function () {
+'use strict';
+
+const $ = s => document.querySelector(s);
+let api = null, loading = false;
+
+function loadThree() {
+  return new Promise((resolve, reject) => {
+    if (window.THREE) return resolve();
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+    s.onload = resolve; s.onerror = () => reject(new Error('three.js'));
+    document.head.appendChild(s);
+  });
+}
+
+window.hgOpen = function () {
+  if (api) { api.resize(); return; }
+  if (loading) return;
+  loading = true;
+  loadThree().then(() => {
+    try { api = start(); $('#hgMsg').style.display = 'none'; api.resize(); }
+    catch (e) { $('#hgMsg').textContent = 'Este navegador não conseguiu iniciar o WebGL, então a cena 3D não pode ser exibida.'; api = null; }
+    loading = false;
+  }).catch(() => {
+    loading = false;
+    $('#hgMsg').textContent = 'Não foi possível carregar a biblioteca 3D. Verifique a conexão e abra a aba de novo.';
+  });
+};
+window.hgLeave = function () { if (api) api.stopPlay(); };
+
+function start() {
+
+/* ================= Dados musicais ================= */
+const LET = ['C','D','E','F','G','A','B'];
+const LPC = [0,2,4,5,7,9,11];
+const SC = { maj:[0,2,4,5,7,9,11], min:[0,2,3,5,7,8,10] };
+// v: fundamental → 3ª (altura). h: 3ª → 5ª (largura). s: 5ª → 7ª (terceira perna, desce).
+const FIELDS = {
+  maj: {
+    label: 'maior',
+    roman: ['I','II','III','IV','V','VI','VII'],
+    tonics: ['C','G','D','A','E','B','F#','Db','Ab','Eb','Bb','F'],
+    deg: [
+      {v:4,h:3,s:4,tri:'M',tet:'maj7'},
+      {v:3,h:4,s:3,tri:'m',tet:'m7'},
+      {v:3,h:4,s:3,tri:'m',tet:'m7'},
+      {v:4,h:3,s:4,tri:'M',tet:'maj7'},
+      {v:4,h:3,s:3,tri:'M',tet:'7',dom:true},
+      {v:3,h:4,s:3,tri:'m',tet:'m7'},
+      {v:3,h:3,s:4,tri:'d',tet:'m7♭5'}
+    ]
+  },
+  min: {
+    label: 'menor',
+    roman: ['i','ii°','III','iv','v','VI','VII'],
+    tonics: ['A','E','B','F#','C#','G#','D#','D','G','C','F','Bb'],
+    deg: [
+      {v:3,h:4,s:3,tri:'m',tet:'m7'},
+      {v:3,h:3,s:4,tri:'d',tet:'m7♭5'},
+      {v:4,h:3,s:4,tri:'M',tet:'maj7'},
+      {v:3,h:4,s:3,tri:'m',tet:'m7'},
+      {v:3,h:4,s:3,tri:'m',tet:'m7'},
+      {v:4,h:3,s:4,tri:'M',tet:'maj7'},
+      {v:4,h:3,s:3,tri:'M',tet:'7',dom:true}
+    ]
+  }
+};
+const RELATIVE = { maj:{C:'A',G:'E',D:'B',A:'F#',E:'C#',B:'G#','F#':'D#',Db:'Bb',Ab:'F',Eb:'C',Bb:'G',F:'D'} };
+RELATIVE.min = {}; Object.keys(RELATIVE.maj).forEach(k => { RELATIVE.min[RELATIVE.maj[k]] = k; });
+
+const PRESETS = [
+  { seq:[[0,4],[5,4],[1,4],[4,4],[0,4]], note:'o exemplo do início' },
+  { seq:[[1,2],[4,2],[0,4]], note:'2 + 2 + 4 tempos' },
+  { seq:[[0,4],[3,4],[4,4],[0,4]] },
+  { seq:[[0,4],[4,4],[5,4],[3,4]] },
+  { seq:[[0,2],[1,2],[2,2],[3,2],[4,2],[5,2],[6,2]], note:'2 tempos cada' }
+];
+const MAX_EVENTS = 16;
+const U = 1;          // 1 tempo = 1 unidade no eixo Z
+const GAP = .5;       // respiro entre um bloco e o seguinte
+const T = .5;         // espessura das pernas
+const FLOOR = -10;    // altura do piso (abaixo da terceira perna)
+const AX = -3.5;      // posição x da régua do tempo
+const HEX = { gold:'#C8A030', green:'#4A9E6A', red:'#B84848', ivory:'#E4E0D8' };
+
+/* ================= Estado ================= */
+const S = { field:'maj', tonic:'C', tetra:false, t7:0, t7Goal:0, prog:[], dur:4, bpm:90, active:-1, meas:true };
+let names = [], TL = { evs:[], total:0 };
+let playing = false, playT0 = 0, lastEv = -1, dirty = true, userZoomed = false, flashT = null;
+const RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+const stage = $('#hgStage'), canvas = $('#hgCanvas'), labels = $('#hgLabels');
+const DEG = () => FIELDS[S.field].deg;
+
+function setPressed(el, on) { el.classList.toggle('active', !!on); el.setAttribute('aria-pressed', !!on); }
+
+/* ---------- grafia das notas ---------- */
+function pcOf(n) {
+  let pc = LPC[LET.indexOf(n[0])];
+  for (const ch of n.slice(1)) { if (ch==='#'||ch==='♯') pc+=1; else if (ch==='b'||ch==='♭') pc-=1; else if (ch==='𝄪') pc+=2; else if (ch==='𝄫') pc-=2; }
+  return ((pc % 12) + 12) % 12;
+}
+function accOf(d) { return d===0?'':d===1?'♯':d===-1?'♭':d===2?'𝄪':'𝄫'; }
+function nameAt(letterIdx, pc) {
+  const L = ((letterIdx % 7) + 7) % 7; let d = (((pc - LPC[L]) % 12) + 12) % 12; if (d > 6) d -= 12; return LET[L] + accOf(d);
+}
+function spellScale(tonic, field) {
+  const li = LET.indexOf(tonic[0]), tpc = pcOf(tonic);
+  return SC[field].map((s, i) => nameAt(li + i, (tpc + s) % 12));
+}
+function toneNames(i) {
+  const d = DEG()[i], rl = LET.indexOf(names[i][0]), rpc = pcOf(names[i]);
+  const semis = [0, d.v, d.v + d.h, d.v + d.h + d.s], off = [0,2,4,6];
+  return semis.map((s, k) => nameAt(rl + off[k], (rpc + s) % 12));
+}
+function chordName(i) {
+  const d = DEG()[i];
+  return names[i] + (S.tetra ? d.tet : (d.tri==='M' ? '' : d.tri==='m' ? 'm' : 'dim'));
+}
+/* cor do bloco pela qualidade: verde (maior), dourado (menor), vermelho (dominante), marfim (diminuto).
+   O dominante tem cor própria também nas tríades, onde ele tem o mesmo formato do maior. */
+function colorKey(i) {
+  const d = DEG()[i];
+  if (d.dom) return 'red';
+  if (S.tetra) { if (d.tet === 'm7♭5') return 'ivory'; return d.v === 4 ? 'green' : 'gold'; }
+  if (d.tri === 'd') return 'ivory';
+  return d.tri === 'M' ? 'green' : 'gold';
+}
+
+/* ================= Three.js ================= */
+const renderer = new THREE.WebGLRenderer({ canvas:canvas, antialias:true, alpha:true });
+renderer.setClearColor(0x0C0C0C, 1);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 900);
+const world = new THREE.Group(); scene.add(world);
+const V3 = THREE.Vector3, UP = new V3(0,1,0);
+const C = { gold:new THREE.Color(HEX.gold), green:new THREE.Color(HEX.green), red:new THREE.Color(HEX.red), ivory:new THREE.Color(HEX.ivory) };
+let disposables = [], ctr = new V3(), W = 1, H = 1;
+let anchors = { ev:[], ms:[], tone:[], ax:[] }, texts = { ev:[], ms:[], tone:[], ax:[] };
+
+function timeline() {
+  let t = 0; const evs = S.prog.map(e => { const o = { d:e.d, b:e.b, t0:t, t1:t + e.b }; t += e.b; return o; });
+  return { evs:evs, total:t };
+}
+function touchProg() { TL = timeline(); dirty = true; }
+function axisBeats() { return Math.max(TL.total, 16); }
+function sceneBounds() {
+  return { min:new V3(-5.5, FLOOR-1, -(axisBeats()+2.5)*U), max:new V3(7.5, 3.6, 1.5) };
+}
+
+function track() { for (const o of arguments) disposables.push(o); }
+function clearWorld() {
+  while (world.children.length) world.remove(world.children[0]);
+  disposables.forEach(o => o.dispose && o.dispose()); disposables = [];
+}
+function basic(col, op, extra) { const m = new THREE.MeshBasicMaterial(Object.assign({ color:col, transparent:true, opacity:op }, extra || {})); track(m); return m; }
+function tube(a, b, r, mat) {
+  const dir = b.clone().sub(a), len = dir.length(); if (len < 1e-4) return null;
+  const g = new THREE.CylinderGeometry(r, r, len, 10, 1), m = new THREE.Mesh(g, mat);
+  m.position.copy(a).addScaledVector(dir, .5); m.quaternion.setFromUnitVectors(UP, dir.normalize());
+  world.add(m); track(g); return m;
+}
+function ball(p, r, mat) { const g = new THREE.SphereGeometry(r, 16, 12), m = new THREE.Mesh(g, mat); m.position.copy(p); world.add(m); track(g); return m; }
+function cone(p, dir, r, h, mat) {
+  const g = new THREE.ConeGeometry(r, h, 14), m = new THREE.Mesh(g, mat);
+  m.position.copy(p); m.quaternion.setFromUnitVectors(UP, dir.clone().normalize()); world.add(m); track(g); return m;
+}
+function box(cx, cy, cz, w, h, dd, col, op) {
+  const g = new THREE.BoxGeometry(w, h, dd);
+  const m = new THREE.MeshBasicMaterial({ color:col, transparent:true, opacity:op, depthWrite:false });
+  const mesh = new THREE.Mesh(g, m); mesh.position.set(cx, cy, cz);
+  const eg = new THREE.EdgesGeometry(g);
+  const lm = new THREE.LineBasicMaterial({ color:col, transparent:true, opacity:Math.min(1, op*3.4) });
+  const ls = new THREE.LineSegments(eg, lm); ls.position.copy(mesh.position);
+  world.add(mesh, ls); track(g, m, eg, lm);
+}
+function lines(pts, col, op) {
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
+  const m = new THREE.LineBasicMaterial({ color:col, transparent:true, opacity:op });
+  world.add(new THREE.LineSegments(g, m)); track(g, m);
+}
+
+/* pontos do bloco no plano X/Y: sempre a mesma posição. A 7ª desce a partir da 5ª. */
+function shape(i) {
+  const d = DEG()[i];
+  const A = {x:0, y:0}, B = {x:0, y:-d.v}, Cc = {x:d.h, y:-d.v}, D = {x:d.h, y:-d.v - d.s*S.t7};
+  return { A, B, C:Cc, D, d };
+}
+
+function build() {
+  clearWorld();
+  anchors = { ev:[], ms:[], tone:[], ax:[] }; texts = { ev:[], ms:[], tone:[], ax:[] };
+  const bnd = sceneBounds(); ctr = bnd.min.clone().add(bnd.max).multiplyScalar(.5);
+  const beats = Math.ceil(axisBeats()), zEnd = -(beats+1)*U;
+  const show3 = S.t7 > .03;
+
+  /* piso quadriculado: uma linha por tempo, mais forte a cada compasso */
+  const soft = [], hard = [];
+  for (let x = -4; x <= 7; x++) soft.push(x, FLOOR, 1, x, FLOOR, zEnd);
+  for (let t = 0; t <= beats+1; t++) { (t%4===0 ? hard : soft).push(-4, FLOOR, -t*U, 7, FLOOR, -t*U); }
+  lines(soft, C.ivory, .09); lines(hard, C.ivory, .28);
+
+  /* eixos: X e Y saem da origem da régua, Z é o tempo */
+  const wm = basic(C.ivory, .9), ym = basic(C.gold, 1);
+  const O = new V3(AX, FLOOR, 0);
+  tube(O, new V3(AX, FLOOR+4, 0), .06, wm); cone(new V3(AX, FLOOR+4.35, 0), UP, .24, .7, wm);
+  tube(O, new V3(AX+4, FLOOR, 0), .06, wm); cone(new V3(AX+4.35, FLOOR, 0), new V3(1,0,0), .24, .7, wm);
+  tube(O, new V3(AX, FLOOR, zEnd), .09, ym); cone(new V3(AX, FLOOR, zEnd-.5), new V3(0,0,-1), .3, .9, ym);
+  for (let t = 0; t <= beats; t++) {
+    const isBar = t%4===0, w = isBar ? .8 : .38;
+    tube(new V3(AX-w, FLOOR, -t*U), new V3(AX+w, FLOOR, -t*U), isBar ? .05 : .03, wm);
+    if (isBar && t < beats) { anchors.ax.push(new V3(AX-1.2, FLOOR, -t*U)); texts.ax.push(String(t/4+1)); }
+  }
+  anchors.ax.push(new V3(AX, FLOOR+4.9, 0)); texts.ax.push('X');
+  anchors.ax.push(new V3(AX+4.9, FLOOR, 0)); texts.ax.push('Y');
+  anchors.ax.push(new V3(AX, FLOOR, zEnd-1.8)); texts.ax.push('Z · tempo');
+
+  /* blocos: um por acorde, no mesmo lugar, esticados pela duração */
+  const playingNow = S.active >= 0;
+  const prev = [];
+  TL.evs.forEach((e, k) => {
+    const sh = shape(e.d), d = sh.d, key = colorKey(e.d), col = C[key];
+    const act = S.active === k, dim = playingNow && !act;
+    const op = act ? .5 : dim ? .12 : .24;
+    const z0 = -e.t0*U, z1 = -e.t1*U + GAP, len = Math.max(.3, z0 - z1), zm = (z0 + z1)/2;
+    const legs = [[sh.A, sh.B], [sh.B, sh.C]]; if (show3) legs.push([sh.C, sh.D]);
+    legs.forEach(([p, q]) => {
+      const vert = Math.abs(p.x - q.x) < 1e-6;
+      box((p.x+q.x)/2, (p.y+q.y)/2, zm, vert ? T : Math.abs(q.x-p.x)+T, vert ? Math.abs(q.y-p.y)+T : T, len, col, op);
+    });
+    const nm = basic(col, dim ? .5 : 1);
+    const nodes = [sh.A, sh.B, sh.C]; if (show3) nodes.push(sh.D);
+    nodes.forEach((p, j) => ball(new V3(p.x, p.y, z0), j===0 ? .42 : .28, nm));
+
+    /* fios que ligam cada nota ao mesmo ponto do bloco seguinte */
+    if (prev.length) {
+      const from = prev[prev.length-1];
+      nodes.forEach((p, j) => {
+        if (!from.nodes[j]) return;
+        const a = new V3(from.nodes[j].x, from.nodes[j].y, from.z1), b2 = new V3(p.x, p.y, z0);
+        tube(a, b2, .03, basic(C.ivory, .5));
+      });
+    }
+    prev.push({ nodes:nodes, z1:z1 });
+
+    /* rótulos */
+    anchors.ev.push(new V3(d.h/2, 2.4, zm)); texts.ev.push({ roman:FIELDS[S.field].roman[e.d], name:chordName(e.d), on:act, key:key });
+    if (S.meas) {
+      anchors.ms.push(new V3(-1.1, -d.v/2, zm)); texts.ms.push(d.v + ' ST');
+      anchors.ms.push(new V3(d.h/2, -d.v-1.1, zm)); texts.ms.push(d.h + ' ST');
+      if (show3 && S.t7 > .6) { anchors.ms.push(new V3(d.h+1.1, -d.v - d.s*S.t7/2, zm)); texts.ms.push(d.s + ' ST'); }
+    }
+    if (act) {
+      const tn = toneNames(e.d), pts = [[sh.A,-1.3,.5],[sh.B,-1.3,0],[sh.C,1.3,0],[sh.D,1.3,0]];
+      tn.forEach((n, j) => {
+        if (j === 3 && !show3) return;
+        const p = pts[j][0]; anchors.tone.push(new V3(p.x + pts[j][1], p.y + pts[j][2], z0));
+        texts.tone.push({ deg:['1','3','5','7'][j], name:n });
+      });
+    }
+  });
+  refreshLabels();
+}
+
+/* marcador (ponto escuro com halo marfim) e plano de leitura */
+const markerG = new THREE.Group();
+const mOut = new THREE.Mesh(new THREE.SphereGeometry(.66,20,16), new THREE.MeshBasicMaterial({ color:0xE4E0D8, depthTest:false, transparent:true }));
+const mIn = new THREE.Mesh(new THREE.SphereGeometry(.42,20,16), new THREE.MeshBasicMaterial({ color:0x0C0C0C, depthTest:false, transparent:true }));
+mOut.renderOrder = 19; mIn.renderOrder = 20; markerG.add(mOut, mIn); markerG.visible = false; scene.add(markerG);
+const phGeo = new THREE.PlaneGeometry(12.5, -FLOOR + 3.6);
+const phMat = new THREE.MeshBasicMaterial({ color:0xE4E0D8, transparent:true, opacity:.06, side:THREE.DoubleSide, depthWrite:false });
+const phEdge = new THREE.LineSegments(new THREE.EdgesGeometry(phGeo), new THREE.LineBasicMaterial({ color:0xC8A030, transparent:true, opacity:.95 }));
+const playhead = new THREE.Group(); playhead.add(new THREE.Mesh(phGeo, phMat), phEdge);
+playhead.position.set(1.25, (FLOOR+3.6)/2, 0); playhead.visible = false; scene.add(playhead);
+
+/* ================= Câmera ================= */
+const cur = { theta:.85, phi:1.2, dist:60 }, goal = { theta:.85, phi:1.2, dist:60 }, pan = new V3();
+const VIEWS = { front:[0, Math.PI/2], diag:[.85, 1.2], side:[Math.PI/2, Math.PI/2], top:[0, .25] };
+function fit() {
+  const b = sceneBounds(), size = b.max.clone().sub(b.min), R = size.length()/2 + 2;
+  const vf = camera.fov*Math.PI/180, hf = 2*Math.atan(Math.tan(vf/2)*camera.aspect);
+  goal.dist = R/Math.sin(Math.min(vf, hf)/2)*.82;
+}
+function setView(name) {
+  const v = VIEWS[name]; goal.theta = v[0]; goal.phi = v[1]; pan.set(0,0,0); userZoomed = false; fit();
+  document.querySelectorAll('[data-hgview]').forEach(b => setPressed(b, b.dataset.hgview === name));
+}
+function updateCamera() {
+  const f = RM ? 1 : .16;
+  cur.theta += (goal.theta-cur.theta)*f; cur.phi += (goal.phi-cur.phi)*f; cur.dist += (goal.dist-cur.dist)*f;
+  const t = ctr.clone().add(pan);
+  camera.position.set(t.x + cur.dist*Math.sin(cur.phi)*Math.sin(cur.theta), t.y + cur.dist*Math.cos(cur.phi), t.z + cur.dist*Math.sin(cur.phi)*Math.cos(cur.theta));
+  camera.lookAt(t); camera.updateMatrixWorld();
+}
+const ptrs = new Map(); let lastPinch = 0;
+const pinch = () => { const a = [...ptrs.values()]; return Math.hypot(a[0].x-a[1].x, a[0].y-a[1].y) || 1; };
+stage.addEventListener('pointerdown', e => {
+  stage.setPointerCapture(e.pointerId); ptrs.set(e.pointerId, { x:e.clientX, y:e.clientY }); if (ptrs.size === 2) lastPinch = pinch();
+});
+stage.addEventListener('pointermove', e => {
+  const p = ptrs.get(e.pointerId); if (!p) return;
+  const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
+  if (ptrs.size === 1) {
+    if (e.shiftKey || e.buttons === 2) {
+      const k = cur.dist*.0016, r = new V3().setFromMatrixColumn(camera.matrixWorld, 0), u = new V3().setFromMatrixColumn(camera.matrixWorld, 1);
+      pan.addScaledVector(r, -dx*k).addScaledVector(u, dy*k);
+    } else { goal.theta -= dx*.007; goal.phi = Math.min(Math.PI-.2, Math.max(.2, goal.phi - dy*.007)); }
+  } else if (ptrs.size === 2) {
+    const d = pinch(); goal.dist = Math.min(280, Math.max(10, goal.dist*lastPinch/d)); lastPinch = d; userZoomed = true;
+  }
+});
+['pointerup','pointercancel'].forEach(t => stage.addEventListener(t, e => ptrs.delete(e.pointerId)));
+stage.addEventListener('wheel', e => { e.preventDefault(); goal.dist = Math.min(280, Math.max(10, goal.dist*Math.exp(e.deltaY*.0012))); userZoomed = true; }, { passive:false });
+stage.addEventListener('contextmenu', e => e.preventDefault());
+
+/* ================= Rótulos em HTML ================= */
+const pools = { ev:[], ms:[], tone:[], ax:[] };
+const CLS = { ev:'hg-lab hg-evl', ms:'hg-lab hg-ms', tone:'hg-lab hg-tone', ax:'hg-lab hg-axl' };
+function ensure(name, n) {
+  const p = pools[name];
+  while (p.length < n) { const s = document.createElement('span'); s.className = CLS[name]; labels.appendChild(s); p.push(s); }
+  while (p.length > n) p.pop().remove();
+}
+function refreshLabels() {
+  ['ev','ms','tone','ax'].forEach(n => ensure(n, anchors[n].length));
+  pools.ev.forEach((el, k) => { const t = texts.ev[k]; el.className = 'hg-lab hg-evl ' + t.key + (t.on ? ' on' : ''); el.innerHTML = '<span class="rn">' + t.roman + '</span><span class="nm">' + t.name + '</span>'; });
+  pools.ms.forEach((el, k) => { el.textContent = texts.ms[k]; });
+  pools.tone.forEach((el, k) => { const t = texts.tone[k]; el.innerHTML = '<i>' + t.deg + '</i>' + t.name; });
+  pools.ax.forEach((el, k) => { const t = texts.ax[k]; el.textContent = t; el.className = 'hg-lab hg-axl' + ((t==='X' || t==='Y') ? ' big' : '') + (t.indexOf('Z') === 0 ? ' z' : ''); });
+}
+function place(el, v) {
+  const p = v.clone().project(camera);
+  el.style.transform = 'translate(' + ((p.x*.5+.5)*W).toFixed(1) + 'px,' + ((-p.y*.5+.5)*H).toFixed(1) + 'px)';
+  el.style.visibility = p.z < 1 ? 'visible' : 'hidden';
+}
+function updateLabels() { ['ev','ms','tone','ax'].forEach(n => pools[n].forEach((el, k) => { if (anchors[n][k]) place(el, anchors[n][k]); })); }
+
+/* ================= Áudio: usa o motor de som do app ================= */
+function semis(i) { const d = DEG()[i], a = [0, d.v, d.v + d.h]; if (S.tetra) a.push(d.v + d.h + d.s); return a; }
+function playChord(i, dur) {
+  try {
+    initAudio();                                   // do app: cria o grafo de áudio (Caixa/Fone, EQ, reverb)
+    const root = 60 + ((pcOf(S.tonic) + SC[S.field][i]) % 12);
+    const t = audioCtx.currentTime, len = Math.max(1.0, dur || 1.1);
+    semis(i).forEach((s, n) => playNote(midiToFreq(root + s), t + n*.04, len));
+  } catch (e) {}
+}
+
+/* ================= Interface ================= */
+const tonicSel = $('#hgTonic'), presetSel = $('#hgPreset');
+const pretty = t => t.replace('#','♯').replace('b','♭');
+
+function glyph(i) {
+  const d = DEG()[i], k = 4, x0 = 10, y0 = 6, col = HEX[colorKey(i)];
+  const A = [x0,y0], B = [x0, y0 + d.v*k], Cc = [x0 + d.h*k, y0 + d.v*k], D = [Cc[0], Cc[1] + d.s*k];
+  const pts = S.tetra ? [A,B,Cc,D] : [A,B,Cc];
+  const line = pts.map(p => p.join(',')).join(' ');
+  const dots = pts.map((p, j) => '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="' + (j===0 ? 3.2 : 2.3) + '" fill="' + col + '"/>').join('');
+  return '<svg viewBox="0 0 44 44" width="44" height="44" aria-hidden="true"><polyline points="' + line + '" fill="none" stroke="' + col + '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>' + dots + '</svg>';
+}
+function renderDegs() {
+  const boxEl = $('#hgDegs'); boxEl.innerHTML = '';
+  DEG().forEach((d, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'hg-deg ' + colorKey(i);
+    b.innerHTML = glyph(i) + '<span class="rn">' + FIELDS[S.field].roman[i] + '</span><span class="nm">' + chordName(i) + '</span>';
+    b.setAttribute('aria-label', 'Grau ' + FIELDS[S.field].roman[i] + ', ' + chordName(i) + '. Ouvir e acrescentar ao tempo.');
+    b.addEventListener('click', () => onChord(i)); boxEl.appendChild(b);
+  });
+}
+function renderTonics() {
+  tonicSel.innerHTML = '';
+  FIELDS[S.field].tonics.forEach(t => { const o = document.createElement('option'); o.value = t; o.textContent = pretty(t) + ' ' + FIELDS[S.field].label; tonicSel.appendChild(o); });
+  tonicSel.value = S.tonic;
+}
+function presetLabel(p) { return p.seq.map(x => FIELDS[S.field].roman[x[0]]).join(' – ') + (p.note ? ' (' + p.note + ')' : ''); }
+function renderPresets(sel) {
+  presetSel.innerHTML = '';
+  PRESETS.forEach((p, i) => { const o = document.createElement('option'); o.value = i; o.textContent = presetLabel(p); presetSel.appendChild(o); });
+  const oc = document.createElement('option'); oc.value = 'c'; oc.textContent = 'Personalizada (clique nos graus)'; presetSel.appendChild(oc);
+  presetSel.value = sel;
+}
+function renderProg() {
+  $('#hgProgText').textContent = S.prog.length ? S.prog.map(e => chordName(e.d)).join(' → ') : 'Clique nos graus para montar uma progressão no tempo.';
+  const bars = TL.total/4;
+  $('#hgProgInfo').textContent = S.prog.length ? (TL.total + ' tempos, ' + (Number.isInteger(bars) ? bars : bars.toFixed(1).replace('.',',')) + (bars === 1 ? ' compasso' : ' compassos') + ' em 4/4.') : '';
+  ['#hgPlay','#hgUndo','#hgClear'].forEach(s => { $(s).disabled = !S.prog.length; });
+}
+function renderLegend() {
+  const di = DEG().findIndex(d => d.dom), dr = FIELDS[S.field].roman[di];
+  const rows = S.tetra ? [
+    ['green','Maior com sétima maior','3ª M + 3ª m + 3ª M'],
+    ['gold','Menor com sétima','3ª m + 3ª M + 3ª m'],
+    ['red','Dominante (' + dr + '7)','3ª M + 3ª m + 3ª m'],
+    ['ivory','Meio-diminuto (m7♭5)','3ª m + 3ª m + 3ª M']
+  ] : [
+    ['green','Maior','3ª M + 3ª m'],
+    ['gold','Menor','3ª m + 3ª M'],
+    ['red','Dominante (' + dr + ')','3ª M + 3ª m, o mesmo formato do maior'],
+    ['ivory','Diminuto','3ª m + 3ª m']
+  ];
+  $('#hgLegend').innerHTML = rows.map(r => '<li class="' + r[0] + '"><i></i><div><b>' + r[1] + '</b><small>' + r[2] + '</small></div></li>').join('');
+}
+function renderMode() {
+  setPressed($('#hgMTri'), !S.tetra); setPressed($('#hgMTet'), S.tetra);
+  renderLegend(); renderDegs(); renderProg();
+}
+function recompute() { names = spellScale(S.tonic, S.field); }
+function setMode(t) {
+  S.tetra = t; S.t7Goal = t ? 1 : 0; if (RM) S.t7 = S.t7Goal;
+  renderMode(); dirty = true;
+}
+function setField(f) {
+  if (f === S.field) return;
+  if (playing) stopPlay();
+  const from = S.field; S.field = f; S.tonic = RELATIVE[from][S.tonic] || FIELDS[f].tonics[0];
+  setPressed($('#hgFMaj'), f === 'maj'); setPressed($('#hgFMin'), f === 'min');
+  recompute(); renderTonics(); renderPresets(presetSel.value); renderMode(); dirty = true;
+}
+function setProg(seq, custom) {
+  S.prog = seq.map(p => ({ d:p[0], b:p[1] }));
+  const key = JSON.stringify(seq), i = PRESETS.findIndex(p => JSON.stringify(p.seq) === key);
+  presetSel.value = (!custom && i >= 0) ? String(i) : 'c';
+  touchProg(); renderProg();
+}
+function flash(k) {
+  S.active = k; dirty = true; clearTimeout(flashT);
+  flashT = setTimeout(() => { if (!playing) { S.active = -1; dirty = true; } }, 1500);
+}
+function onChord(i) {
+  if (playing) stopPlay();
+  if (S.prog.length >= MAX_EVENTS) { playChord(i, 1.0); return; }
+  S.prog = S.prog.concat({ d:i, b:S.dur }); presetSel.value = 'c'; touchProg(); renderProg();
+  playChord(i, 1.0); flash(S.prog.length - 1);
+}
+function setPlayLabel(txt) { const sp = $('#hgPlay span'); if (sp) sp.textContent = txt; }
+function startPlay() {
+  if (playing) { stopPlay(); return; }
+  if (!S.prog.length) return;
+  playing = true; playT0 = performance.now(); lastEv = -1; playhead.visible = true; setPlayLabel('■ Parar');
+}
+function stopPlay() {
+  playing = false; S.active = -1; lastEv = -1; playhead.visible = false; markerG.visible = false; setPlayLabel('▶ Tocar'); dirty = true;
+}
+
+tonicSel.addEventListener('change', () => { S.tonic = tonicSel.value; recompute(); renderDegs(); renderProg(); dirty = true; });
+presetSel.addEventListener('change', () => { if (presetSel.value === 'c') return; if (playing) stopPlay(); setProg(PRESETS[+presetSel.value].seq.map(p => p.slice()), false); });
+$('#hgFMaj').addEventListener('click', () => setField('maj'));
+$('#hgFMin').addEventListener('click', () => setField('min'));
+$('#hgMTri').addEventListener('click', () => setMode(false));
+$('#hgMTet').addEventListener('click', () => setMode(true));
+$('#hgPlay').addEventListener('click', startPlay);
+$('#hgUndo').addEventListener('click', () => { if (playing) stopPlay(); S.prog = S.prog.slice(0, -1); presetSel.value = 'c'; touchProg(); renderProg(); });
+$('#hgClear').addEventListener('click', () => { if (playing) stopPlay(); S.prog = []; presetSel.value = 'c'; touchProg(); renderProg(); });
+$('#hgMeas').addEventListener('change', e => { S.meas = e.target.checked; dirty = true; });
+document.querySelectorAll('[data-hgview]').forEach(b => b.addEventListener('click', () => setView(b.dataset.hgview)));
+document.querySelectorAll('[data-hgdur]').forEach(b => b.addEventListener('click', () => {
+  S.dur = +b.dataset.hgdur; document.querySelectorAll('[data-hgdur]').forEach(x => setPressed(x, x === b));
+}));
+$('#hgBpm').addEventListener('input', e => {
+  const v = +e.target.value;
+  if (playing) { const eb = (performance.now() - playT0)/1000*S.bpm/60; playT0 = performance.now() - eb/(v/60)*1000; }
+  S.bpm = v; $('#hgBpmOut').textContent = v;
+});
+
+/* ================= Tamanho e laço principal ================= */
+function resize() {
+  W = stage.clientWidth || 1; H = stage.clientHeight || 1;
+  if (stage.clientWidth === 0) return;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); renderer.setSize(W, H, false);
+  camera.aspect = W/H; camera.updateProjectionMatrix(); if (!userZoomed) fit();
+}
+if (window.ResizeObserver) new ResizeObserver(resize).observe(stage); else window.addEventListener('resize', resize);
+
+function frame(now) {
+  requestAnimationFrame(frame);
+  if (!stage.offsetParent) return;                 // aba fechada: não gasta processamento
+  if (S.t7 !== S.t7Goal) {
+    S.t7 += (S.t7Goal - S.t7)*.16; if (Math.abs(S.t7Goal - S.t7) < .004) S.t7 = S.t7Goal; dirty = true;
+  }
+  if (playing) {
+    const eb = (now - playT0)/1000*S.bpm/60;
+    if (eb >= TL.total) { stopPlay(); }
+    else {
+      const k = TL.evs.findIndex(e => eb >= e.t0 && eb < e.t1);
+      if (k !== lastEv && k >= 0) { lastEv = k; S.active = k; const e = TL.evs[k]; playChord(e.d, e.b*60/S.bpm*1.02); dirty = true; }
+      if (k >= 0) { const sh = shape(TL.evs[k].d); markerG.position.set(sh.C.x/2, (sh.A.y + Math.min(sh.B.y, sh.D.y))/2, -eb*U); markerG.visible = true; }
+      playhead.position.z = -eb*U;
+    }
+  } else if (S.active >= 0 && TL.evs[S.active]) {
+    const e = TL.evs[S.active], sh = shape(e.d); markerG.position.set(sh.C.x/2, (sh.A.y + Math.min(sh.B.y, sh.D.y))/2, -((e.t0+e.t1)/2)*U); markerG.visible = true;
+  } else markerG.visible = false;
+  if (dirty) { build(); dirty = false; }
+  updateCamera(); renderer.render(scene, camera); updateLabels();
+}
+
+/* ================= Início ================= */
+recompute(); renderTonics(); renderPresets('0'); renderMode();
+setProg(PRESETS[0].seq.map(p => p.slice()), false);
+resize(); fit(); cur.dist = goal.dist;
+build(); dirty = false;
+requestAnimationFrame(frame);
+
+return { resize: resize, stopPlay: stopPlay };
+}
+})();
 </script>
 </body>
 </html>
